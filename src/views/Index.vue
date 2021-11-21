@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="container">
+      <a href="\workshop">HERE CLICK for workshop</a>
       <SpWelcome />
       <SpTokenSend :address="address" :refresh="true" />
       <SpTransferList :address="address" />

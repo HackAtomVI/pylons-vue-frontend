@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Index from '@/views/Index.vue'
 import Types from '@/views/Types.vue'
 import Relayers from '@/views/Relayers.vue'
+import Workshop from '@/views/Workshop.vue'
 
 const routerHistory = createWebHistory()
 const routes = [
@@ -11,6 +12,7 @@ const routes = [
   },
   { path: '/types', component: Types },
   { path: '/relayers', component: Relayers },
+  { path: '/workshop', combonent: Workshop },
 ]
 
 const router = createRouter({
