@@ -4,13 +4,8 @@
       <router-link to="/" class="nav__logo">
         <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
       </router-link>
-
-      <div class="header-text">
-        <div class="header-item">Wallet / Tokens</div>
-        <div class="header-item">Visit CC website</div>
-        <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
-      </div>
-
+      <div class="header-item">Wallet / Tokens</div>
+      <div class="header-item">Visit CC website</div>
       <router-link v-if="$store.getters.loggedIn" class="account-box" to="/me">
         <button>My Account ({{ getUserCredits }} Credits)</button>
       </router-link>
@@ -49,19 +44,16 @@ header {
   font-size: 20px;
   display: inline;
 }
-.logo {
-  width: 12%;
-}
-.header-text {
-  display: flex;
-  flex-direction: row;
-  float: right;
-  padding-top: 2%;
-  width: 60%;
+.nav__logo {
+  height: 100%;
+  width: 100%;
+  display: contents;
 }
 .header-content-container {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  height: 15%;
+  height: 100%;
   justify-content: middle;
 }
 .account-box {

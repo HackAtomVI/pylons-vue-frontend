@@ -1,9 +1,7 @@
 <template>
-  <body>
-    <div>
-      <div class="container">HERE WE GO BABY</div>
-    </div>
-  </body>
+  <div class="background">
+    <div class="container">HERE WE GO BABY</div>
+  </div>
 </template>
 
 <script>
@@ -18,7 +16,14 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
-body {
-  background: linear-gradient(90deg, rgba(85, 5, 66, 1) 0%, rgba(176, 109, 84, 1) 50%, rgba(85, 5, 66, 1) 100%);
+.sp-fill {
+  padding-top: 0;
+}
+.background {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: $background-gradient;
 }
 </style>

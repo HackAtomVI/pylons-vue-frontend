@@ -45,12 +45,8 @@
               Login
             </div>
           </li>
-          <li style="height: 50%">
-            <a
-              class="discord-button"
-              style="color: black; height: 10%; padding-top: 5%; margin-top: 13%; border-radius: 8%; font-size: 16px"
-              href="https://discord.gg/ZKKbhUs"
-            >
+          <li>
+            <a class="discord-button" href="https://discord.gg/ZKKbhUs">
               <picture>
                 <source type="image/webp" srcset="../assets/icon/discord.webp" />
                 <source type="image/png" srcset="../assets/icon/discord.png" />
@@ -263,6 +259,7 @@ export default {
 .discord-button {
   background-color: white;
   color: black;
+  padding: 0;
   font-size: $font-size;
 }
 </style>
