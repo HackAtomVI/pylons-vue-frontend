@@ -12,4 +12,7 @@ module.exports = {
     },
     plugins: [new NodePolyfillPlugin()],
   },
+  devServer: {
+    proxy: 'http://46.166.140.172',
+  },
 }

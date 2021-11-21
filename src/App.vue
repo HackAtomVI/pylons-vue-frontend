@@ -39,9 +39,9 @@ export default {
   },
   async created() {
     await this.$store.dispatch('common/env/init', {
-      apiNode: 'http://localhost:1317',
-      rpcNode: 'http://localhost:26657',
-      wsNode: 'ws://localhost:26657/websocket',
+      apiNode: 'http://46.166.140.172:1317/',
+      rpcNode: 'http://46.166.140.172:26657/',
+      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
       chainId: 'pylons',
       addrPrefix: 'pylo',
       sdkVersion: 'Stargate',
