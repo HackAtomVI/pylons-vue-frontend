@@ -43,7 +43,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('common/env/init', {
-      apiNode: 'http://localhost:1317',
+      //apiNode: 'http://localhost:1317',
       rpcNode: 'http://localhost:26657',
       wsNode: 'ws://localhost:26657/websocket',
       chainId: 'pylons',

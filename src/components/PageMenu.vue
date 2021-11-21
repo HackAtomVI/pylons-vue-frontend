@@ -47,7 +47,7 @@
           </li>
           <li>
             <a class="discord-button" href="https://discord.gg/ZKKbhUs">
-              <picture>
+              <picture style="color: black">
                 <source type="image/webp" srcset="../assets/icon/discord.webp" />
                 <source type="image/png" srcset="../assets/icon/discord.png" />
                 <img
