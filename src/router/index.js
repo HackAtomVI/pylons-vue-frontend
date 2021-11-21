@@ -12,7 +12,7 @@ const routes = [
   },
   { path: '/types', component: Types },
   { path: '/relayers', component: Relayers },
-  { path: '/workshop', combonent: Workshop },
+  { path: '/workshop', component: Workshop },
 ]
 
 const router = createRouter({

@@ -1,11 +1,10 @@
 <template>
   <div v-if="initialized">
-    <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
     <SpLayout>
-      <template v-slot:sidebar>
-        <Sidebar />
-      </template>
       <template v-slot:content>
+        <PageHeader />
+        <PageMenu />
+        <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
         <router-view />
       </template>
     </SpLayout>
@@ -21,11 +20,15 @@ body {
 <script>
 import './scss/app.scss'
 import '@starport/vue/lib/starport-vue.css'
-import Sidebar from './components/Sidebar'
+//import Sidebar from './components/Sidebar'
+import PageMenu from './components/PageMenu'
+import PageHeader from './components/PageHeader'
 
 export default {
   components: {
-    Sidebar,
+    //Sidebar,
+    PageMenu,
+    PageHeader,
   },
   data() {
     return {
@@ -54,3 +57,4 @@ export default {
   },
 }
 </script>
+<style scoped lang="scss"></style>
