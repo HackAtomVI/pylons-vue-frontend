@@ -41,16 +41,25 @@ export default {
     let local = {
       apiNode: 'http://localhost:1317',
       rpcNode: 'http://localhost:26657',
-      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
+      wsNode: 'ws://localhost:26657/websocket',
       chainId: 'pylons',
       addrPrefix: 'pylo',
       sdkVersion: 'Stargate',
       getTXApi: 'http://localhost:26657/tx?hash=0x',
     }
     let pylonsserver = {
+      apiNode: 'http://api.testnet.pylons.tech:1317',
+      rpcNode: 'http://api.testnet.pylons.tech:26657',
+      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
+      chainId: 'pylons',
+      addrPrefix: 'pylo',
+      sdkVersion: 'Stargate',
+      getTXApi: 'http://api.testnet.pylons.tech:26657/tx?hash=0x',
+    }
+    let pylonsserver2 = {
       apiNode: 'http://46.166.140.172:1317',
       rpcNode: 'http://46.166.140.172:26657',
-      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
+      wsNode: 'http://46.166.140.172:26657/websocket',
       chainId: 'pylons',
       addrPrefix: 'pylo',
       sdkVersion: 'Stargate',
