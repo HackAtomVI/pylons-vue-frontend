@@ -54,6 +54,7 @@ export default {
   box-shadow: 10px 10px 8px #242424;
   height: 10%;
 }
+
 .background {
   top: 0;
   left: 0;
