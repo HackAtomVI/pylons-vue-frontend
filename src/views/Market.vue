@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Workshop',
+  name: 'Marketplace',
   components: {},
   data() {
     return {}

@@ -40,6 +40,7 @@ header {
 }
 .header-item {
   font-weight: bolder;
+  color: $white;
   padding-left: 12%;
   font-size: 20px;
   display: inline;

@@ -22,28 +22,19 @@
         </div>
         <ul :class="showMenuClass">
           <li>
-            <router-link to="/about"> The Game </router-link>
-          </li>
-          <li>
-            <router-link to="/howtoplay"> How To Play </router-link>
+            <router-link to="/"> HOME </router-link>
           </li>
           <li>
             <router-link to="/workshop"> WORKSHOP </router-link>
           </li>
           <li>
-            <router-link to="/newcard"> Card Creator </router-link>
+            <router-link to="/arena"> ARENA </router-link>
           </li>
           <li>
-            <router-link to="/gallery"> Gallery </router-link>
+            <router-link to="/market"> MARKETPLACE </router-link>
           </li>
-
-          <li v-if="$store.getters.loggedIn">
-            <router-link to="/vote"> Voting </router-link>
-          </li>
-          <li v-if="!$store.getters.loggedIn" @click="$store.commit('toggleLoginBox')">
-            <div :class="displayLoginDialogue ? 'nav__menu__item nav__menu__item--exposed' : 'nav__menu__item '">
-              Login
-            </div>
+          <li>
+            <a href="https://crowdcontrol.network/#/"> CROWD CONTROL </a>
           </li>
           <li>
             <a class="discord-button" href="https://discord.gg/ZKKbhUs">

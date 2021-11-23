@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Workshop',
+  name: 'Arena',
   components: {},
   data() {
     return {}
