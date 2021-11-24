@@ -3,9 +3,11 @@
     <div class="container">
       <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
       <div class="title">The NFT Arena game</div>
-      <button v-on:click="isStartClicked = !isStartClicked" type="button" class="get-started">GET STARTED NOW</button>
+      <router-link to="/login" v-on:click="isStartClicked = !isStartClicked" type="button" class="get-started"
+        >GET STARTED NOW</router-link
+      >
       <div v-if="isStartClicked" style="text-align: center">
-        <SpWallet class="wallet" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
+        <!-- <SpWallet class="wallet" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" /> -->
       </div>
     </div>
   </div>
@@ -47,12 +49,20 @@ export default {
 }
 .get-started {
   font-size: 30px;
+  text-decoration: none;
   padding: 5px 15px;
+  line-height: 60px;
+  color: black;
   margin-top: 35px;
-  border-radius: 4%;
   border-width: 0;
-  box-shadow: 10px 10px 8px #242424;
-  height: 10%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 1);
+  width: 480px;
+  height: 70px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .background {
   top: 0;

@@ -4,8 +4,8 @@
       <router-link to="/" class="nav__logo">
         <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
       </router-link>
-      <div class="header-item">Wallet / Tokens</div>
-      <div class="header-item">Visit CC website</div>
+      <!-- <div class="header-item">Wallet / Tokens</div>
+      <div class="header-item">Visit CC website</div> -->
       <router-link v-if="$store.getters.loggedIn" class="account-box" to="/me">
         <button>My Account ({{ getUserCredits }} Credits)</button>
       </router-link>
