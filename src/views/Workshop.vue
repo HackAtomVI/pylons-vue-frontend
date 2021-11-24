@@ -12,11 +12,16 @@
           <!--Show this if no nft name-->
           <img src="../assets/img/rename.png" class="edit-icon" />
         </div>
-        <div class="save-hero">SAVE HERO</div>
-        <router-link to="/arena" class="to-arena">
-          <img src="../assets/img/sword.png" class="edit-icon" />
-          TO ARENA
-        </router-link>
+
+        <div class="nft-img-container"></div>
+
+        <div class="button-wrapper">
+          <div class="save-hero btn-g">SAVE HERO</div>
+          <router-link to="/arena" class="to-arena btn-g">
+            <img src="../assets/img/sword.png" class="edit-icon" />
+            TO ARENA
+          </router-link>
+        </div>
       </div>
       <div class="panel--right"></div>
     </div>
@@ -38,12 +43,33 @@ export default {
 .sp-fill {
   padding-top: 0;
 }
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.nft-img-container {
+  width: 400px;
+  height: 400px;
+  margin: 30px 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.btn-g {
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  vertical-align: middle;
+  line-height: 40px;
+}
 .to-arena {
   text-decoration: none;
   color: black;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 1);
-  width: 184px;
+  width: 230px;
   height: 46px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -54,8 +80,9 @@ export default {
   color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: rgba(0, 0, 0, 1);
-  width: 112px;
+  width: 190px;
   height: 46px;
+  margin-right: 20px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
