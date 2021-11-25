@@ -5,7 +5,7 @@
       <template v-slot:content>
         <PageHeader />
         <PageMenu />
-        <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
+        <!-- <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" /> -->
         <router-view />
       </template>
     </SpLayout>

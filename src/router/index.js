@@ -8,6 +8,7 @@ import Relayers from '@/views/Relayers.vue'
 import Workshop from '@/views/Workshop.vue'
 import Login from '@/views/Login.vue'
 import Upload from '@/views/Upload.vue'
+import Fight from '@/views/Fight.vue'
 
 const routerHistory = createWebHistory()
 const routes = [
@@ -23,6 +24,7 @@ const routes = [
   { path: '/workshop', component: Workshop },
   { path: '/login', component: Login },
   { path: '/upload', component: Upload },
+  { path: '/fight', component: Fight },
 ]
 
 const router = createRouter({

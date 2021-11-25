@@ -16,7 +16,7 @@
         <div class="nft-img-container"></div>
 
         <div class="button-wrapper">
-          <div class="save-hero btn-g">SAVE HERO</div>
+          <div v-on:click="log()" class="save-hero btn-g">SAVE HERO</div>
           <router-link to="/arena" class="to-arena btn-g">
             <img src="../assets/img/sword.png" class="edit-icon" />
             TO ARENA
@@ -33,7 +33,27 @@ export default {
   name: 'Workshop',
   components: {},
   data() {
-    return {}
+    return {
+      isLoggedIn: false,
+      walletName: '',
+    }
+  },
+  mounted() {
+    this.setLoginStatus()
+  },
+  methods: {
+    log() {
+      console.log(this.$store)
+    },
+    setLoginStatus() {
+      this.walletName = this.$store.getters['common/wallet/walletName']
+      console.log(this.walletName)
+      if (this.walletName != null) {
+        this.isLoggedIn = true
+      } else {
+        this.isLoggedIn = false
+      }
+    },
   },
 }
 </script>
