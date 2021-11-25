@@ -74,7 +74,7 @@ export default {
       sdkVersion: 'Stargate',
       getTXApi: 'http://v2202008103543124756.megasrv.de:26659/tx?hash=0x',
     }
-    await this.$store.dispatch('common/env/init', shameserver)
+    await this.$store.dispatch('common/env/init')
     this.initialized = true
   },
   errorCaptured(err) {
