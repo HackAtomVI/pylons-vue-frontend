@@ -45,6 +45,10 @@ export default {
   margin-bottom: 20px;
   font-weight: bolder;
 }
+.fight-text {
+  text-decoration: none;
+  color: black;
+}
 .fight-button {
   width: 180px;
   height: 180px;

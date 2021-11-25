@@ -63,9 +63,16 @@ export default {
 .e60_156::after {
   display: none;
 }
+.e60_156 * {
+  display: none;
+}
 .e60_156 {
   display: block;
   margin: 50px auto;
+  background-image: url('../assets/img/cross.png');
+  background-size: 200px, 200px;
+  background-position: center;
+  background-repeat: no-repeat;
   background-color: rgba(255, 255, 255, 0.5);
   width: 400px;
   height: 400px;

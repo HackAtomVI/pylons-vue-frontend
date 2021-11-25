@@ -26,6 +26,12 @@ export default {
       walletName: '',
     }
   },
+  watch: {
+    "$store.getters['common/wallet/walletName']": function () {
+      this.getLoginStatus()
+    },
+  },
+
   computed: {
     getUserCredits() {
       return this.$store.getters.getUserCredits
@@ -78,6 +84,7 @@ header {
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: 100;
 }
 .nav__logo {
   height: 100%;

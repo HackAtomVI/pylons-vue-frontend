@@ -36,6 +36,7 @@ export default {
   position: relative;
 }
 .wrapper {
+  float: right;
   //text-align: center;
 }
 .maintext {

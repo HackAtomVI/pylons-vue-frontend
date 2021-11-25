@@ -16,7 +16,6 @@
       </div>
       <div class="container--mid">
         <img src="../assets/img/vsStar.png" class="star-img" />
-        <span class="vs-text">VS</span>
       </div>
       <div class="container--bot">
         <div class="nft-name" id="nftName">
