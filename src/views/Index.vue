@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <SpWelcome />
+      <!-- <SpWelcome /> -->
       <SpTokenSend :address="address" :refresh="true" />
       <SpTransferList :address="address" />
     </div>
@@ -44,3 +44,5 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss"></style>
