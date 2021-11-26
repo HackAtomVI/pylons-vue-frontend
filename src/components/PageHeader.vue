@@ -44,9 +44,15 @@ export default {
   },
   methods: {
     addCoins() {
+      const axios = require('axios').default
       //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
       // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
-      // axios.post("http://v2202008103543124756.megasrv.de:4500")
+      axios.post('http://v2202008103543124756.megasrv.de:4500', {
+        address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
+        coins: ['5000upylon'],
+      })
+
+      console.log('after axios, yes')
 
       this.$store
         .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
@@ -57,6 +63,7 @@ export default {
           },
         })
         .then((res) => {
+          console.log('after create account, yes')
           this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
             value: {
               '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
@@ -69,7 +76,9 @@ export default {
             },
           })
         })
+      console.log('coins added, yes')
     },
+
     getLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
       this.isLoggedIn = this.$store.getters['common/wallet/walletName'] != null ? true : false
