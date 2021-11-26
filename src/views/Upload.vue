@@ -1,10 +1,13 @@
 <template>
   <div class="background">
     <div class="container">
-      <input class="e60_170" type="text" id="nftname" name="name" placeholder="NFT Name" />
-      <input class="e60_156" type="file" id="nftimg" name="image" accept="image/png, image/jpeg" />
+      <form @submit.prevent="upload">
+        <input v-model="nftname" class="e60_170" type="text" name="nftname" placeholder="NFT Name" required />
 
-      <input class="e60_150" type="submit" value="UPLOAD" />
+        <input class="e60_156" type="file" id="nftimg" name="image" accept="image/png, image/jpeg" />
+
+        <button class="e60_150" type="submit">UPLOAD</button>
+      </form>
     </div>
   </div>
 </template>
@@ -14,7 +17,15 @@ export default {
   name: 'Upload',
   components: {},
   data() {
-    return {}
+    return {
+      nftname: '',
+    }
+  },
+  methods: {
+    upload() {
+      this.$store.commit('setNftName', this.nftname)
+      console.log(this.$store.getters.getNftName)
+    },
   },
 }
 </script>

@@ -13,6 +13,7 @@
       <router-link v-if="isLoggedIn" to="/login" class="login">
         {{ walletName }}
       </router-link>
+      <button v-on:click="addCoins()" class="get-coins">Get Coins!</button>
     </div>
   </header>
 </template>
@@ -42,6 +43,33 @@ export default {
     //this.$cardChain.updateUserCredits()
   },
   methods: {
+    addCoins() {
+      //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
+      // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
+      // axios.post("http://v2202008103543124756.megasrv.de:4500")
+
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+            creator: this.$store.getters['common/wallet/address'],
+            username: this.$store.getters['common/wallet/walletName'],
+          },
+        })
+        .then((res) => {
+          this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+            value: {
+              '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+              creator: this.$store.getters['common/wallet/address'],
+              cookbookID: 'nftarena',
+              recipeID: 'getcoins',
+              coinInputsIndex: '0',
+              itemIDs: [],
+              paymentInfos: [],
+            },
+          })
+        })
+    },
     getLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
       this.isLoggedIn = this.$store.getters['common/wallet/walletName'] != null ? true : false
@@ -60,6 +88,18 @@ header {
   //text-align: center;
   height: 10%;
   //border-bottom: $border-thickness-bold solid $white;
+}
+.get-coins {
+  text-decoration: none;
+  color: black;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 1);
+  width: 230px;
+  height: 46px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .header-item {
   font-weight: bolder;

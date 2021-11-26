@@ -25,7 +25,11 @@
           </router-link>
         </div>
       </div>
-      <div class="panel--right"></div>
+      <div class="panel--right">
+        <div class="stickfigure-background">
+          <img src="../assets/img/stick.png" class="stickfigure" />
+        </div>
+      </div>
     </div>
     <div v-if="!this.isUserLoggedIn()">
       <PleaseLogIn />
@@ -76,6 +80,15 @@ export default {
 @import '../scss/variables';
 .sp-fill {
   padding-top: 0;
+}
+.stickfigure {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .centered-over-image {
   display: none;
@@ -156,6 +169,16 @@ export default {
 .panel--left {
   display: flex;
   flex-direction: column;
+}
+.panel--right {
+  padding-left: 20px;
+}
+.stickfigure-background {
+  width: 500px;
+  height: 100%;
+  background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
+}
+.stickfigure {
 }
 .title {
   color: white;

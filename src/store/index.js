@@ -11,11 +11,17 @@ const store = createStore({
     setWinner(state, winner) {
       state.isWinner = winner
     },
+    setNftName(state, name) {
+      state.nftName = name
+    },
   },
   actions: {},
   getters: {
     getLoggedIn: (state) => {
       return state.isLoggedIn
+    },
+    getNftName: (state) => {
+      return state.nftName
     },
     getIsWinner: (state) => {
       return state.isWinner
