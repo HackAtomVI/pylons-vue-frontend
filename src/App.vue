@@ -78,7 +78,7 @@ export default {
       sdkVersion: 'Stargate',
       getTXApi: 'http://v2202008103543124756.megasrv.de:26659/tx?hash=0x',
     }
-    //await this.$store.dispatch('common/env/init', shameserver) //FIXME: THIS CAN LITERALLY BURN A CPU
+    await this.$store.dispatch('common/env/init', shameserver) //FIXME: THIS CAN LITERALLY BURN A CPU
     this.initialized = true
   },
   errorCaptured(err) {

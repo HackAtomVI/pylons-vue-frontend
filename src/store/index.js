@@ -5,12 +5,20 @@ const store = createStore({
   state: {
     isLoggedIn: false,
     nftName: '',
+    isWinner: false,
   },
-  mutations: {},
+  mutations: {
+    setWinner(state, winner) {
+      state.isWinner = winner
+    },
+  },
   actions: {},
   getters: {
     getLoggedIn: (state) => {
       return state.isLoggedIn
+    },
+    getIsWinner: (state) => {
+      return state.isWinner
     },
   },
 })

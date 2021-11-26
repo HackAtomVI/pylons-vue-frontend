@@ -53,6 +53,7 @@ export default {
   computed: {},
   methods: {
     isUserLoggedIn() {
+      console.log(this.$store)
       return this.$store.getters['common/wallet/loggedIn']
     },
     log() {
