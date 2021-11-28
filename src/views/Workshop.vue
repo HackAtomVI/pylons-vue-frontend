@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="container">
+    <div v-if="this.isUserLoggedIn()" class="container">
       <div class="panel--left">
         <div class="title text">
           Workshop
@@ -13,7 +13,9 @@
           <img src="../assets/img/rename.png" class="edit-icon" />
         </div>
 
-        <div class="nft-img-container"></div>
+        <router-link to="/upload" class="nft-img-container">
+          <div class="centered-over-image">Upload</div>
+        </router-link>
 
         <div class="button-wrapper">
           <div v-on:click="log()" class="save-hero btn-g">SAVE HERO</div>
@@ -23,15 +25,26 @@
           </router-link>
         </div>
       </div>
-      <div class="panel--right"></div>
+      <div class="panel--right">
+        <div class="stickfigure-background">
+          <img src="../assets/img/stick.png" class="stickfigure" />
+        </div>
+      </div>
+    </div>
+    <div v-if="!this.isUserLoggedIn()">
+      <PleaseLogIn />
     </div>
   </div>
 </template>
 
 <script>
+import PleaseLogIn from '../components/PleaseLogIn.vue'
+
 export default {
   name: 'Workshop',
-  components: {},
+  components: {
+    PleaseLogIn,
+  },
   data() {
     return {
       isLoggedIn: false,
@@ -41,7 +54,12 @@ export default {
   mounted() {
     this.setLoginStatus()
   },
+  computed: {},
   methods: {
+    isUserLoggedIn() {
+      console.log(this.$store)
+      return this.$store.getters['common/wallet/loggedIn']
+    },
     log() {
       console.log(this.$store)
     },
@@ -63,11 +81,31 @@ export default {
 .sp-fill {
   padding-top: 0;
 }
+.stickfigure {
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.centered-over-image {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  font-size: 30px;
+  margin: 10px 0 0 10px;
+  //top: 50%;
+  //left: 50%;
+  //transform: translate(-50%, -50%);
+}
 .button-wrapper {
   display: flex;
   flex-direction: row;
 }
 .nft-img-container {
+  text-decoration: none;
   width: 400px;
   height: 400px;
   margin: 30px 0;
@@ -134,6 +172,16 @@ export default {
 .panel--left {
   display: flex;
   flex-direction: column;
+}
+.panel--right {
+  padding-left: 20px;
+}
+.stickfigure-background {
+  width: 500px;
+  height: 100%;
+  background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
+}
+.stickfigure {
 }
 .title {
   color: white;

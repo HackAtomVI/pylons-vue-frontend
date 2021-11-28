@@ -9,14 +9,17 @@
         <div class="nft-name" id="nftName">
           <span>PLACEHOLDER</span>
         </div>
+
         <div class="hero_wrapper">
           <div class="stats_wrapper"></div>
           <div class="nft-img_wrapper" style="float: right"></div>
         </div>
       </div>
       <div class="container--mid">
-        <img src="../assets/img/vsStar.png" class="star-img" />
-        <span class="vs-text">VS</span>
+        <!-- v-on:click="this.$store.commit('setWinner', true)"  -->
+        <router-link v-on:click="this.$store.commit('setWinner', true)" to="/result">
+          <img src="../assets/img/vsStar.png" class="star-img" />
+        </router-link>
       </div>
       <div class="container--bot">
         <div class="nft-name" id="nftName">
@@ -56,6 +59,7 @@ export default {
   font-weight: bolder;
 }
 .stats_wrapper {
+  background-color: rgba(255, 255, 255, 0.5);
   width: 65%;
 }
 .nft-img_wrapper {
@@ -65,22 +69,26 @@ export default {
   // height: 20%;
 }
 .hero_wrapper {
-  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: row;
+  //background-color: rgba(255, 255, 255, 0.5);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 .star-img {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   display: inline;
+  transform: translateY(-10px);
 }
 .vs-text {
   display: inline;
 }
 .sword-img {
   //vertical-align: middle;
+
   width: 40px;
   height: 40px;
   //margin-left: 20px;
@@ -98,11 +106,11 @@ export default {
   margin: 0;
 }
 .container--top {
-  padding-left: 10%;
+  padding-left: 5%;
   //text-align: right;
   //padding: 5% 10%;
   height: 40%;
-  width: 70%;
+  width: 60%;
   float: left;
   display: block;
   //background-color: rgba(85.0000025331974, 5.000000176951289, 66.00000366568565, 1);
@@ -118,15 +126,15 @@ export default {
 .container--bot {
   align-self: end;
   height: 40%;
-  width: 70%;
+  width: 60%;
   float: right;
-  padding-right: 10%;
+  //padding-right: 10%;
   //padding: 5% 10%;
   //background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
 }
 .title {
   //margin-right: 5%;
-  color: white;
+  color: red;
   font-size: 40px;
   height: 10%;
   font-family: $font-family;
@@ -139,6 +147,8 @@ export default {
   width: 100%;
   height: 100%;
   padding: 0;
-  background: $background-gradient;
+  // background: $background-gradient;
+  background-image: url('../assets/img/Background_Fight.png');
+  // background-position-y: -;
 }
 </style>

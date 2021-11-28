@@ -13,6 +13,7 @@
       <router-link v-if="isLoggedIn" to="/login" class="login">
         {{ walletName }}
       </router-link>
+      <button v-if="getLoggedIn" v-on:click="addCoins()" class="get-coins">Get Coins!</button>
     </div>
   </header>
 </template>
@@ -26,16 +27,54 @@ export default {
       walletName: '',
     }
   },
+  watch: {
+    "$store.getters['common/wallet/walletName']": function () {
+      this.getLoginStatus()
+    },
+  },
+
   computed: {
     getUserCredits() {
       return this.$store.getters.getUserCredits
     },
-  },
-  mounted() {
-    this.getLoginStatus()
-    //this.$cardChain.updateUserCredits()
+    getLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
+    },
   },
   methods: {
+    addCoins() {
+      // const axios = require('axios').default
+      // //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
+      // // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
+      // axios.post('http://v2202008103543124756.megasrv.de:4500', {
+      //   address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
+      //   coins: ['5000upylon'],
+      // })
+
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+            creator: this.$store.getters['common/wallet/address'],
+            username: this.$store.getters['common/wallet/walletName'],
+          },
+        })
+        .then((res) => {
+          console.log('after create account, yes')
+          this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+            value: {
+              '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+              creator: this.$store.getters['common/wallet/address'],
+              cookbookID: 'nftarena',
+              recipeID: 'getcoins',
+              coinInputsIndex: '0',
+              itemIDs: [],
+              paymentInfos: [],
+            },
+          })
+        })
+    },
+
     getLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
       this.isLoggedIn = this.$store.getters['common/wallet/walletName'] != null ? true : false
@@ -54,6 +93,20 @@ header {
   //text-align: center;
   height: 10%;
   //border-bottom: $border-thickness-bold solid $white;
+}
+.get-coins {
+  text-decoration: none;
+  color: black;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 1);
+  width: 230px;
+  height: 46px;
+  margin-left: 100px;
+  font-size: 35px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .header-item {
   font-weight: bolder;
@@ -78,6 +131,7 @@ header {
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  z-index: 100;
 }
 .nav__logo {
   height: 100%;

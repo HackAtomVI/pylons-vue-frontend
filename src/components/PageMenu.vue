@@ -34,7 +34,7 @@
             <router-link to="/market"> MARKETPLACE </router-link>
           </li>
           <li>
-            <a href="https://crowdcontrol.network/#/"> CROWD CONTROL </a>
+            <router-link to="/about"> CROWD CONTROL </router-link>
           </li>
           <li>
             <a class="discord-button" href="https://discord.gg/ZKKbhUs">
