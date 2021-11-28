@@ -14,7 +14,7 @@
         </div>
 
         <router-link to="/upload" class="nft-img-container">
-          <div class=".centered-over-image">Upload</div>
+          <div class="centered-over-image">Upload</div>
         </router-link>
 
         <div class="button-wrapper">
@@ -85,17 +85,20 @@ export default {
   width: 500px;
   height: 500px;
   margin: 0 auto;
-  position: absolute;
+  position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 .centered-over-image {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  text-decoration: none;
+  color: black;
+  position: relative;
+  font-size: 30px;
+  margin: 10px 0 0 10px;
+  //top: 50%;
+  //left: 50%;
+  //transform: translate(-50%, -50%);
 }
 .button-wrapper {
   display: flex;

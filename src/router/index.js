@@ -10,6 +10,7 @@ import Login from '@/views/Login.vue'
 import Upload from '@/views/Upload.vue'
 import Fight from '@/views/Fight.vue'
 import Result from '@/views/Result.vue'
+import About from '@/views/About.vue'
 
 const routerHistory = createWebHistory()
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/upload', component: Upload },
   { path: '/fight', component: Fight },
+  { path: '/about', component: About },
   { path: '/result', component: Result },
 ]
 

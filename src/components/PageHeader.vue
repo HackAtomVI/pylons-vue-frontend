@@ -13,7 +13,7 @@
       <router-link v-if="isLoggedIn" to="/login" class="login">
         {{ walletName }}
       </router-link>
-      <button v-on:click="addCoins()" class="get-coins">Get Coins!</button>
+      <button v-if="getLoggedIn" v-on:click="addCoins()" class="get-coins">Get Coins!</button>
     </div>
   </header>
 </template>
@@ -37,10 +37,9 @@ export default {
     getUserCredits() {
       return this.$store.getters.getUserCredits
     },
-  },
-  mounted() {
-    this.getLoginStatus()
-    //this.$cardChain.updateUserCredits()
+    getLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
+    },
   },
   methods: {
     addCoins() {
@@ -102,6 +101,8 @@ header {
   background-color: rgba(255, 255, 255, 1);
   width: 230px;
   height: 46px;
+  margin-left: 100px;
+  font-size: 35px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
