@@ -25,6 +25,32 @@ export default {
     upload() {
       this.$store.commit('setNftName', this.nftname)
       console.log(this.$store.getters.getNftName)
+
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+            creator: this.$store.getters['common/wallet/address'],
+            cookbookID: 'nftarena',
+            recipeID: 'importnft',
+            coinInputsIndex: '0',
+            itemIDs: [],
+            paymentInfos: [],
+          },
+        })
+        .then((res) => {
+          console.log('execute recipe res: ' + res)
+          this.$store.dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
+            value: {
+              '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
+              creator: this.$store.getters['common/wallet/address'],
+              cookbookID: 'nftarena',
+              ID: res,
+              field: 'name',
+              value: this.nftname,
+            },
+          })
+        })
     },
   },
 }

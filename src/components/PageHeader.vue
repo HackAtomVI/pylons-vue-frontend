@@ -44,15 +44,13 @@ export default {
   },
   methods: {
     addCoins() {
-      const axios = require('axios').default
-      //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
-      // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
-      axios.post('http://v2202008103543124756.megasrv.de:4500', {
-        address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
-        coins: ['5000upylon'],
-      })
-
-      console.log('after axios, yes')
+      // const axios = require('axios').default
+      // //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
+      // // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
+      // axios.post('http://v2202008103543124756.megasrv.de:4500', {
+      //   address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
+      //   coins: ['5000upylon'],
+      // })
 
       this.$store
         .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
@@ -76,7 +74,6 @@ export default {
             },
           })
         })
-      console.log('coins added, yes')
     },
 
     getLoginStatus() {
