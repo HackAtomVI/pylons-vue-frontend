@@ -13,7 +13,7 @@
       <router-link v-if="isLoggedIn" to="/login" class="login">
         {{ walletName }}
       </router-link>
-      <button v-if="getLoggedIn" v-on:click="addCoins()" class="get-coins">Get Coins!</button>
+      <button v-if="getLoggedIn" v-on:click="testAxios()" class="get-coins">Get Coins!</button>
     </div>
   </header>
 </template>
@@ -42,14 +42,20 @@ export default {
     },
   },
   methods: {
+    testAxios() {
+      this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
+        address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
+        coins: ['5000upylon'],
+      })
+    },
     addCoins() {
-      // const axios = require('axios').default
-      // //console.log(this.$store.getters["cosmos.bank.v1beta1/getBalance"]);
-      // // console.log("Adding coins lmao: " + this.$store.getters["common/wallet/address"]);
-      // axios.post('http://v2202008103543124756.megasrv.de:4500', {
-      //   address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
-      //   coins: ['5000upylon'],
-      // })
+      ;(this.$axios.defaults.headers.common['allowAccess'] = 'Access-Control-Allow-Origin'), '*'
+      console.log('Axios: ' + this.$axios)
+
+      this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
+        address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
+        coins: ['5000upylon'],
+      })
 
       this.$store
         .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
