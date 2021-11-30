@@ -49,11 +49,11 @@ export default {
       })
     },
     addCoins() {
-      ;(this.$axios.defaults.headers.common['allowAccess'] = 'Access-Control-Allow-Origin'), '*'
+      //this.$axios.defaults.headers.common['allowAccess'] = "Access-Control-Allow-Origin", "*"
       console.log('Axios: ' + this.$axios)
 
       this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
-        address: 'pylo1xmw53ldes40qqafqtztufc2uzant0xnyut8ppv',
+        address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
         coins: ['5000upylon'],
       })
 
@@ -79,6 +79,7 @@ export default {
             },
           })
         })
+      console.log('Balance: ' + this.$store.getters['cosmos.bank.v1beta1/getBalance'])
     },
 
     getLoginStatus() {
