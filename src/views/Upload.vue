@@ -2,11 +2,21 @@
   <div class="background">
     <div class="container">
       <form @submit.prevent="upload">
-        <input v-model="nftname" class="e60_170" type="text" name="nftname" placeholder="NFT Name" required />
+        <input v-model="nftname" class="e60_170" type="text" name="nftname" placeholder="nftname" required />
 
-        <input class="e60_156" type="file" id="nftimg" name="image" accept="image/png, image/jpeg" />
-
-        <button class="e60_150" type="submit">UPLOAD</button>
+        <input
+          @change="onFileChange"
+          class="e60_156"
+          type="file"
+          id="nftimg"
+          name="image"
+          accept="image/png, image/jpeg"
+        />
+        <img :src="nftimg" />
+        <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD</button>
+        <button v-on:click="createNft()">create nft lul</button>
+        <button v-on:click="printAllItems()">print all items</button>
+        <button v-on:click="loadNft()">Load NFT</button>
       </form>
     </div>
   </div>
@@ -19,13 +29,62 @@ export default {
   data() {
     return {
       nftname: '',
+      nftimg: '',
+      heroNft: {},
+      hasnft: false,
+      heroName: '',
+      heroImg: '',
     }
   },
+  mounted() {
+    //console.log(JSON.stringify(this.heroNft))
+    //this.setUserNft()
+  },
   methods: {
-    upload() {
-      this.$store.commit('setNftName', this.nftname)
-      console.log(this.$store.getters.getNftName)
+    async loadNft() {
+      console.log('Outside: ' + this.$store.getters.getNft)
+      if (typeof this.$store.getters.getNft === 'undefined') {
+        console.log('Īnside :)')
+        await this.getNft() //TODO await
+      }
+      if (typeof this.$store.getters.getNft === 'undefined') {
+        this.createNft() //TODO await
+        this.getNft() //TODO await
+      }
+    },
 
+    getNft() {
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+          params: {
+            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+            owner: this.$store.getters['common/wallet/address'],
+          },
+        })
+        .then((res) => {
+          //console.log("QueryListItemByOwner")
+          var BreakException = {}
+          try {
+            res.Items.forEach((item) => {
+              item.strings.forEach((str) => {
+                if (str.Key === 'ItemType' && str.Value === 'nft') {
+                  this.$store.commit('setNft', item)
+                  this.$store.getters.getNft
+                  //this.heroNft = item
+                  //console.log(this.heroNft)
+                  throw BreakException
+                }
+              })
+            })
+            //console.log("false bby")
+          } catch (e) {
+            if (e !== BreakException) throw e
+            //console.log("true bby")
+          }
+        })
+    },
+    printAllItems() {},
+    createNft() {
       this.$store
         .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
           value: {
@@ -39,17 +98,116 @@ export default {
           },
         })
         .then((res) => {
-          console.log('execute recipe res: ' + res)
-          this.$store.dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
+          console.log('Nft created')
+        })
+    },
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.createImage(files[0])
+    },
+    createImage(file) {
+      //var nftimg = new Image();
+      var reader = new FileReader()
+      var vm = this
+
+      reader.onload = (e) => {
+        vm.nftimg = e.target.result
+      }
+      reader.readAsDataURL(file)
+
+      console.log(file)
+      //console.log(vm.nftimg)
+    },
+    setNftData() {
+      console.log(this.nftname)
+      console.log(
+        this.$store
+          .dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
             value: {
               '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
               creator: this.$store.getters['common/wallet/address'],
               cookbookID: 'nftarena',
-              ID: res,
+              ID: this.heroNft.ID,
               field: 'name',
               value: this.nftname,
             },
           })
+          .then((res) => {
+            this.$store
+              .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+                params: {
+                  '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+                  owner: this.$store.getters['common/wallet/address'],
+                },
+              })
+              .then((res) => {
+                //console.log("QueryListItemByOwner")
+                var BreakException = {}
+                try {
+                  res.Items.forEach((item) => {
+                    item.strings.forEach((str) => {
+                      if (str.Key === 'ItemType' && str.Value === 'nft') {
+                        this.heroNft = item
+                        console.log(this.heroNft)
+                        throw BreakException
+                      }
+                    })
+                  })
+                } catch (e) {
+                  if (e !== BreakException) throw e
+                }
+              })
+          }),
+      )
+
+      this.$store.dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
+        value: {
+          '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
+          creator: this.$store.getters['common/wallet/address'],
+          cookbookID: 'nftarena',
+          ID: this.heroNft.ID,
+          field: 'image',
+          value: this.nftimg,
+        },
+      })
+    },
+    getNftData() {
+      this.heroNft.mutableStrings.forEach((str) => {
+        if (str.Key === 'name') {
+          this.heroName = str.Value
+        }
+        if (str.Key === 'image') {
+          this.heroImg = str.Value
+        }
+      })
+    },
+
+    setUserNft() {
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+          params: {
+            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+            owner: this.$store.getters['common/wallet/address'],
+          },
+        })
+        .then((res) => {
+          console.log('All items: ')
+          console.log(res.Items)
+          var BreakException = {}
+          try {
+            res.Items.forEach((item) => {
+              item.strings.forEach((str) => {
+                if (str.Key === 'ItemType' && str.Value === 'nft') {
+                  this.heroNft = item
+                  //console.log(this.heroNft)
+                  throw BreakException
+                }
+              })
+            })
+          } catch (e) {
+            if (e !== BreakException) throw e
+          }
         })
     },
   },

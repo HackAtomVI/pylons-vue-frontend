@@ -6,6 +6,7 @@
       <div class="wrapper">
         <SpWallet class="wallet--local" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
       </div>
+      <img src="../assets/img/StickyMockup.png" />
     </div>
   </div>
 </template>

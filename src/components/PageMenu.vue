@@ -2,24 +2,6 @@
   <div class="nav-wrapper">
     <nav class="nav">
       <div class="nav__content">
-        <div class="nav__button" @click="displayMenu = !displayMenu">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="36"
-            height="36"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="feather feather-menu"
-          >
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </div>
         <ul :class="showMenuClass">
           <li>
             <router-link to="/"> HOME </router-link>
@@ -31,7 +13,7 @@
             <router-link to="/arena"> ARENA </router-link>
           </li>
           <li>
-            <router-link to="/market"> MARKETPLACE </router-link>
+            <router-link to="/upload"> MARKETPLACE </router-link>
           </li>
           <li>
             <router-link to="/about"> CROWD CONTROL </router-link>
@@ -94,9 +76,6 @@ export default {
   justify-content: center;
   background-color: $dark-gray;
   position: relative;
-  @media (max-width: 1178px) {
-    transform: skewX(0);
-  }
 }
 
 .nav__content {
@@ -105,11 +84,6 @@ export default {
   display: flex;
   flex-flow: row;
   justify-content: center;
-
-  @media (max-width: 1178px) {
-    display: flex;
-    flex-flow: column;
-  }
 }
 
 .nav__menu {
@@ -118,16 +92,10 @@ export default {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  @media (max-width: 1396px) {
-    //margin: 0em 5.5em;
-  }
 }
 
 .nav__menu li {
   float: left;
-  @media (max-width: 1178px) {
-    width: 100%;
-  }
 
   a,
   .nav__menu__item {
@@ -179,21 +147,12 @@ export default {
       -webkit-transform: scaleX(1);
       transform: scaleX(1);
     }
-    @media (max-width: 1178px) {
-      width: 100%;
-      padding-left: 0;
-      padding-right: 0;
-    }
   }
   &.nav__menu__item--exposed {
     transform: skewX(-15deg);
     background-color: $white;
     a {
       color: $black;
-    }
-
-    @media (max-width: 1178px) {
-      transform: skewX(0deg);
     }
   }
 }
@@ -205,11 +164,6 @@ export default {
   margin-top: -2.5rem;
   z-index: 10000000;
   box-shadow: $border-thickness-bold * 1.5 $border-thickness-bold * 1.5 rgba(0, 0, 0, 0.3);
-  @media (max-width: 1178px) {
-    width: 100vw;
-    margin-top: -1px;
-    right: 0;
-  }
 }
 
 .nav__logo {
@@ -219,23 +173,9 @@ export default {
   -webkit-user-drag: none;
   width: 350px;
   height: 100%;
-
-  @media (max-width: 1396px) {
-    margin: 1em auto;
-  }
-  @media (max-width: 1178px) {
-    position: relative;
-    display: inline-block;
-    margin: 1em auto;
-    width: 47%;
-  }
 }
 
 .nav__button {
-  @media (min-width: 1178px) {
-    display: none;
-    width: 100%;
-  }
   color: $black;
   position: absolute;
   right: 1.5em;
@@ -243,9 +183,6 @@ export default {
 }
 
 .nav__menu--hidden {
-  @media (max-width: 1178px) {
-    display: none;
-  }
 }
 .discord-button {
   background-color: white;

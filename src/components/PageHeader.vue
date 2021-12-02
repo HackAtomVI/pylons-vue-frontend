@@ -13,7 +13,7 @@
       <router-link v-if="isLoggedIn" to="/login" class="login">
         {{ walletName }}
       </router-link>
-      <button v-if="getLoggedIn" v-on:click="testAxios()" class="get-coins">Get Coins!</button>
+      <!-- <button v-if="getLoggedIn" v-on:click="addCoins()" class="get-coins">Get Coins!</button> -->
     </div>
   </header>
 </template>
@@ -43,19 +43,37 @@ export default {
   },
   methods: {
     testAxios() {
-      this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
-        address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
-        coins: ['5000upylon'],
-      })
+      //Content-Type:application/x-www-form-urlencoded
+      //this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
+      this.$axios.post(
+        'http://v2202008103543124756.megasrv.de:4500',
+        {
+          address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
+          coins: ['5000upylon'],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
+      )
     },
     addCoins() {
       //this.$axios.defaults.headers.common['allowAccess'] = "Access-Control-Allow-Origin", "*"
-      console.log('Axios: ' + this.$axios)
-
-      this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
-        address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
-        coins: ['5000upylon'],
-      })
+      //console.log('Axios: ' + this.$axios)
+      //TODO:
+      // this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
+      //   address: this.$store.getters['common/wallet/address'],
+      //   coins: ['5000upylon'],
+      // },
+      // {
+      //   headers: {
+      //     'Content-Type':'application/x-www-form-urlencoded'
+      //   }
+      // }).then((res) => {
+      //   //console.log("Res: " + JSON.stringify(res));
+      // })
 
       this.$store
         .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
@@ -66,7 +84,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log('after create account, yes')
+          //console.log('after create account, yes')
           this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
             value: {
               '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
@@ -79,7 +97,7 @@ export default {
             },
           })
         })
-      console.log('Balance: ' + this.$store.getters['cosmos.bank.v1beta1/getBalance'])
+      // console.log('Balance: ' + this.$store.getters['cosmos.bank.v1beta1/getBalance'], 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv')
     },
 
     getLoginStatus() {
