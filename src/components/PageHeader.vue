@@ -74,29 +74,27 @@ export default {
       // }).then((res) => {
       //   //console.log("Res: " + JSON.stringify(res));
       // })
-
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-          value: {
-            '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-            creator: this.$store.getters['common/wallet/address'],
-            username: this.$store.getters['common/wallet/walletName'],
-          },
-        })
-        .then((res) => {
-          //console.log('after create account, yes')
-          this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-            value: {
-              '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-              creator: this.$store.getters['common/wallet/address'],
-              cookbookID: 'nftarena',
-              recipeID: 'getcoins',
-              coinInputsIndex: '0',
-              itemIDs: [],
-              paymentInfos: [],
-            },
-          })
-        })
+      // this.$store.dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+      //     value: {
+      //       '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+      //       creator: this.$store.getters['common/wallet/address'],
+      //       username: this.$store.getters['common/wallet/walletName'],
+      //     },
+      //   })
+      //   .then((res) => {
+      //     //console.log('after create account, yes')
+      //     this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+      //       value: {
+      //         '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+      //         creator: this.$store.getters['common/wallet/address'],
+      //         cookbookID: 'nftarena',
+      //         recipeID: 'getcoins',
+      //         coinInputsIndex: '0',
+      //         itemIDs: [],
+      //         paymentInfos: [],
+      //       },
+      //     })
+      //   })
       // console.log('Balance: ' + this.$store.getters['cosmos.bank.v1beta1/getBalance'], 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv')
     },
 

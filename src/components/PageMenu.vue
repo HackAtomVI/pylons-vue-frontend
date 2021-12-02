@@ -4,16 +4,16 @@
       <div class="nav__content">
         <ul :class="showMenuClass">
           <li>
-            <router-link to="/"> HOME </router-link>
+            <router-link to="/upload"> UPLOAD NFT </router-link>
           </li>
           <li>
-            <router-link to="/workshop"> WORKSHOP </router-link>
+            <router-link to="/workshop"> NFT HERO </router-link>
+          </li>
+          <li>
+            <router-link to="/market"> MARKET </router-link>
           </li>
           <li>
             <router-link to="/arena"> ARENA </router-link>
-          </li>
-          <li>
-            <router-link to="/upload"> UPLOAD </router-link>
           </li>
           <li>
             <router-link to="/about"> CROWD CONTROL </router-link>

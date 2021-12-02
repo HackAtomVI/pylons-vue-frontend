@@ -45,7 +45,7 @@ export default {
       this.getNft().then((res) => {
         console.log('First res is: ')
         console.log(res)
-        if (res === false)
+        if (res === false) {
           this.createNft().then(() => {
             console.log('Created NFT: ')
             this.getNft().then((res) => {
@@ -57,6 +57,10 @@ export default {
               console.log(this.heroNft)
             })
           })
+        } else {
+          console.log('Hero: ')
+          console.log(this.heroNft)
+        }
       })
     },
     getNft() {
