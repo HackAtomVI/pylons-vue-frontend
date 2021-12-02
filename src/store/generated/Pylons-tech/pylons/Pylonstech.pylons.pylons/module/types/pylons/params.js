@@ -364,8 +364,6 @@ export const PaymentProcessor = {
     },
 };
 const baseParams = {
-    minNameFieldLength: 0,
-    minDescriptionFieldLength: 0,
     recipeFeePercentage: "",
     itemTransferFeePercentage: "",
     minTransferFee: "",
@@ -375,41 +373,35 @@ const baseParams = {
 };
 export const Params = {
     encode(message, writer = Writer.create()) {
-        if (message.minNameFieldLength !== 0) {
-            writer.uint32(8).uint64(message.minNameFieldLength);
-        }
-        if (message.minDescriptionFieldLength !== 0) {
-            writer.uint32(16).uint64(message.minDescriptionFieldLength);
-        }
         for (const v of message.coinIssuers) {
-            CoinIssuer.encode(v, writer.uint32(26).fork()).ldelim();
+            CoinIssuer.encode(v, writer.uint32(10).fork()).ldelim();
         }
         for (const v of message.paymentProcessors) {
-            PaymentProcessor.encode(v, writer.uint32(34).fork()).ldelim();
+            PaymentProcessor.encode(v, writer.uint32(18).fork()).ldelim();
         }
         if (message.recipeFeePercentage !== "") {
-            writer.uint32(42).string(message.recipeFeePercentage);
+            writer.uint32(26).string(message.recipeFeePercentage);
         }
         if (message.itemTransferFeePercentage !== "") {
-            writer.uint32(50).string(message.itemTransferFeePercentage);
+            writer.uint32(34).string(message.itemTransferFeePercentage);
         }
         if (message.updateItemStringFee !== undefined) {
-            Coin.encode(message.updateItemStringFee, writer.uint32(58).fork()).ldelim();
+            Coin.encode(message.updateItemStringFee, writer.uint32(42).fork()).ldelim();
         }
         if (message.minTransferFee !== "") {
-            writer.uint32(66).string(message.minTransferFee);
+            writer.uint32(50).string(message.minTransferFee);
         }
         if (message.maxTransferFee !== "") {
-            writer.uint32(74).string(message.maxTransferFee);
+            writer.uint32(58).string(message.maxTransferFee);
         }
         if (message.updateUsernameFee !== undefined) {
-            Coin.encode(message.updateUsernameFee, writer.uint32(82).fork()).ldelim();
+            Coin.encode(message.updateUsernameFee, writer.uint32(66).fork()).ldelim();
         }
         if (message.distrEpochIdentifier !== "") {
-            writer.uint32(90).string(message.distrEpochIdentifier);
+            writer.uint32(74).string(message.distrEpochIdentifier);
         }
         if (message.engineVersion !== 0) {
-            writer.uint32(96).uint64(message.engineVersion);
+            writer.uint32(80).uint64(message.engineVersion);
         }
         return writer;
     },
@@ -423,39 +415,33 @@ export const Params = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.minNameFieldLength = longToNumber(reader.uint64());
-                    break;
-                case 2:
-                    message.minDescriptionFieldLength = longToNumber(reader.uint64());
-                    break;
-                case 3:
                     message.coinIssuers.push(CoinIssuer.decode(reader, reader.uint32()));
                     break;
-                case 4:
+                case 2:
                     message.paymentProcessors.push(PaymentProcessor.decode(reader, reader.uint32()));
                     break;
-                case 5:
+                case 3:
                     message.recipeFeePercentage = reader.string();
                     break;
-                case 6:
+                case 4:
                     message.itemTransferFeePercentage = reader.string();
                     break;
-                case 7:
+                case 5:
                     message.updateItemStringFee = Coin.decode(reader, reader.uint32());
                     break;
-                case 8:
+                case 6:
                     message.minTransferFee = reader.string();
                     break;
-                case 9:
+                case 7:
                     message.maxTransferFee = reader.string();
                     break;
-                case 10:
+                case 8:
                     message.updateUsernameFee = Coin.decode(reader, reader.uint32());
                     break;
-                case 11:
+                case 9:
                     message.distrEpochIdentifier = reader.string();
                     break;
-                case 12:
+                case 10:
                     message.engineVersion = longToNumber(reader.uint64());
                     break;
                 default:
@@ -469,20 +455,6 @@ export const Params = {
         const message = { ...baseParams };
         message.coinIssuers = [];
         message.paymentProcessors = [];
-        if (object.minNameFieldLength !== undefined &&
-            object.minNameFieldLength !== null) {
-            message.minNameFieldLength = Number(object.minNameFieldLength);
-        }
-        else {
-            message.minNameFieldLength = 0;
-        }
-        if (object.minDescriptionFieldLength !== undefined &&
-            object.minDescriptionFieldLength !== null) {
-            message.minDescriptionFieldLength = Number(object.minDescriptionFieldLength);
-        }
-        else {
-            message.minDescriptionFieldLength = 0;
-        }
         if (object.coinIssuers !== undefined && object.coinIssuers !== null) {
             for (const e of object.coinIssuers) {
                 message.coinIssuers.push(CoinIssuer.fromJSON(e));
@@ -551,10 +523,6 @@ export const Params = {
     },
     toJSON(message) {
         const obj = {};
-        message.minNameFieldLength !== undefined &&
-            (obj.minNameFieldLength = message.minNameFieldLength);
-        message.minDescriptionFieldLength !== undefined &&
-            (obj.minDescriptionFieldLength = message.minDescriptionFieldLength);
         if (message.coinIssuers) {
             obj.coinIssuers = message.coinIssuers.map((e) => e ? CoinIssuer.toJSON(e) : undefined);
         }
@@ -593,20 +561,6 @@ export const Params = {
         const message = { ...baseParams };
         message.coinIssuers = [];
         message.paymentProcessors = [];
-        if (object.minNameFieldLength !== undefined &&
-            object.minNameFieldLength !== null) {
-            message.minNameFieldLength = object.minNameFieldLength;
-        }
-        else {
-            message.minNameFieldLength = 0;
-        }
-        if (object.minDescriptionFieldLength !== undefined &&
-            object.minDescriptionFieldLength !== null) {
-            message.minDescriptionFieldLength = object.minDescriptionFieldLength;
-        }
-        else {
-            message.minDescriptionFieldLength = 0;
-        }
         if (object.coinIssuers !== undefined && object.coinIssuers !== null) {
             for (const e of object.coinIssuers) {
                 message.coinIssuers.push(CoinIssuer.fromPartial(e));
