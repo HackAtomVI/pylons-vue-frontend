@@ -13,7 +13,7 @@
             <router-link to="/arena"> ARENA </router-link>
           </li>
           <li>
-            <router-link to="/upload"> MARKETPLACE </router-link>
+            <router-link to="/upload"> UPLOAD </router-link>
           </li>
           <li>
             <router-link to="/about"> CROWD CONTROL </router-link>
@@ -64,7 +64,9 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
-
+* {
+  font-family: $font-family;
+}
 .nav-wrapper {
   width: 100%;
 }
