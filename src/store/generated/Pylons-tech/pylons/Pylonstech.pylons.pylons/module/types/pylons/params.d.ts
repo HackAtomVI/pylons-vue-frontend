@@ -25,8 +25,6 @@ export interface PaymentProcessor {
 }
 /** Params represent the parameters used by the pylons module */
 export interface Params {
-    minNameFieldLength: number;
-    minDescriptionFieldLength: number;
     coinIssuers: CoinIssuer[];
     paymentProcessors: PaymentProcessor[];
     recipeFeePercentage: string;
