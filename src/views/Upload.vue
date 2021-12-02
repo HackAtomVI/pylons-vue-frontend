@@ -41,19 +41,54 @@ export default {
     //this.setUserNft()
   },
   methods: {
-    async loadNft() {
+    loadNft() {
       console.log('Outside: ' + this.$store.getters.getNft)
       if (typeof this.$store.getters.getNft === 'undefined') {
-        console.log('Īnside :)')
-        await this.getNft() //TODO await
-      }
-      if (typeof this.$store.getters.getNft === 'undefined') {
-        this.createNft() //TODO await
-        this.getNft() //TODO await
+        this.getNft().then((res) => {
+          console.log(res)
+          if (res === false)
+            this.createNft().then(() => {
+              this.getNft()
+            })
+        })
       }
     },
 
     getNft() {
+      return new Promise((resolve) => {
+        this.$store
+          .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+            params: {
+              '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+              owner: this.$store.getters['common/wallet/address'],
+            },
+          })
+          .then((res) => {
+            //console.log("QueryListItemByOwner")
+            var BreakException = {}
+            try {
+              res.Items.forEach((item) => {
+                item.strings.forEach((str) => {
+                  if (str.Key === 'ItemType' && str.Value === 'nft') {
+                    this.$store.commit('setNft', item)
+                    this.$store.getters.getNft
+                    //this.heroNft = item
+                    //console.log(this.heroNft)
+                    throw BreakException
+                  }
+                })
+              })
+              console.log('false bby')
+              resolve(false)
+            } catch (e) {
+              if (e !== BreakException) throw e
+              console.log('true bby')
+              resolve(true)
+            }
+          })
+      })
+    },
+    printAllItems() {
       this.$store
         .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
           params: {
@@ -62,44 +97,28 @@ export default {
           },
         })
         .then((res) => {
-          //console.log("QueryListItemByOwner")
-          var BreakException = {}
-          try {
-            res.Items.forEach((item) => {
-              item.strings.forEach((str) => {
-                if (str.Key === 'ItemType' && str.Value === 'nft') {
-                  this.$store.commit('setNft', item)
-                  this.$store.getters.getNft
-                  //this.heroNft = item
-                  //console.log(this.heroNft)
-                  throw BreakException
-                }
-              })
-            })
-            //console.log("false bby")
-          } catch (e) {
-            if (e !== BreakException) throw e
-            //console.log("true bby")
-          }
+          console.log('All items: ')
+          console.log(res.Items)
         })
     },
-    printAllItems() {},
     createNft() {
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-          value: {
-            '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-            creator: this.$store.getters['common/wallet/address'],
-            cookbookID: 'nftarena',
-            recipeID: 'importnft',
-            coinInputsIndex: '0',
-            itemIDs: [],
-            paymentInfos: [],
-          },
-        })
-        .then((res) => {
-          console.log('Nft created')
-        })
+      return new Promise(() => {
+        this.$store
+          .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+            value: {
+              '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+              creator: this.$store.getters['common/wallet/address'],
+              cookbookID: 'nftarena',
+              recipeID: 'importnft',
+              coinInputsIndex: '0',
+              itemIDs: [],
+              paymentInfos: [],
+            },
+          })
+          .then(() => {
+            console.log('Nft created')
+          })
+      })
     },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files
