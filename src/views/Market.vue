@@ -5,30 +5,36 @@
       <div class="description">Chose the item category</div>
       <div class="category-container">
         <div class="armor-wrapper">
-          <div class="blackbox">
-            <img class="blackbox-img" src="../assets/img/market/armor.png" />
-            <div class="blackbox-description">CRAFT ARMOR ITEM</div>
-          </div>
+          <button @click="craftArmor()">
+            <div class="blackbox">
+              <img class="blackbox-img" src="../assets/img/market/armor.png" />
+              <div class="blackbox-description">CRAFT ARMOR ITEM</div>
+            </div>
+          </button>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             25 token
           </div>
         </div>
         <div class="weapon-wrapper">
-          <div class="blackbox">
-            <img class="blackbox-img" src="../assets/img/market/sword.png" />
-            <div class="blackbox-description">CRAFT WEAPON ITEM</div>
-          </div>
+          <button @click="craftWeapon()">
+            <div class="blackbox">
+              <img class="blackbox-img" src="../assets/img/market/sword.png" />
+              <div class="blackbox-description">CRAFT WEAPON ITEM</div>
+            </div>
+          </button>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             25 token
           </div>
         </div>
         <div class="surprise-wrapper">
-          <div class="blackbox">
-            <img class="blackbox-img" src="../assets/img/market/surprise.svg" />
-            <div class="blackbox-description">CRAFT RANDOM ITEM</div>
-          </div>
+          <button @click="craftShield()">
+            <div class="blackbox">
+              <img class="blackbox-img" src="../assets/img/market/surprise.svg" />
+              <div class="blackbox-description">CRAFT RANDOM ITEM</div>
+            </div>
+          </button>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             20 token
@@ -40,11 +46,48 @@
 </template>
 
 <script>
+import { craftWeapon, craftArmor, craftShield } from '../utils/pylonsInteraction.js'
+
 export default {
   name: 'Market',
   components: {},
   data() {
     return {}
+  },
+  methods: {
+    craftWeapon() {
+      craftWeapon
+        .bind(this)()
+        .then((res) => {
+          console.log('craft result', res)
+        })
+        .catch((err) => {
+          console.error('YES SHIT, YOU DUN GOOFED:', err)
+        })
+    },
+    craftArmor() {
+      craftArmor
+        .bind(this)()
+        .then((res) => {
+          console.log('craft result', res)
+        })
+        .catch((err) => {
+          console.error('YES SHIT, YOU DUN GOOFED:', err)
+        })
+    },
+    craftRandomItem() {
+      console.log(
+        'CRAFT RANDOM ITEM, ARE YOU RETARDED? WE HAVE NO RANDOM ITEM, I WILL CRAFT A SHIELD NOW YOU FUCKING IDIOT',
+      )
+      craftShield
+        .bind(this)()
+        .then((res) => {
+          console.log('craft result', res)
+        })
+        .catch((err) => {
+          console.error('YES SHIT, YOU DUN GOOFED:', err)
+        })
+    },
   },
 }
 </script>
