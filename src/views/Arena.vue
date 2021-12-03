@@ -22,34 +22,68 @@
 </template>
 
 <script>
-import { getNft } from '../utils/pylonsInteraction.js'
+import { getNft, getItems } from '../utils/pylonsInteraction.js'
 
 export default {
   name: 'Arena',
   components: {},
   data() {
     return {
+      fighterEquipment: {},
       fighterName: 'loserboi',
       heroNft: {},
+      canFight: false,
+      ownedItems: [],
     }
   },
   beforeCreate() {
     this.getNft = getNft.bind(this)
+    this.getItems = getItems.bind(this)
   },
   mounted() {
     this.getNft()
       .then((res) => {
         if (res === false) {
           console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
+        } else {
+          console.log('getnft', res)
+          this.heroNft = res
+          this.figtherEquipment = this.heroNft
         }
-        console.log('getnft', res)
-        console.log('fighterequip:', this.$store.getters['getFighterEquipment'])
       })
       .catch((err) => {
         console.log('NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?')
         console.error(err)
       })
+
+    this.getItems().then((items) => {
+      this.ownedItems = items
+      console.log('items', items)
+    })
     console.log('store', this.$store.getters['getFighterEquipment'])
+    this.figtherEquipment = this.$store.getters['getFighterEquipment']
+
+    if (!this.fighterEquipment.nft) {
+      this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")
+    }
+    if (!this.fighterEquipment.armor) {
+      this.notifyFail(
+        'No Armor worn',
+        "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
+      )
+    }
+    if (!this.fighterEquipment.lefthand) {
+      this.notifyFail(
+        'No Weapon in Left Hand',
+        "Boi, you don't even have an item in your left hand.\nLet's see if you have any weapons, lol.",
+      )
+    }
+    if (!this.fighterEquipment.righthand) {
+      this.notifyFail(
+        'No Weapon in Right Hand',
+        "Boi, you don't even have an item your right hand.\nLet's see if you have any weapons, lol.",
+      )
+    }
   },
   methods: {
     getNft() {
