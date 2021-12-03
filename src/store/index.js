@@ -3,12 +3,28 @@ import init from './config'
 
 const store = createStore({
   state: {
+    fighterEquipment: {
+      nft: {},
+      lefthand: {},
+      righthand: {},
+      armor: {},
+      helmet: {},
+    },
     isLoggedIn: false,
     nftName: '',
     isWinner: false,
     NFT: {},
   },
   mutations: {
+    setFighterEquipment(state, nft, lefthand, righthand, armor, helmet) {
+      state.fighterEquipment = {
+        nft: nft,
+        lefthand: lefthand,
+        righthand: righthand,
+        armor: armor,
+        helmet: helmet,
+      }
+    },
     setNft(state, nft) {
       state.NFT = nft
     },
@@ -21,6 +37,9 @@ const store = createStore({
   },
   actions: {},
   getters: {
+    getFighterEquipment: (state) => {
+      return state.fighterEquipment
+    },
     getNft: (state) => {
       return state.NFT
     },
