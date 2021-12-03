@@ -4,16 +4,18 @@
     <div v-if="initialized" class="container">
       <form @submit.prevent="upload">
         <input v-model="nftname" class="e60_170" type="text" name="nftname" :placeholder="nftname" required />
-
-        <input
-          @change="onFileChange"
-          class="e60_156"
-          type="file"
-          id="nftimg"
-          name="image"
-          accept="image/png, image/jpeg"
-        />
-        <img :src="nftimg" />
+        <div class="img-container">
+          <input
+            @change="onFileChange"
+            class="e60_156"
+            type="file"
+            id="nftimg"
+            name="image"
+            accept="image/png, image/jpeg"
+            v-bind:style="[hasImg ? { display: none } : { display: block }]"
+          />
+          <img class="uploaded-img" :src="nftimg" />
+        </div>
         <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD</button>
         <!-- <button v-on:click="createNft()">create nft lul</button> -->
         <button v-on:click="printAllItems()">print all items</button>
@@ -29,6 +31,7 @@ export default {
   components: {},
   data() {
     return {
+      hasImg: false,
       nftname: '',
       nftimg: '',
       heroNft: {},
@@ -60,6 +63,7 @@ export default {
         } else {
           console.log('Hero: ')
           console.log(this.heroNft)
+          this.getNftData()
         }
       })
     },
@@ -127,6 +131,8 @@ export default {
       var files = e.target.files || e.dataTransfer.files
       if (!files.length) return
       this.createImage(files[0])
+      this.hasImg = true
+      console.log('hasImg: ' + this.hasImg)
     },
     createImage(file) {
       //var nftimg = new Image();
@@ -177,42 +183,21 @@ export default {
         })
     },
     getNftData() {
+      console.log('getting data: ')
       this.heroNft.mutableStrings.forEach((str) => {
         if (str.Key === 'name') {
           this.nftname = str.Value
+          console.log(this.nftname)
         }
         if (str.Key === 'image') {
           this.nftimg = str.Value
+
+          if (this.nftimg === '') this.hasImg = false
+          else this.hasImg = true
+
+          console.log(this.nftimg)
         }
       })
-    },
-
-    setUserNft() {
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-          params: {
-            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-            owner: this.$store.getters['common/wallet/address'],
-          },
-        })
-        .then((res) => {
-          console.log('All items: ')
-          console.log(res.Items)
-          var BreakException = {}
-          try {
-            res.Items.forEach((item) => {
-              item.strings.forEach((str) => {
-                if (str.Key === 'ItemType' && str.Value === 'nft') {
-                  this.heroNft = item
-                  //console.log(this.heroNft)
-                  throw BreakException
-                }
-              })
-            })
-          } catch (e) {
-            if (e !== BreakException) throw e
-          }
-        })
     },
   },
 }
@@ -220,6 +205,12 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
+.disabled {
+  display: none;
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0);
+  width: 1%;
+}
 .sp-fill {
   padding-top: 0;
 }
@@ -230,6 +221,14 @@ export default {
   width: 80%;
   padding: 5% 7%;
   background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
+}
+.img-container {
+  display: grid;
+}
+.uploaded-img {
+  margin: 70px auto;
+  grid-column: 1;
+  grid-row: 1;
 }
 .e60_150 {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -266,6 +265,9 @@ export default {
   display: none;
 }
 .e60_156 {
+  //Image upload box
+  grid-column: 1;
+  grid-row: 1;
   display: block;
   margin: 50px auto;
   background-image: url('../assets/img/cross.png');

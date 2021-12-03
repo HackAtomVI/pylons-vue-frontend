@@ -5,7 +5,7 @@
       <div class="description">Chose the item category</div>
       <div class="category-container">
         <div class="armor-wrapper">
-          <div class="blackbox">
+          <div class="blackbox" @click="craftArmor()">
             <img class="blackbox-img" src="../assets/img/market/armor.png" />
             <div class="blackbox-description">CRAFT ARMOR ITEM</div>
           </div>
@@ -45,6 +45,14 @@ export default {
   components: {},
   data() {
     return {}
+  },
+  methods: {
+    craftArmor() {
+      this.$router.push({
+        name: 'Enchant',
+        params: { itemNew: true, id: 123 },
+      })
+    },
   },
 }
 </script>
