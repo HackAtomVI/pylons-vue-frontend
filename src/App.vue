@@ -9,7 +9,7 @@
         <router-view />
       </template>
     </SpLayout>
-    <notifications group="bottom-right-notification" position="bottom right" classes="notification" />
+    <notifications group="bottom-right-notification" position="bottom right" class="notification" />
   </div>
 </template>
 
@@ -90,12 +90,31 @@ export default {
 }
 </script>
 <style lang="scss">
-// body {
-//   background: linear-gradient(90deg, rgba(85, 5, 66, 1) 0%, rgba(176, 109, 84, 1) 50%, rgba(85, 5, 66, 1) 100%);
-// }
-// .sp-fill {
-//   padding-top: 0;
-// }
+@import './scss/variables';
+
+.notification--info {
+  border-left: $border-thickness-bold solid $black !important;
+  background: $notification-info !important;
+}
+.notifications {
+  width: 450px !important;
+}
+.notification {
+  padding: $font-size/2;
+  margin: 0 $font-size/2 $font-size/2;
+  font-size: $font-size;
+  color: $white;
+}
+.notification--success {
+  border-left: $border-thickness-bold solid darken($notification-success, 10%) !important;
+  background: $notification-success !important;
+}
+
+.notification--alert {
+  border-left: $border-thickness-bold solid darken($notification-fail, 10%) !important;
+  background: $notification-fail !important;
+}
+
 @font-face {
   font-family: 'Museo900-Regular';
   font-weight: normal;
