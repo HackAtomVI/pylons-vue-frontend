@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Marketplace',
+  name: 'Enchant',
   components: {},
   data() {
     return {}

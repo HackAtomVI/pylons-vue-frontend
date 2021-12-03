@@ -11,6 +11,7 @@ import Upload from '@/views/Upload.vue'
 import Fight from '@/views/Fight.vue'
 import Result from '@/views/Result.vue'
 import About from '@/views/About.vue'
+import Enchant from '@/views/About.vue'
 
 const routerHistory = createWebHistory()
 const routes = [
@@ -29,6 +30,7 @@ const routes = [
   { path: '/fight', component: Fight },
   { path: '/about', component: About },
   { path: '/result', component: Result },
+  { path: '/enchant', component: Enchant },
 ]
 
 const router = createRouter({

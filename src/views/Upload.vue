@@ -73,7 +73,6 @@ export default {
             },
           })
           .then((res) => {
-            //console.log("QueryListItemByOwner")
             var BreakException = {}
             try {
               res.Items.forEach((item) => {
@@ -84,11 +83,9 @@ export default {
                   }
                 })
               })
-              console.log('false bby')
               resolve(false)
             } catch (e) {
               if (e !== BreakException) throw e
-              console.log('true bby')
               resolve(true)
             }
           })
@@ -146,6 +143,8 @@ export default {
       //console.log(vm.nftimg)
     },
     setNftData() {
+      console.log(this.heroNft.ID)
+      console.log(this.nftname)
       this.$store
         .dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
           value: {
