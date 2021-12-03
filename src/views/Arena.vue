@@ -6,7 +6,7 @@
       </div>
       <div class="container--bot">
         <div class="nft-name" id="nftName">
-          <span>PLACEHOLDER</span>
+          <span>Fighter {{ fighterName }}</span>
         </div>
         <div class="hero_wrapper">
           <div class="nft-img_wrapper"></div>
@@ -29,6 +29,7 @@ export default {
   components: {},
   data() {
     return {
+      fighterName: 'loserboi',
       heroNft: {},
     }
   },
@@ -48,6 +49,7 @@ export default {
         console.log('NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?')
         console.error(err)
       })
+    console.log('store', this.$store.getters['getFighterEquipment'])
   },
   methods: {
     getNft() {
