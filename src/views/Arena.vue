@@ -37,6 +37,7 @@ export default {
           console.log('YOU DONT OWN NFT - GO TO WORKSHOP - DONT PASS GO - DONT COLLECT $400')
         }
         console.log(res)
+        console.log(this.$store.getters['getFighterEquipment'])
       })
       .catch((err) => {
         console.log('NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?')
