@@ -39,15 +39,15 @@
               <div id="item-list">
                 <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
                 <!-- v-on:click="EquimpentItemSelected(item.id)" -->
-                <!-- <EquipmentItem
+                <EquipmentItem
                   class="grid-item"
-                  :class="{ wrapper__highlight: selectedItem === item.id }"
-                  v-for="item in ownedItems"
+                  v-for="(item, index) in ownedItems"
+                  :class="{ wrapper__highlight: selectedItem === index }"
                   :name="item.name"
                   :item="item.ItemType"
                   :key="item.id"
-                  @click="onEquipmentClicked(item)"
-                /> -->
+                  @click="onEquipmentClicked(item, index)"
+                />
               </div>
             </div>
             <div class="inventory__right">
@@ -60,14 +60,14 @@
       <div class="panel__right">
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
-          <img
+          <!-- <img
             src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
             style="z-index: 10"
             class="equipped-item"
-          />
-          <img src="../assets/img/stick_items/Stickyboi_Items_SR_PoleAxe.png" class="equipped-item" />
+          /> -->
+          <!-- <img src="../assets/img/stick_items/Stickyboi_Items_SR_PoleAxe.png" class="equipped-item" />
           <img src="../assets/img/stick_items/Stickyboi_Items_SL_ShieldHeater.png" class="equipped-item" />
-          <img src="../assets/img/stick_items/Stickyboi_Items_Armor_Gambeson.png" class="equipped-item" />
+          <img src="../assets/img/stick_items/Stickyboi_Items_Armor_Gambeson.png" class="equipped-item" /> -->
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export default {
   name: 'Workshop',
   components: {
     PleaseLogIn,
-    //EquipmentItem,
+    EquipmentItem,
     //StickyboiItem,
   },
   beforeCreate() {
@@ -104,28 +104,6 @@ export default {
       selectedItem: -1,
       selectedItemName: '',
       heroNft: {},
-      dummyItems: [
-        {
-          name: 'Brigandine',
-          img: 'img/item_icons/art_armor_icon_13.png',
-          id: 0,
-        },
-        {
-          name: 'Heater Shield',
-          img: 'img/item_icons/weapon_icon_1_64.png',
-          id: 1,
-        },
-        {
-          name: 'Pole Axe',
-          img: 'img/item_icons/weapon_icon_1_84.png',
-          id: 2,
-        },
-        {
-          name: 'Heater Shield',
-          img: 'img/item_icons/weapon_icon_1_64.png',
-          id: 3,
-        },
-      ],
       equippedItems: [{}],
       ownedItems: [],
     }
@@ -202,9 +180,11 @@ export default {
           console.log('nft:', res)
         })
     },
-    onEquipmentClicked(item) {
-      this.selectedItem = item.id
-      this.selectedItemName = item.name
+    onEquipmentClicked(item, index) {
+      this.selectedItem = index
+      //this.selectedItem = item.id
+      let name = item.name
+      this.selectedItemName = name.charAt(0).toUpperCase() + name.slice(1)
       console.log(this.selectedItem + ' clicked.')
     },
     isUserLoggedIn() {
