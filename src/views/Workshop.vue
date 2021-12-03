@@ -39,15 +39,15 @@
               <div id="item-list">
                 <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
                 <!-- v-on:click="EquimpentItemSelected(item.id)" -->
-                <EquipmentItem
+                <!-- <EquipmentItem
                   class="grid-item"
                   :class="{ wrapper__highlight: selectedItem === item.id }"
                   v-for="item in ownedItems"
                   :name="item.name"
-                  :img="item.img"
+                  :item="item.ItemType"
                   :key="item.id"
                   @click="onEquipmentClicked(item)"
-                />
+                /> -->
               </div>
             </div>
             <div class="inventory__right">
@@ -89,7 +89,7 @@ export default {
   name: 'Workshop',
   components: {
     PleaseLogIn,
-    EquipmentItem,
+    //EquipmentItem,
     //StickyboiItem,
   },
   beforeCreate() {
@@ -176,8 +176,9 @@ export default {
         })
 
       this.getItems().then((res) => {
-        this.ownedItems = res
-        console.log('items:', res)
+        this.ownedItems = this.R.without((x) => x.ItemType === 'nft', res)
+        //  this.ownedItems = res
+        console.log('items:', this.ownedItems)
       })
     },
     buyNft() {

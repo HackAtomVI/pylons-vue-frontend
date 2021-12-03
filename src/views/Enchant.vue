@@ -10,7 +10,8 @@
           <img class="item-img" :src="itemImg" />
         </div>
         <div class="item-container__right">
-          <div>{{}}</div>
+          <div class="item-name">{{}}</div>
+          <div class="item-stats">{{}}</div>
         </div>
       </div>
     </div>
@@ -78,6 +79,14 @@ export default {
 }
 .item-container__left {
   background-color: rgb(18, 209, 209);
+}
+.item-container {
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(255, 198, 98, 0.3);
+  width: 400px;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 .title {
   font-size: 50px;

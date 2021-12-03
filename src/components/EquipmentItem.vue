@@ -11,7 +11,7 @@ export default {
   props: {
     name: String,
     img: String,
-    ID: Number,
+    ID: String,
   },
   data() {
     return {
