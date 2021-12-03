@@ -55,6 +55,12 @@ export default {
     return {}
   },
   methods: {
+    wtfisthis() {
+      this.$router.push({
+        name: 'Enchant',
+        params: { itemNew: true, id: 123 },
+      })
+    },
     craftWeapon() {
       this.notifyInfo('Weapon', 'craft it')
       craftWeapon

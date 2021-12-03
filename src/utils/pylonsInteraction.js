@@ -20,7 +20,9 @@ export function getNft() {
       return found
     })
 }
-
+export function isLoggedIn() {
+  return this.$store.getters['common/wallet/loggedIn']
+}
 export function getItems() {
   return this.$store.dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
     params: {
