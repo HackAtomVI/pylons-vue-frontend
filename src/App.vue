@@ -9,6 +9,7 @@
         <router-view />
       </template>
     </SpLayout>
+    <notifications group="bottom-right-notification" position="bottom right" classes="notification" />
   </div>
 </template>
 

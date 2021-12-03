@@ -79,6 +79,7 @@
 
 <script>
 import { getNft } from '../utils/pylonsInteraction.js'
+import { getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
 import StickyboiItem from '@/components/EquipmentItem.vue'
@@ -93,6 +94,7 @@ export default {
   },
   beforeCreate() {
     this.getNft = getNft.bind(this)
+    this.getItems = getItems.bind(this)
   },
   data() {
     return {
@@ -172,8 +174,8 @@ export default {
             })
         })
 
-      this.getNft().then((res) => {
-        console.log('nft:', res)
+      this.getItems().then((res) => {
+        console.log('items:', res.Items)
       })
     },
     buyNft() {
