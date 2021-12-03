@@ -2,7 +2,10 @@
   <div class="nav-wrapper">
     <nav class="nav">
       <div class="nav__content">
-        <ul :class="showMenuClass">
+        <ul class="nav__menu">
+          <li>
+            <router-link to="/"> HOME </router-link>
+          </li>
           <li>
             <router-link to="/upload"> UPLOAD NFT </router-link>
           </li>
