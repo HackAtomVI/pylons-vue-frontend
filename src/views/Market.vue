@@ -56,26 +56,33 @@ export default {
   },
   methods: {
     craftWeapon() {
+      this.notifyInfo('Weapon', 'craft it')
       craftWeapon
         .bind(this)()
         .then((res) => {
           console.log('craft result', res)
+          this.notifySuccess('Very Nice', 'Weapon crafting successful!')
         })
         .catch((err) => {
+          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
           console.error('YES SHIT, YOU DUN GOOFED:', err)
         })
     },
     craftArmor() {
+      this.notifyInfo('Armor', 'craft it')
       craftArmor
         .bind(this)()
         .then((res) => {
           console.log('craft result', res)
+          this.notifySuccess('Very Nice', 'Armor crafting successful!')
         })
         .catch((err) => {
+          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
           console.error('YES SHIT, YOU DUN GOOFED:', err)
         })
     },
-    craftRandomItem() {
+    craftShield() {
+      this.notifyInfo('Shield', 'craft it')
       console.log(
         'CRAFT RANDOM ITEM, ARE YOU RETARDED? WE HAVE NO RANDOM ITEM, I WILL CRAFT A SHIELD NOW YOU FUCKING IDIOT',
       )
@@ -83,8 +90,10 @@ export default {
         .bind(this)()
         .then((res) => {
           console.log('craft result', res)
+          this.notifySuccess('Very Nice', 'Shield crafting successful!')
         })
         .catch((err) => {
+          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
           console.error('YES SHIT, YOU DUN GOOFED:', err)
         })
     },
