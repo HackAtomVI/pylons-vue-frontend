@@ -159,21 +159,21 @@ export default {
         .then((res) => {
           console.log('name updated')
           console.log(res)
-        })
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
-          value: {
-            '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
-            creator: this.$store.getters['common/wallet/address'],
-            cookbookID: 'nftarena',
-            ID: this.heroNft.ID,
-            field: 'image',
-            value: this.nftimg,
-          },
-        })
-        .then((res) => {
-          console.log('Img updated')
-          console.log(res)
+          this.$store
+            .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
+              value: {
+                '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
+                creator: this.$store.getters['common/wallet/address'],
+                cookbookID: 'nftarena',
+                ID: this.heroNft.ID,
+                field: 'image',
+                value: this.nftimg,
+              },
+            })
+            .then((res) => {
+              console.log('Img updated')
+              console.log(res)
+            })
         })
     },
     getNftData() {
