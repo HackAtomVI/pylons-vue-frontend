@@ -42,7 +42,7 @@
                 <EquipmentItem
                   class="grid-item"
                   :class="{ wrapper__highlight: selectedItem === item.id }"
-                  v-for="item in dummyItems"
+                  v-for="item in ownedItems"
                   :name="item.name"
                   :img="item.img"
                   :key="item.id"
@@ -126,6 +126,7 @@ export default {
         },
       ],
       equippedItems: [{}],
+      ownedItems: [],
     }
   },
   mounted() {
@@ -175,6 +176,7 @@ export default {
         })
 
       this.getItems().then((res) => {
+        this.ownedItems = res
         console.log('items:', res)
       })
     },
