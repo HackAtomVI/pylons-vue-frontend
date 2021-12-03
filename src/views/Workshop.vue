@@ -175,7 +175,7 @@ export default {
         })
 
       this.getItems().then((res) => {
-        console.log('items:', res.Items)
+        console.log('items:', res)
       })
     },
     buyNft() {

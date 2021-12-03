@@ -24,12 +24,32 @@ export function isLoggedIn() {
   return this.$store.getters['common/wallet/loggedIn']
 }
 export function getItems() {
-  return this.$store.dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-    params: {
-      '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-      owner: this.$store.getters['common/wallet/address'],
-    },
-  })
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+      params: {
+        '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+        owner: this.$store.getters['common/wallet/address'],
+      },
+    })
+    .then((res) => {
+      console.log('items', res)
+      let items = []
+      res.Items.forEach((item) => {
+        let entry = {
+          ID: item.ID,
+        }
+        item.strings.forEach((string) => {
+          entry[string.Key] = string.Value
+        })
+        item.doubles.forEach((double) => {
+          entry[double.Key] = double.Value
+        })
+        items.push(entry)
+      })
+      //name
+      //oneHanded
+      return items
+    })
 }
 
 export function craftWeapon() {

@@ -12,6 +12,14 @@ module.exports = {
     },
     plugins: [new NodePolyfillPlugin()],
   },
+  chainWebpack: (config) => {
+    /*
+     Disable (or customize) prefetch, see:
+     https://cli.vuejs.org/guide/html-and-static-assets.html#prefetch
+  */
+    config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
+  },
   /*devServer: {
     proxy: 'http://46.166.140.172',
   },*/
