@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { getNft } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
 import StickyboiItem from '@/components/EquipmentItem.vue'
@@ -89,6 +90,9 @@ export default {
     PleaseLogIn,
     EquipmentItem,
     //StickyboiItem,
+  },
+  beforeCreate() {
+    this.getNft = getNft.bind(this)
   },
   data() {
     return {
@@ -167,7 +171,10 @@ export default {
               })
             })
         })
-      this.getNft()
+
+      this.getNft().then((res) => {
+        console.log('nft:', res)
+      })
     },
     buyNft() {
       this.$store
@@ -184,39 +191,11 @@ export default {
         })
         .then((res) => {
           console.log(res)
-          this.getNft()
         })
-    },
-
-    getNft() {
-      var items = this.$store
-        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-          params: {
-            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-            owner: this.$store.getters['common/wallet/address'],
-          },
-        })
+        .then(this.getNft)
         .then((res) => {
-          //console.log(res.Items)
-          var BreakException = {}
-          try {
-            res.Items.forEach((item) => {
-              item.strings.forEach((str) => {
-                if (str.Key === 'ItemType' && str.Value === 'nft') {
-                  this.heroNft = item
-                  console.log(this.heroNft)
-                  throw BreakException
-                }
-              })
-            })
-          } catch (e) {
-            if (e !== BreakException) throw e
-          }
+          console.log('nft:', res)
         })
-
-      // var items = this.$store.getters['Pylonstech.pylons.pylons/getListItemByOwner']({
-      //   query: this.$store.getters['common/wallet/address']
-      // })
     },
     onEquipmentClicked(item) {
       this.selectedItem = item.id
@@ -228,11 +207,11 @@ export default {
       return this.$store.getters['common/wallet/loggedIn']
     },
     log() {
-      console.log(this.$store)
+      console.log('store:', this.$store)
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
-      console.log(this.walletName)
+      console.log('walletname:', this.walletName)
       if (this.walletName != null) {
         this.isLoggedIn = true
       } else {

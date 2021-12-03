@@ -22,6 +22,8 @@
 </template>
 
 <script>
+import { getNft } from '../utils/pylonsInteraction.js'
+
 export default {
   name: 'Arena',
   components: {},
@@ -29,6 +31,9 @@ export default {
     return {
       heroNft: {},
     }
+  },
+  beforeCreate() {
+    this.getNft = getNft.bind(this)
   },
   mounted() {
     this.getNft()
