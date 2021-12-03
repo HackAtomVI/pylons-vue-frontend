@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import * as R from 'ramda'
 import { getNft } from '../utils/pylonsInteraction.js'
 import { getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
@@ -176,8 +177,7 @@ export default {
         })
 
       this.getItems().then((res) => {
-        this.ownedItems = this.R.without((x) => x.ItemType === 'nft', res)
-        //  this.ownedItems = res
+        this.ownedItems = R.reject((x) => x.ItemType === 'nft', res)
         console.log('items:', this.ownedItems)
       })
     },
