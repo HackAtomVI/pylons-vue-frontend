@@ -33,11 +33,13 @@ export default {
   mounted() {
     this.getNft()
       .then((res) => {
+        if (res === false) {
+          console.log('YOU DONT OWN NFT - GO TO WORKSHOP - DONT PASS GO - DONT COLLECT $400')
+        }
         console.log(res)
-        console.log('REAL')
       })
       .catch((err) => {
-        console.log('TERROR')
+        console.log('NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?')
         console.error(err)
       })
   },
@@ -51,15 +53,17 @@ export default {
           },
         })
         .then((res) => {
+          let found = false
           res.Items.forEach((item) => {
-            item.strings.forEach((str) => {
-              if (str.Key === 'ItemType' && str.Value === 'nft') {
-                this.heroNft = item
-                return item
-              }
-            })
+            if (!found) {
+              item.strings.forEach((str) => {
+                if (!found && str.Key === 'ItemType' && str.Value === 'nft') {
+                  found = item
+                }
+              })
+            }
           })
-          return false
+          return found
         })
     },
   },
