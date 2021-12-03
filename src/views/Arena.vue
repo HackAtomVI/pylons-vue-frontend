@@ -26,7 +26,42 @@ export default {
   name: 'Arena',
   components: {},
   data() {
-    return {}
+    return {
+      heroNft: {},
+    }
+  },
+  mounted() {
+    this.getNft()
+      .then((res) => {
+        console.log(res)
+        console.log('REAL')
+      })
+      .catch((err) => {
+        console.log('TERROR')
+        console.error(err)
+      })
+  },
+  methods: {
+    getNft() {
+      return this.$store
+        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+          params: {
+            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+            owner: this.$store.getters['common/wallet/address'],
+          },
+        })
+        .then((res) => {
+          res.Items.forEach((item) => {
+            item.strings.forEach((str) => {
+              if (str.Key === 'ItemType' && str.Value === 'nft') {
+                this.heroNft = item
+                return item
+              }
+            })
+          })
+          return false
+        })
+    },
   },
 }
 </script>
