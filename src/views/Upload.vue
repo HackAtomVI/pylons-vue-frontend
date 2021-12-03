@@ -146,7 +146,7 @@ export default {
       console.log(this.heroNft.ID)
       console.log(this.nftname)
       this.$store
-        .dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
+        .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
           value: {
             '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
             creator: this.$store.getters['common/wallet/address'],
@@ -161,7 +161,7 @@ export default {
           console.log(res)
         })
       this.$store
-        .dispatch('Pylonstech.pylons.pylons/MsgSetItemString', {
+        .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
           value: {
             '@type': '/Pylonstech.pylons.pylons.MsgSetItemString',
             creator: this.$store.getters['common/wallet/address'],
