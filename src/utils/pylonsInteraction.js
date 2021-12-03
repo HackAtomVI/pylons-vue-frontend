@@ -20,3 +20,6 @@ export function getNft() {
       return found
     })
 }
+export function isLoggedIn() {
+  return this.$store.getters['common/wallet/loggedIn']
+}

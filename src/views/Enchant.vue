@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div v-if="isLoggedIn()" class="background">
     <div style="text-align: center" class="title" v-if="invalidItem">It seem's you haven't selected a valid item</div>
     <div v-else class="container">
       <div v-if="this.isNew" class="title">Congrats on your new item!</div>
@@ -15,13 +15,20 @@
       </div>
     </div>
   </div>
+  <div v-else class="background">
+    <PleaseLogIn />
+  </div>
 </template>
 
 <script>
+import PleaseLogIn from '../components/PleaseLogIn.vue'
+
 export default {
   name: 'Enchant',
   props: {},
-  components: {},
+  components: {
+    PleaseLogIn,
+  },
 
   data() {
     return {
@@ -38,6 +45,9 @@ export default {
     }
   },
   methods: {
+    isLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
+    },
     getItem() {},
     updateItem() {},
     logItem() {

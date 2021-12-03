@@ -39,7 +39,7 @@ export default {
     this.getNft()
       .then((res) => {
         if (res === false) {
-          console.log('YOU DONT OWN NFT - GO TO WORKSHOP - DONT PASS GO - DONT COLLECT $400')
+          console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
         }
         console.log(res)
         console.log(this.$store.getters['getFighterEquipment'])
