@@ -11,10 +11,12 @@
         <div class="hero_wrapper">
           <div class="nft-img_wrapper"></div>
           <div class="stats_wrapper"></div>
-          <router-link to="/fight" class="fight-button">
-            <img src="../assets/img/sword.png" class="sword-img" />
-            <span class="fight-text">FIGHT!</span>
-          </router-link>
+          <button @click="enlistForArena()">
+            <div class="fight-button">
+              <img src="../assets/img/sword.png" class="sword-img" />
+              <span class="fight-text">FIGHT!</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>
@@ -22,8 +24,6 @@
 </template>
 
 <script>
-import { getNft, getItems } from '../utils/pylonsInteraction.js'
-
 export default {
   name: 'Arena',
   components: {},
@@ -36,33 +36,20 @@ export default {
       ownedItems: [],
     }
   },
-  beforeCreate() {
-    this.getNft = getNft.bind(this)
-    this.getItems = getItems.bind(this)
-  },
   mounted() {
-    this.getNft()
-      .then((res) => {
-        if (res === false) {
-          console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
-        } else {
-          console.log('getnft', res)
-          this.heroNft = res
-          this.figtherEquipment = this.heroNft
-        }
-      })
-      .catch((err) => {
-        this.notifyFail('LOGGED IN?', "'NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?'")
-        console.log()
-        console.error(err)
-      })
-
-    this.getItems().then((items) => {
-      this.ownedItems = items
-      console.log('items', items)
+    this.queryMyNFT().then((nft) => {
+      console.log('NFT:', nft)
+      this.heroNft = nft
+      this.fighterEquipment = this.heroNft
     })
-    console.log('store', this.$store.getters['getFighterEquipment'])
-    this.figtherEquipment = this.$store.getters['getFighterEquipment']
+
+    this.queryMyItems().then((items) => {
+      this.ownedItems = items
+      console.log('owned items', items)
+    })
+
+    console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
+    this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
     if (!this.fighterEquipment.nft) {
       this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")
@@ -86,7 +73,30 @@ export default {
       )
     }
   },
-  methods: {},
+  methods: {
+    enlistForArena() {
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgEnlistForArena',
+            creator: this.$store.getters['common/wallet/address'],
+            nft: this.heroNft.ID,
+            cookbookID: 'nftarena',
+            lHitem: this.fighterEquipment.lefthand,
+            rHitem: this.fighterEquipment.righthand,
+            armoritem: this.fighterEquipment.armor,
+          },
+        })
+        .then((res) => {
+          console.log('EnlistForArena')
+          console.log(res)
+
+          // if success link to page fight with id of the fight
+          //<router-link to="/fight" class="">
+          //</router-link>
+        })
+    },
+  },
 }
 </script>
 
