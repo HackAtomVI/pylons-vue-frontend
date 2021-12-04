@@ -147,7 +147,13 @@
       <div class="panel__right">
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
-          <StickyItem v-for="(item, index) in equipedItemNames" :name="item" class="equipped-item" :key="index" />
+          <StickyItem
+            v-for="(item, index) in this.equipedItemNames"
+            :id="index"
+            :name="this.equipedItemNames[index]"
+            class="equipped-item"
+            :key="index"
+          />
           <!-- <img
             src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
             style="z-index: 10"
@@ -285,9 +291,13 @@ export default {
 
       let name = item.name
       this.selectedItemName = name.charAt(0).toUpperCase() + name.slice(1)
+      console.log(this.singleButton())
     },
     singleButton() {
-      if (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') {
+      if (
+        (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') &&
+        this.selectedItemType !== 'armor'
+      ) {
         return false
       } else return true
     },
@@ -340,7 +350,9 @@ export default {
       //console.log(this.$store.getters['getFighterEquipment'])
     },
     updateEquipedItemNames() {
-      this.equipedItemNames = Object.values(this.$store.getters['getFighterEquipment'])
+      // console.log(this.$store.getters['getEquipedItemNames'])
+      this.equipedItemNames = Object.values(this.$store.getters['getEquipedItemNames'])
+      console.log(this.equipedItemNames)
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']

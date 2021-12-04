@@ -75,6 +75,9 @@ const store = createStore({
     getFighterEquipment: (state) => {
       return state.fighterEquipment
     },
+    getEquipedItemNames: (state) => {
+      return state.equipedItemNames
+    },
     getNft: (state) => {
       return state.NFT
     },

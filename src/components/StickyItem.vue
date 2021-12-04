@@ -7,50 +7,52 @@
 
 <script>
 //Weapons
-import axe from '@/assets/img/item_icons/axe.png'
-import sword from '../assets/img/item_icons/sword.png'
-import greatsword from '../assets/img/item_icons/greatsword.png'
+import axe from '@/assets/img/stick_items/axe.png'
+import sword from '../assets/img/stick_items/sword.png'
+import greatsword from '../assets/img/stick_items/greatsword.png'
 
-import gambeson from '../assets/img/item_icons/gambeson.png'
-import chainmail from '../assets/img/item_icons/chainmail.png'
-import brigandine from '../assets/img/item_icons/brigandine.png'
-import platearmor from '../assets/img/item_icons/platearmor.png'
-import paddedvest from '../assets/img/item_icons/paddedvest.png'
+import gambeson from '../assets/img/stick_items/gambeson.png'
+import chainmail from '../assets/img/stick_items/chainmail.png'
+import brigandine from '../assets/img/stick_items/brigandine.png'
+import platearmor from '../assets/img/stick_items/platearmor.png'
+import paddedvest from '../assets/img/stick_items/paddedvest.png'
 
-import roundShield from '../assets/img/item_icons/roundShield.png'
-import kiteShield from '../assets/img/item_icons/kiteShield.png'
-import heaterShield from '../assets/img/item_icons/heaterShield.png'
-import towerShield from '../assets/img/item_icons/towerShield.png'
+import roundShield from '../assets/img/stick_items/roundShield.png'
+import kiteShield from '../assets/img/stick_items/kiteShield.png'
+import heaterShield from '../assets/img/stick_items/heaterShield.png'
+import towerShield from '../assets/img/stick_items/towerShield.png'
 
 export default {
   name: 'StickyItem',
   props: {
     name: String,
+    id: Number,
   },
   data() {
     return {
       itemName: this.name,
       imgs: {
         //Weapons
-        axe: axe,
-        sword: sword,
-        greatSword: greatsword,
+        Axe: axe,
+        Sword: sword,
+        GreatSword: greatsword,
         //Armor
-        chainmail: chainmail,
-        gambeson: gambeson,
-        brigandine: brigandine,
-        plateArmor: platearmor,
-        paddedVest: paddedvest,
+        Chainmail: chainmail,
+        Gambeson: gambeson,
+        Brigandine: brigandine,
+        PlateArmor: platearmor,
+        PaddedVest: paddedvest,
         //Shields
-        roundShield: roundShield,
-        kiteShield: kiteShield,
-        heaterShield: heaterShield,
-        towerShield: towerShield,
+        RoundShield: roundShield,
+        KiteShield: kiteShield,
+        HeaterShield: heaterShield,
+        TowerShield: towerShield,
       },
     }
   },
   methods: {
     getSrc() {
+      console.log(this.id)
       //console.log(require('@/assets/' + this.imgs[this.itemName]))
       console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
       return this.imgs[this.itemName]
