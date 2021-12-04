@@ -68,9 +68,8 @@ export default {
       if (this.itemType === 'shield') return true
     },
     getSrc() {
-      console.log(this.id)
       //console.log(require('@/assets/' + this.imgs[this.itemName]))
-      console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
+      //console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
       return this.imgs[this.itemName]
       //return require('@/assets/' + this.imgs[this.itemName]).default
     },
