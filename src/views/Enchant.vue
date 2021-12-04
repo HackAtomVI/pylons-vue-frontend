@@ -23,6 +23,8 @@
 
 <script>
 import PleaseLogIn from '../components/PleaseLogIn.vue'
+import { getItems } from '../utils/pylonsInteraction.js'
+import * as R from 'ramda'
 
 export default {
   name: 'Enchant',
@@ -39,17 +41,32 @@ export default {
       item: {},
     }
   },
+  beforeCreate() {
+    this.getItems = getItems.bind(this)
+  },
   mounted() {
     this.logItem()
     if (this.itemID === 'undefined' || this.itemID === -1) {
       this.invalidItem = true
     }
   },
+
   methods: {
     isLoggedIn() {
       return this.$store.getters['common/wallet/loggedIn']
     },
-    getItem() {},
+    getItem() {
+      this.getItems().then((res) => {
+        this.item = R.find(R.propEq('ID', this.itemID), res)
+
+        if (this.item === 'undefined' || this.itemID === -1) {
+          this.notifyFail(
+            'This item does not exist',
+            'You tried to enchant an non existant item?,\n Go to the forge and get a real one!',
+          )
+        }
+      })
+    },
     updateItem() {},
     logItem() {
       this.itemID = this.$route.params.id
