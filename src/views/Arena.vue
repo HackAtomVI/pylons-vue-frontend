@@ -72,8 +72,28 @@ export default {
         "Boi, you don't even have an item your right hand.\nLet's see if you have any weapons, lol.",
       )
     }
+    this.enlistForArena()
   },
-  methods: {},
+  methods: {
+    enlistForArena() {
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgEnlistForArena',
+            creator: this.$store.getters['common/wallet/address'],
+            nft: this.heroNft.ID,
+            cookbookID: 'nftarena',
+            lHitem: this.fighterEquipment.lefthand,
+            rHitem: this.fighterEquipment.righthand,
+            armoritem: this.fighterEquipment.armor,
+          },
+        })
+        .then((res) => {
+          console.log('EnlistForArena')
+          console.log(res)
+        })
+    },
+  },
 }
 </script>
 
