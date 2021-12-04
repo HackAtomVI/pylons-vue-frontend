@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import { getNft, getItems } from '../utils/pylonsInteraction.js'
-
 export default {
   name: 'Arena',
   components: {},
@@ -36,33 +34,19 @@ export default {
       ownedItems: [],
     }
   },
-  beforeCreate() {
-    this.getNft = getNft.bind(this)
-    this.getItems = getItems.bind(this)
-  },
   mounted() {
-    this.getNft()
-      .then((res) => {
-        if (res === false) {
-          console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
-        } else {
-          console.log('getnft', res)
-          this.heroNft = res
-          this.figtherEquipment = this.heroNft
-        }
-      })
-      .catch((err) => {
-        this.notifyFail('LOGGED IN?', "'NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?'")
-        console.log()
-        console.error(err)
-      })
+    this.queryMyNFT().then((nft) => {
+      console.log('NFT:', nft)
+      this.heroNft = nft
+      this.fighterEquipment = this.heroNft
+    })
 
-    this.getItems().then((items) => {
+    this.queryMyItems.then((items) => {
       this.ownedItems = items
-      console.log('items', items)
+      console.log('owned items', items)
     })
     console.log('store', this.$store.getters['getFighterEquipment'])
-    this.figtherEquipment = this.$store.getters['getFighterEquipment']
+    this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
     if (!this.fighterEquipment.nft) {
       this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")

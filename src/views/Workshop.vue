@@ -262,6 +262,13 @@ export default {
       this.getItems().then((res) => {
         this.ownedItems = R.reject((x) => x.ItemType === 'nft', res)
         console.log('items:', this.ownedItems)
+
+        if (this.ownedItems.length === 0) {
+          this.notifyFail(
+            'No Items owned',
+            "You don't have any equipment,\n do you want to stay naked your whole life?\n Go to the Forge and craft some.",
+          )
+        }
       })
     },
     onEquipmentClicked(item, index) {
