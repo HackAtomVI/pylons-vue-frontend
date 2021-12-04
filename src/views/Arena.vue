@@ -11,10 +11,12 @@
         <div class="hero_wrapper">
           <div class="nft-img_wrapper"></div>
           <div class="stats_wrapper"></div>
-          <router-link to="/fight" class="fight-button">
-            <img src="../assets/img/sword.png" class="sword-img" />
-            <span class="fight-text">FIGHT!</span>
-          </router-link>
+          <button @click="craftWeapon()">
+            <div class="fight-button">
+              <img src="../assets/img/sword.png" class="sword-img" />
+              <span class="fight-text">FIGHT!</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>
@@ -45,7 +47,8 @@ export default {
       this.ownedItems = items
       console.log('owned items', items)
     })
-    console.log('store', this.$store.getters['getFighterEquipment'])
+
+    console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
     this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
     if (!this.fighterEquipment.nft) {
