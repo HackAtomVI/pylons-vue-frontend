@@ -411,6 +411,9 @@ export default {
                 successfulEquip = false
               } else {
                 this.$store.commit('setFighterLeftHand', this.selectedItem)
+                if (!R.isEmpty(equipment.righthand) && !equipment.righthand.oneHanded) {
+                  this.$store.commit('setFighterRightHand', {})
+                }
               }
             } else {
               console.log('no hand empty')
