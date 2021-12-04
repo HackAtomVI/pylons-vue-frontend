@@ -1,6 +1,6 @@
 <template>
   <!--   v-class="{active: isClicked}" -->
-  <div class="wrapper">
+  <div>
     <img :src="getSrc()" class="item-image" />
   </div>
 </template>
@@ -27,9 +27,11 @@ export default {
   props: {
     name: String,
     id: Number,
+    type: String,
   },
   data() {
     return {
+      itemType: this.type,
       itemName: this.name,
       imgs: {
         //Weapons
@@ -51,6 +53,9 @@ export default {
     }
   },
   methods: {
+    isShield() {
+      if (this.itemType === 'shield') return true
+    },
     getSrc() {
       console.log(this.id)
       //console.log(require('@/assets/' + this.imgs[this.itemName]))
@@ -67,7 +72,9 @@ export default {
 
 .wrapper {
 }
-
+.zclass {
+  z-index: 9999;
+}
 .item-image {
   width: 100%;
   height: 100%;

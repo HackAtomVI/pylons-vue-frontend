@@ -13,25 +13,28 @@
       <div class="panel-wrapper">
         <div class="panel__left">
           <div class="selection-wrapper">
-            <div class="selection-item">
+            <!-- <div class="selection-item">
               <span class="selection-text" style="color: rgb(18, 209, 209)">HELMET</span>
               <div class="arrow-left blue" />
               <div class="arrow-right blue" />
-            </div>
+            </div> -->
             <div class="selection-item">
               <span class="selection-text" style="color: rgb(255, 198, 98)">ARMOR</span>
-              <div class="arrow-left orange" />
-              <div class="arrow-right orange" />
+              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.armor}}</div> -->
+              <!-- <div class="arrow-left orange" />
+              <div class="arrow-right orange" /> -->
             </div>
             <div class="selection-item">
               <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND</span>
-              <div class="arrow-left red" />
-              <div class="arrow-right red" />
+              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.RightHand}}</div> -->
+              <!-- <div class="arrow-left red" />
+              <div class="arrow-right red" /> -->
             </div>
             <div class="selection-item">
               <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND</span>
-              <div class="arrow-left red" />
-              <div class="arrow-right red" />
+              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.LeftHand}}</div> -->
+              <!-- <div class="arrow-left red" />
+              <div class="arrow-right red" /> -->
             </div>
           </div>
           <div class="inventory-container">
@@ -265,7 +268,7 @@ export default {
 
       this.getItems().then((res) => {
         this.ownedItems = R.reject((x) => x.ItemType === 'nft', res)
-        console.log('items:', this.ownedItems)
+        console.log('owned items:', this.ownedItems)
       })
     },
     onEquipmentClicked(item, index) {
@@ -291,37 +294,28 @@ export default {
 
       let name = item.name
       this.selectedItemName = name.charAt(0).toUpperCase() + name.slice(1)
-      console.log(this.singleButton())
+      //console.log(this.singleButton())
     },
     singleButton() {
-      if (
-        (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') &&
-        this.selectedItemType !== 'armor'
-      ) {
-        return false
-      } else return true
+      return true //WHILE Equipment is limited to being equiped in specific hand
+      // if (
+      //   (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') &&
+      //   this.selectedItemType !== 'armor'
+      // ) {
+      //   return false
+      // } else return true
     },
     isUserLoggedIn() {
       //console.log(this.$store)
       return this.$store.getters['common/wallet/loggedIn']
     },
-    log() {
-      console.log('store:', this.$store)
-    },
     equipItem(hand) {
-      console.log('!!!equipping!!! ' + this.selectedItemType)
+      //console.log('!!!equipping!!! ' + this.selectedItemType)
       switch (this.selectedItemType) {
         case 'weapon': {
           if (this.selectedOneHanded === 'true') {
-            if (hand === 'right') {
-              this.$store.commit('setFighterRightHand', this.selectedItemID)
-              this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
-            }
-            //TODO: Unequip the other weapon if its two handed
-            else if (hand === 'left') {
-              this.$store.commit('setFighterLeftHand', this.selectedItemID)
-              this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
-            }
+            this.$store.commit('setFighterRightHand', this.selectedItemID)
+            this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
           } else {
             this.$store.commit('setFighterRightHand', this.selectedItemID)
             this.$store.commit('setFighterLeftHand', {})
@@ -337,22 +331,21 @@ export default {
           break
         }
         case 'shield': {
-          if (hand === 'right') this.$store.commit('setFighterRightHand', this.selectedItemID)
-          //TODO: Unequip the other weapon if its two handed
-          else if (hand === 'left') {
-            this.$store.commit('setFighterLeftHand', this.selectedItemID)
-            this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
-          }
+          this.$store.commit('setFighterLeftHand', this.selectedItemID)
+          this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
           break
         }
       }
       this.updateEquipedItemNames()
-      //console.log(this.$store.getters['getFighterEquipment'])
+      console.log('vvvv=== Get Fighter equipment ===vvv')
+      console.log(this.$store.getters['getFighterEquipment'])
     },
     updateEquipedItemNames() {
       // console.log(this.$store.getters['getEquipedItemNames'])
+      this.equipedItemNames = []
       this.equipedItemNames = Object.values(this.$store.getters['getEquipedItemNames'])
-      console.log(this.equipedItemNames)
+      this.equipedItemNames.slice().reverse()
+      console.log('Equiped item names: ' + this.equipedItemNames)
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
