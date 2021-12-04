@@ -45,7 +45,7 @@
                 <EquipmentItem
                   class="grid-item"
                   v-for="(item, index) in ownedItems"
-                  :class="{ wrapper__highlight: selectedItem === index }"
+                  :class="{ wrapper__highlight: selectedItemIndex === index }"
                   :name="item.name"
                   :item="item.ItemType"
                   :key="item.id"
@@ -217,7 +217,8 @@ export default {
       isLoggedIn: false,
       componentKey: 0,
       walletName: '',
-      selectedItem: -1,
+      selectedItem: {},
+      selectedItemIndex: -1,
       selectedItemName: '',
       selectedEnchantment: '',
       //Weapon specific
@@ -299,8 +300,9 @@ export default {
       })
     },
     onEquipmentClicked(item, index) {
+      this.selectedItem = item
+      this.selectedItemIndex = index
       this.selectedItemID = item.ID
-      this.selectedItem = index
       this.selectedItemType = item.ItemType
       this.selectedEnchantment = item.Enchantment
 
@@ -347,26 +349,26 @@ export default {
 
             if (R.isEmpty(equipment.righthand)) {
               console.log('righthand empty')
-              this.$store.commit('setFighterRightHand', this.selectedItemID)
+              this.$store.commit('setFighterRightHand', this.selectedItem)
             } else if (R.isEmpty(equipment.lefthand)) {
               console.log('lefthand empty')
-              if (equipment.lefthand === this.selectedItemID || equipment.righthand === this.selectedItemID) {
+              if (equipment.lefthand.ID === this.selectedItem.ID || equipment.righthand.ID === this.selectedItem.ID) {
                 this.notifyFail('Already worn', 'You already wear this item. Pick another one.')
               } else {
-                this.$store.commit('setFighterLeftHand', this.selectedItemID)
+                this.$store.commit('setFighterLeftHand', this.selectedItem)
               }
             } else {
               console.log('no hand empty')
-              if (this.selectedItemID === equipment.righthand) {
+              if (this.selectedItem.ID === equipment.righthand.ID) {
                 this.notifyFail('Already worn', 'You already wear this item in your right hand.')
-              } else if (this.selectedItemID === equipment.lefthand) {
+              } else if (this.selectedItem.ID === equipment.lefthand.ID) {
                 this.notifyFail('Already worn', 'You already wear this item in your left hand.')
               } else {
                 if (this.equipRightHandNext) {
-                  this.$store.commit('setFighterRightHand', this.selectedItemID)
+                  this.$store.commit('setFighterRightHand', this.selectedItem)
                   this.equipRightHandNext = false
                 } else {
-                  this.$store.commit('setFighterLeftHand', this.selectedItemID)
+                  this.$store.commit('setFighterLeftHand', this.selectedItem)
                   this.equipRightHandNext = true
                 }
               }
@@ -376,39 +378,47 @@ export default {
             this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
           } else {
             // 2H Weapon case
-            if (this.selectedItemID === equipment.righthand) {
+            if (this.selectedItem.ID === equipment.righthand.ID) {
               this.notifyFail('Already worn', 'You already wear this item.')
             } else {
               console.log('equipping 2H')
-              this.$store.commit('setFighterRightHand', this.selectedItemID)
+              this.$store.commit('setFighterRightHand', this.selectedItem)
               this.$store.commit('setFighterLeftHand', {})
 
+              // this should be removed
               this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
               this.$store.commit('setEquipmentNameLeftHand', '')
             }
+
+            console.log('worn items:', this.$store.getters['getFighterEquipment'])
           }
           break
         }
         case 'armor': {
-          if (this.selectedItemID === equipment.armor) {
+          if (this.selectedItem.ID === equipment.armor.ID) {
             this.notifyFail('Already worn', 'You already wear this item.')
           }
-          this.$store.commit('setFighterArmor', this.selectedItemID)
+          this.$store.commit('setFighterArmor', this.selectedItem)
+
+          // should be removed
           this.$store.commit('setEquipmentNameArmor', this.selectedItemName)
           break
         }
         case 'shield': {
-          if (this.selectedItemID === equipment.lefthand) {
+          console.log('right hand empty?', R.isEmpty(equipment.righthand))
+          console.log('right hand onehanded?', equipment.righthand.oneHanded)
+          if (this.selectedItem.ID === equipment.lefthand.ID) {
             this.notifyFail('Already worn', 'You already wear this shield.')
+          } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
+            console.log('REMOVE 2H')
+            this.$store.commit('setFighterRightHand', {})
           }
-          console.log('lefthand weapon', equipment.lefthand)
-          console.log('righthand weapon', equipment.righthand)
-          // this shit here should actually check if there is a 2h weapon, that must be unequipped
-          // unfortunately we do not save more than the item id and then we only have item names,
-          // which we must filter for all 2h weapons, which is stupid... maybe we should save the whole item in the store
-          this.$store.commit('setFighterLeftHand', this.selectedItemID)
 
-          // when is this necessary?
+          this.$store.commit('setFighterLeftHand', this.selectedItem)
+
+          console.log('worn items:', this.$store.getters['getFighterEquipment'])
+
+          // when is this necessary? REMOVE IT
           this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
           break
         }

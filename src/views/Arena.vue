@@ -59,25 +59,25 @@ export default {
     this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
     this.canFight = true
-    if (!this.fighterEquipment.nft) {
+    if (R.isEmpty(this.fighterEquipment.nft)) {
       this.canFight = false
       this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")
     }
-    if (!this.fighterEquipment.armor) {
+    if (R.isEmpty(this.fighterEquipment.armor)) {
       this.canFight = false
       this.notifyFail(
         'No Armor worn',
         "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
       )
     }
-    if (!this.fighterEquipment.lefthand) {
+    if (R.isEmpty(this.fighterEquipment.lefthand)) {
       this.canFight = false
       this.notifyFail(
         'No Weapon in Left Hand',
         "Boi, you don't even have an item in your left hand.\nLet's see if you have any weapons, lol.",
       )
     }
-    if (!this.fighterEquipment.righthand) {
+    if (R.isEmpty(this.fighterEquipment.righthand)) {
       this.canFight = false
       this.notifyFail(
         'No Weapon in Right Hand',
@@ -89,9 +89,9 @@ export default {
     enlistForArena() {
       if (this.canFight) {
         console.log('Can fight with:')
-        console.log(this.fighterEquipment.armor)
-        console.log(this.fighterEquipment.lefthand)
-        console.log(this.fighterEquipment.righthand)
+        console.log(this.fighterEquipment.armor.ID)
+        console.log(this.fighterEquipment.lefthand.ID)
+        console.log(this.fighterEquipment.righthand.ID)
         console.log(this.fighterEquipment.nft.ID)
         this.$store
           .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
@@ -100,9 +100,9 @@ export default {
               creator: this.$store.getters['common/wallet/address'],
               nft: this.fighterEquipment.nft.ID,
               cookbookID: 'nftarena',
-              lHitem: this.fighterEquipment.lefthand,
-              rHitem: this.fighterEquipment.righthand,
-              armoritem: this.fighterEquipment.armor,
+              lHitem: this.fighterEquipment.lefthand.ID,
+              rHitem: this.fighterEquipment.righthand.ID,
+              armoritem: this.fighterEquipment.armor.ID,
             },
           })
           .then((res) => {
