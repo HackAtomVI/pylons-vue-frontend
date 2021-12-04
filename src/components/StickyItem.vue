@@ -52,6 +52,17 @@ export default {
       },
     }
   },
+  watch: {
+    '$store.state.fighterEquipment.armor': function () {
+      console.log('armor has changed:', this.$store.state.fighterEquipment.armor)
+    },
+    '$store.state.fighterEquipment.lefthand': function () {
+      console.log('lefthand has changed:', this.$store.state.fighterEquipment.lefthand)
+    },
+    '$store.state.fighterEquipment.righthand': function () {
+      console.log('righthand has changed:', this.$store.state.fighterEquipment.righthand)
+    },
+  },
   methods: {
     isShield() {
       if (this.itemType === 'shield') return true
