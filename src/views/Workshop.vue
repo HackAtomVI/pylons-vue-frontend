@@ -574,6 +574,10 @@ export default {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+.grid-item {
+  width: 55px;
+  height: 55px;
+}
 .workshop-icon {
   display: inline;
   width: 40px;

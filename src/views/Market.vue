@@ -41,6 +41,7 @@
           </div>
         </div>
       </div>
+      <button @click="wtfisthis()">ENCHANT</button>
     </div>
   </div>
 </template>
@@ -58,7 +59,7 @@ export default {
     wtfisthis() {
       this.$router.push({
         name: 'Enchant',
-        params: { itemNew: true, id: 123 },
+        params: { itemNew: true, id: '3WX6D7HQ81m' },
       })
     },
     craftWeapon() {

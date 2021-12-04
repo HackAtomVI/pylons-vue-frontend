@@ -26,13 +26,10 @@ export default {
   name: 'EquipmentItem',
   props: {
     name: String,
-    ID: String,
-    type: String,
   },
   data() {
     return {
       itemName: this.name,
-      itemID: this.ID,
       imgs: {
         //Weapons
         axe: axe,
@@ -67,8 +64,8 @@ export default {
 @import '../scss/variables';
 
 .wrapper {
-  width: 55px;
-  height: 55px;
+  // width: 55px;
+  // height: 55px;
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.5);
   border-top-left-radius: 10px;
