@@ -385,9 +385,12 @@ export default {
               this.$store.commit('setFighterRightHand', this.selectedItem)
               this.$store.commit('setFighterLeftHand', {})
 
+              // this should be removed
               this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
               this.$store.commit('setEquipmentNameLeftHand', '')
             }
+
+            console.log('worn items:', this.$store.getters['getFighterEquipment'])
           }
           break
         }
@@ -402,15 +405,18 @@ export default {
           break
         }
         case 'shield': {
+          console.log('right hand empty?', R.isEmpty(equipment.righthand))
+          console.log('right hand onehanded?', equipment.righthand.oneHanded)
           if (this.selectedItem.ID === equipment.lefthand.ID) {
             this.notifyFail('Already worn', 'You already wear this shield.')
+          } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
+            console.log('REMOVE 2H')
+            this.$store.commit('setFighterRightHand', {})
           }
-          console.log('lefthand weapon', equipment.lefthand)
-          console.log('righthand weapon', equipment.righthand)
-          // this shit here should actually check if there is a 2h weapon, that must be unequipped
-          // unfortunately we do not save more than the item id and then we only have item names,
-          // which we must filter for all 2h weapons, which is stupid... maybe we should save the whole item in the store
+
           this.$store.commit('setFighterLeftHand', this.selectedItem)
+
+          console.log('worn items:', this.$store.getters['getFighterEquipment'])
 
           // when is this necessary? REMOVE IT
           this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
