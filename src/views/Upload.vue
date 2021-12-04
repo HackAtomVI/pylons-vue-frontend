@@ -26,9 +26,14 @@
 </template>
 
 <script>
+import { getNft } from '../utils/pylonsInteraction.js'
+
 export default {
   name: 'Upload',
   components: {},
+  beforeCreate() {
+    this.getNft = getNft.bind(this)
+  },
   data() {
     return {
       hasImg: false,
@@ -45,55 +50,33 @@ export default {
   },
   methods: {
     loadNft() {
-      this.getNft().then((res) => {
-        console.log('First res is: ')
-        console.log(res)
-        if (res === false) {
-          this.createNft().then(() => {
-            console.log('Created NFT: ')
-            this.getNft().then((res) => {
-              this.getNftData()
-              this.initialized = true
-              console.log('Final Result: ')
-              console.log(res)
-              console.log('Hero: ')
-              console.log(this.heroNft)
-            })
-          })
-        } else {
-          console.log('Hero: ')
-          console.log(this.heroNft)
-          this.getNftData()
-        }
-      })
-    },
-    getNft() {
-      return new Promise((resolve) => {
-        this.$store
-          .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-            params: {
-              '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-              owner: this.$store.getters['common/wallet/address'],
-            },
-          })
-          .then((res) => {
-            var BreakException = {}
-            try {
-              res.Items.forEach((item) => {
-                item.strings.forEach((str) => {
-                  if (str.Key === 'ItemType' && str.Value === 'nft') {
-                    this.heroNft = item
-                    throw BreakException
-                  }
-                })
+      this.getNft()
+        .then((res) => {
+          console.log('First res is: ')
+          console.log(res)
+          if (res === false) {
+            this.createNft().then(() => {
+              console.log('Created NFT: ')
+              this.getNft().then((res) => {
+                this.getNftData()
+                this.initialized = true
+                console.log('Final Result: ')
+                console.log(res)
+                console.log('Hero: ')
+                console.log(this.heroNft)
               })
-              resolve(false)
-            } catch (e) {
-              if (e !== BreakException) throw e
-              resolve(true)
-            }
-          })
-      })
+            })
+          } else {
+            this.heroNft = res
+            console.log('Hero: ')
+            console.log(this.heroNft)
+            this.getNftData()
+          }
+        })
+        .catch((err) => {
+          this.notifyFail('LOGGED IN?', "'NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?'")
+          console.error(err)
+        })
     },
     printAllItems() {
       this.$store
@@ -183,21 +166,13 @@ export default {
         })
     },
     getNftData() {
-      console.log('getting data: ')
-      this.heroNft.mutableStrings.forEach((str) => {
-        if (str.Key === 'name') {
-          this.nftname = str.Value
-          console.log(this.nftname)
-        }
-        if (str.Key === 'image') {
-          this.nftimg = str.Value
+      this.nftname = this.heroNft.name
+      this.nftimg = this.heroNft.image
 
-          if (this.nftimg === '') this.hasImg = false
-          else this.hasImg = true
+      console.log('getting data, name', this.nftname, ' img:', this.nftimg)
 
-          console.log(this.nftimg)
-        }
-      })
+      if (this.nftimg === '') this.hasImg = false
+      else this.hasImg = true
     },
   },
 }

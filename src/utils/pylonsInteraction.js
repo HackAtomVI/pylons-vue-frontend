@@ -8,7 +8,7 @@ export function getNft() {
       },
     })
     .then((res) => {
-      console.log('FUCK FUCK WHO THE FUCK IS SHOOTING US')
+      console.log('getNft res:', res)
       let found = false
       res.Items.forEach((item) => {
         if (!found) {
@@ -22,6 +22,9 @@ export function getNft() {
               })
               item.doubles.forEach((double) => {
                 entry[double.Key] = double.Value
+              })
+              item.mutableStrings.forEach((string) => {
+                entry[string.Key] = string.Value
               })
               console.log('Entry:', entry)
               found = entry
