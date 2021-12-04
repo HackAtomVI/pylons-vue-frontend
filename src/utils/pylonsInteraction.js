@@ -105,3 +105,35 @@ export function craftShield() {
     },
   })
 }
+export function enchantItem(itemType, id) {
+  let recipe
+  switch (itemType) {
+    case 'armor': {
+      recipe = 'enchantarmor'
+      break
+    }
+    case 'weapon': {
+      recipe = 'enchantweapon'
+      break
+    }
+    case 'shield': {
+      recipe = 'enchantshield'
+      break
+    }
+    default: {
+      console.log('OOOPS WRONG ITEM TYPE!!!')
+      return
+    }
+  }
+  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+      creator: this.$store.getters['common/wallet/address'],
+      cookbookID: 'nftarena',
+      recipeID: recipe,
+      coinInputsIndex: '0',
+      itemIDs: [id],
+      paymentInfos: [],
+    },
+  })
+}

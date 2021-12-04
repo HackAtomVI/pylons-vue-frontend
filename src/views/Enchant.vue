@@ -2,8 +2,8 @@
   <div v-if="isLoggedIn()" class="background">
     <div style="text-align: center" class="title" v-if="invalidItem">It seem's you haven't selected a valid item</div>
     <div v-else class="container">
-      <div v-if="this.isNew" class="title">Congrats on your new item!</div>
-      <div v-else class="title">Item overview</div>
+      <div v-if="!getIsNew()" class="title">Congrats on your new item!</div>
+      <div v-if="getIsNew()" class="title">Item overview</div>
       <div class="description">Enchant or equip your item!</div>
       <div class="content-wrapper">
         <div class="item-container">
@@ -29,7 +29,7 @@
 
             <div class="item-stats-container" v-if="this.item.itemName !== '' && this.item.ItemType === 'armor'">
               <div class="item-stat">
-                <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                <span class="stat-description">Enchantment: </span> {{ this.item.Enchantment }}
               </div>
               <div class="item-stat">
                 <span class="stat-description">Accuracy Modifier: </span>
@@ -53,42 +53,40 @@
               </div>
             </div>
 
-            <div class="item-stats-container" v-if="this.selectedItemName !== '' && this.selectedItemType === 'shield'">
+            <div class="item-stats-container" v-if="this.item.itemName !== '' && this.item.ItemType === 'shield'">
               <div class="item-stat">
-                <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                <span class="stat-description">Enchantment: </span> {{ this.item.Enchantment }}
               </div>
               <div class="item-stat">
                 <span class="stat-description">Accuracy Modifier: </span>
-                {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
+                {{ Number.parseFloat(this.item.accuracyModifier).toFixed(2) }}
               </div>
               <div class="item-stat">
-                <span class="stat-description">Blunt Res: </span
-                >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
+                <span class="stat-description">Blunt Res: </span>{{ Number.parseFloat(this.item.bluntDef).toFixed(0) }}
               </div>
               <div class="item-stat">
-                <span class="stat-description">Arrow Res: </span
-                >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
+                <span class="stat-description">Arrow Res: </span>{{ Number.parseFloat(this.item.boltDef).toFixed(0) }}
               </div>
               <div class="item-stat">
-                <span class="stat-description">Slice Res: </span
-                >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
+                <span class="stat-description">Slice Res: </span>{{ Number.parseFloat(this.item.sliceDef).toFixed(0) }}
               </div>
               <div class="item-stat">
-                <span class="stat-description">Stab Res: </span>{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
+                <span class="stat-description">Stab Res: </span>{{ Number.parseFloat(this.item.stabDef).toFixed(0) }}
               </div>
             </div>
           </div>
         </div>
         <div class="enchant-container">
           <div class="enchant-container__left" style="text-align: center">
-            <div @click="enchant()" class="enchant-button">
+            <div @click="enchant()" class="enchant-button" :class="{ enchanted: this.isEnchanted }">
               <img class="enchant-img" src="../assets/img/market/enchant_black.png" />
               <div class="enchant-text">ENCHANT</div>
             </div>
-            <button @click="equip()" class="equip">Equip to NFT</button>
+            <button @click="this.equipItem()" class="equip">Equip to NFT</button>
           </div>
 
-          <div class="enchant-description">Enchant your item for 15 Tokens.</div>
+          <div v-if="!this.isEnchanted" class="enchant-description">Enchant your item for 15 Tokens.</div>
+          <div v-if="this.isEnchanted" class="enchant-description">Item is enchanted</div>
         </div>
       </div>
     </div>
@@ -101,7 +99,7 @@
 <script>
 import PleaseLogIn from '../components/PleaseLogIn.vue'
 import EquipmentItem from '@/components/EquipmentItem.vue'
-import { getItems } from '../utils/pylonsInteraction.js'
+import { getItems, enchantItem } from '../utils/pylonsInteraction.js'
 import * as R from 'ramda'
 
 export default {
@@ -117,6 +115,7 @@ export default {
       itemID: -1,
       invalidItem: false,
       isNew: false,
+      isEnchanted: false,
       item: {},
       itemName: '',
       isInitialized: false,
@@ -124,12 +123,14 @@ export default {
   },
   beforeCreate() {
     this.getItems = getItems.bind(this)
+    this.enchantItem = enchantItem.bind(this)
   },
 
   mounted() {
     if (this.isLoggedIn()) {
       this.logItem()
       this.getItem()
+
       if (this.itemID === 'undefined' || this.itemID === -1) {
         this.invalidItem = true
         this.notifyFail(
@@ -148,27 +149,124 @@ export default {
       console.log(this.itemID)
       this.getItems().then((res) => {
         this.item = R.find(R.propEq('ID', this.itemID), res)
-        console.log(this.item)
+        //console.log(this.item)
 
         if (this.item === 'undefined' || this.itemID === -1) {
           this.notifyFail(
             'This item does not exist',
-            'You tried to enchant an non existant item?,\n Go to the forge and get a real one!',
+            'You tried to enchant a non existant item?,\n Go to the forge and get a real one!',
           )
         } else {
           this.itemName = this.item.name.toUpperCase()
+          this.isEnchanted = this.item.Enchantment === 'none' ? false : true
           this.isInitialized = true
         }
       })
     },
-    enchant() {},
-    equip() {},
+    enchant() {
+      if (this.isEnchanted) {
+        this.notifyInfo('Nice Try', 'Item is already enchanted!')
+        return
+      } else {
+        this.notifyInfo('Enchanting', 'Item is being enchanted, please wait :)')
+      }
+      this.enchantItem(this.item.ItemType, this.itemID)
+        .then((res) => {
+          console.log('enchantment finished: ', res)
+          this.notifySuccess('Very Nice', 'Enchantment Successful!!')
+          this.getItem()
+        })
+        .catch((err) => {
+          this.notifyFail('YOU FAIL', 'Enchantment Unsuccessful :(' + err)
+          console.error('YES, YOU DUN GOOFED:', err)
+        })
+    },
     updateItem() {},
+    getIsNew() {
+      return this.isNew
+    },
     logItem() {
       this.itemID = this.$route.params.id
       this.isNew = this.$route.params.itemNew
-      //console.log(this.itemID)
-      //console.log(this.isNew)
+      //console.log("id: " + this.itemID + " || isNew: " + this.isNew)
+      //console.log()
+    },
+    equipItem() {
+      let equipment = this.$store.getters['getFighterEquipment']
+      let successfulEquip = true
+      switch (this.item.ItemType) {
+        case 'weapon': {
+          if (this.item.oneHanded === 'true') {
+            console.log('equipping 1H')
+
+            if (R.isEmpty(equipment.righthand)) {
+              console.log('righthand empty')
+              this.$store.commit('setFighterRightHand', this.item)
+            } else if (R.isEmpty(equipment.lefthand)) {
+              console.log('lefthand empty')
+              if (equipment.lefthand.ID === this.item.ID || equipment.righthand.ID === this.item.ID) {
+                successfulEquip = false
+                this.notifyFail('Already worn', 'You already wear this item. Pick another one.')
+              } else {
+                this.$store.commit('setFighterLeftHand', this.item)
+              }
+            } else {
+              console.log('no hand empty')
+              if (this.item.ID === equipment.righthand.ID) {
+                this.notifyFail('Already worn', 'You already wear this item in your right hand.')
+                successfulEquip = false
+              } else if (this.item.ID === equipment.lefthand.ID) {
+                this.notifyFail('Already worn', 'You already wear this item in your left hand.')
+                successfulEquip = false
+              } else {
+                if (this.equipRightHandNext) {
+                  this.$store.commit('setFighterRightHand', this.item)
+                  this.equipRightHandNext = false
+                } else {
+                  this.$store.commit('setFighterLeftHand', this.item)
+                  this.equipRightHandNext = true
+                }
+              }
+            }
+          } else {
+            // 2H Weapon case
+            if (this.item.ID === equipment.righthand.ID) {
+              this.notifyFail('Already worn', 'You already wear this item.')
+              successfulEquip = false
+            } else {
+              console.log('equipping 2H')
+              this.$store.commit('setFighterRightHand', this.item)
+              this.$store.commit('setFighterLeftHand', {})
+            }
+          }
+          break
+        }
+        case 'armor': {
+          if (this.item.ID === equipment.armor.ID) {
+            this.notifyFail('Already worn', 'You already wear this item.')
+            successfulEquip = false
+          }
+          this.$store.commit('setFighterArmor', this.item)
+          break
+        }
+        case 'shield': {
+          console.log('right hand empty?', R.isEmpty(equipment.righthand))
+          console.log('right hand onehanded?', equipment.righthand.oneHanded)
+          if (this.item.ID === equipment.lefthand.ID) {
+            this.notifyFail('Already worn', 'You already wear this shield.')
+            successfulEquip = false
+          } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
+            console.log('REMOVE 2H')
+            this.$store.commit('setFighterRightHand', {})
+          }
+          this.$store.commit('setFighterLeftHand', this.item)
+
+          break
+        }
+      }
+      if (successfulEquip) this.notifySuccess('Very Nice', 'Item equiped!')
+      console.log('vvvv=== Get Fighter equipment ===vvv')
+      console.log(this.$store.getters['getFighterEquipment'])
     },
   },
 }
@@ -240,7 +338,9 @@ export default {
 .content-wrapper {
   display: flex;
   flex-direction: row;
-  margin: 100px auto;
+  justify-content: start;
+  align-content: flex-start;
+  margin: 100px;
 }
 .enchant-img {
   width: 80px;
@@ -274,9 +374,15 @@ export default {
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
+.item-stat {
+  font-size: 12px;
+}
 .title {
   font-size: 50px;
   color: white;
   padding: 20px 0;
+}
+.enchanted {
+  background-color: gray !important;
 }
 </style>

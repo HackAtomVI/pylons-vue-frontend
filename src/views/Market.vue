@@ -41,13 +41,12 @@
           </div>
         </div>
       </div>
-      <button @click="wtfisthis()">ENCHANT</button>
     </div>
   </div>
 </template>
 
 <script>
-import { craftWeapon, craftArmor, craftShield } from '../utils/pylonsInteraction.js'
+import { craftWeapon, craftArmor, craftShield, getItems } from '../utils/pylonsInteraction.js'
 
 export default {
   name: 'Market',
@@ -56,19 +55,14 @@ export default {
     return {}
   },
   methods: {
-    wtfisthis() {
-      this.$router.push({
-        name: 'Enchant',
-        params: { itemNew: true, id: '3WX6D7HQ81m' },
-      })
-    },
     craftWeapon() {
-      this.notifyInfo('Weapon', 'craft it')
+      this.notifyInfo('Weapon', 'Crafting it \nPlease wait')
       craftWeapon
         .bind(this)()
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Weapon crafting successful!')
+          this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
@@ -76,12 +70,13 @@ export default {
         })
     },
     craftArmor() {
-      this.notifyInfo('Armor', 'craft it')
+      this.notifyInfo('Armor', 'Crafting it \nPlease wait')
       craftArmor
         .bind(this)()
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Armor crafting successful!')
+          this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
@@ -89,7 +84,7 @@ export default {
         })
     },
     craftShield() {
-      this.notifyInfo('Shield', 'craft it')
+      this.notifyInfo('Shield', 'Crafting it \nPlease wait')
       console.log(
         'CRAFT RANDOM ITEM, ARE YOU RETARDED? WE HAVE NO RANDOM ITEM, I WILL CRAFT A SHIELD NOW YOU FUCKING IDIOT',
       )
@@ -98,10 +93,24 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Shield crafting successful!')
+          this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
           console.error('YES SHIT, YOU DUN GOOFED:', err)
+        })
+    },
+    enchant() {
+      let craftedItem
+      getItems
+        .bind(this)()
+        .then((res) => {
+          craftedItem = res[res.length - 1]
+          //console.log(craftedItem)
+          this.$router.push({
+            name: 'Enchant',
+            params: { itemNew: true, id: craftedItem.ID },
+          })
         })
     },
   },

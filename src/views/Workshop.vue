@@ -55,7 +55,9 @@
               </div>
             </div>
             <div class="inventory__right">
-              <div class="item-name">{{ this.selectedItemName }}</div>
+              <div @click="this.enchant()" v-if="this.selectedItemName !== ''" class="item-name">
+                {{ this.selectedItemName }} <img class="enchant-icon" src="../assets/img/market/enchant.png" />
+              </div>
 
               <div
                 class="item-stats-container"
@@ -375,9 +377,6 @@ export default {
                 }
               }
             }
-
-            // when do we need this here?
-            this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
           } else {
             // 2H Weapon case
             if (this.selectedItem.ID === equipment.righthand.ID) {
@@ -386,12 +385,7 @@ export default {
               console.log('equipping 2H')
               this.$store.commit('setFighterRightHand', this.selectedItem)
               this.$store.commit('setFighterLeftHand', {})
-
-              // this should be removed
-              this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
-              this.$store.commit('setEquipmentNameLeftHand', '')
             }
-
             console.log('worn items:', this.$store.getters['getFighterEquipment'])
           }
           break
@@ -402,8 +396,6 @@ export default {
           }
           this.$store.commit('setFighterArmor', this.selectedItem)
 
-          // should be removed
-          this.$store.commit('setEquipmentNameArmor', this.selectedItemName)
           break
         }
         case 'shield': {
@@ -435,6 +427,13 @@ export default {
       console.log('Equiped item names: ' + this.equipedItemNames)
       this.$forceUpdate()
       this.componentKey += 1
+    },
+    enchant() {
+      //console.log("selectedItem ID: " + this.selectedItem.ID)
+      this.$router.push({
+        name: 'Enchant',
+        params: { itemNew: false, id: this.selectedItem.ID },
+      })
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
@@ -468,7 +467,7 @@ export default {
   transform: scaleX(-1);
 }
 .item-stats-container {
-  font-size: 11px;
+  font-size: 12px;
 }
 .arrow-right {
   margin-left: 20px;
@@ -493,6 +492,7 @@ export default {
   border-top-right-radius: 4px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 3px 2px;
   width: 50%;
 }
@@ -509,6 +509,7 @@ export default {
   border-top-right-radius: 4px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 3px 2px;
   width: 50%;
 }
@@ -532,15 +533,15 @@ export default {
   padding: 5px;
   row-gap: 3px;
   column-gap: 3px;
-  width: 197px;
-  height: 197px;
+  width: 205px;
+  height: 205px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
 .inventory__left {
-  width: 190px;
+  width: 200px;
   background-color: rgb(255, 198, 98);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -554,17 +555,12 @@ export default {
   height: auto;
   width: 100%;
 }
-.item-name {
-  text-align: center;
-  font-size: 21px;
-  margin-bottom: 5px;
-  color: white;
-}
+
 .inventory-container {
   display: flex;
   flex-direction: row;
   background-color: rgba(255, 198, 98, 0.3);
-  width: 400px;
+  width: 450px;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
@@ -705,6 +701,20 @@ export default {
 }
 .text {
   font-family: Roboto;
+  color: white;
+}
+.enchant-icon {
+  width: 20px;
+  height: 20px;
+}
+.item-name:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.item-name {
+  cursor: pointer;
+  text-align: center;
+  font-size: 21px;
+  margin-bottom: 5px;
   color: white;
 }
 </style>
