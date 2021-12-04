@@ -1,4 +1,5 @@
 export function getNft() {
+  console.log('What the actual fuck')
   return this.$store
     .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
       params: {
@@ -7,12 +8,23 @@ export function getNft() {
       },
     })
     .then((res) => {
+      console.log('FUCK FUCK WHO THE FUCK IS SHOOTING US')
       let found = false
       res.Items.forEach((item) => {
         if (!found) {
           item.strings.forEach((str) => {
             if (!found && str.Key === 'ItemType' && str.Value === 'nft') {
-              found = item
+              let entry = {
+                ID: item.ID,
+              }
+              item.strings.forEach((string) => {
+                entry[string.Key] = string.Value
+              })
+              item.doubles.forEach((double) => {
+                entry[double.Key] = double.Value
+              })
+              console.log('Entry:', entry)
+              found = entry
             }
           })
         }
@@ -46,8 +58,6 @@ export function getItems() {
         })
         items.push(entry)
       })
-      //name
-      //oneHanded
       return items
     })
 }
