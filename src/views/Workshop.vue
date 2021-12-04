@@ -155,7 +155,7 @@
             :id="index"
             :name="this.equipedItemNames[index]"
             class="equipped-item"
-            :key="index"
+            :key="index + this.componentKey"
           />
           <!-- <img
             src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
@@ -197,6 +197,7 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      componentKey: 0,
       walletName: '',
       selectedItem: -1,
       selectedItemName: '',
@@ -351,8 +352,10 @@ export default {
       // console.log(this.$store.getters['getEquipedItemNames'])
       this.equipedItemNames = []
       this.equipedItemNames = Object.values(this.$store.getters['getEquipedItemNames'])
-      this.equipedItemNames.slice().reverse()
+      this.equipedItemNames.reverse()
       console.log('Equiped item names: ' + this.equipedItemNames)
+      this.$forceUpdate()
+      this.componentKey += 1
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
