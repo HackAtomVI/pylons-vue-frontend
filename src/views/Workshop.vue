@@ -301,6 +301,7 @@ export default {
       console.log('store:', this.$store)
     },
     equipItem(hand) {
+      console.log('!!!equipping!!! ' + this.selectedItemType)
       switch (this.selectedItemType) {
         case 'weapon': {
           if (this.selectedOneHanded === 'true') {
@@ -311,7 +312,7 @@ export default {
             this.$store.commit('setFighterRightHand', this.selectedItemID)
             this.$store.commit('setFighterLeftHand', {})
           }
-          console.log('Item equiped: ' + this.selectedItemID)
+
           break
         }
         case 'armor': {
@@ -326,7 +327,7 @@ export default {
         }
       }
       //TODO: WHY THIS NOT WORK
-      this.equipedItemNames = Object.keys(this.$store.getters['getFighterEquipment'])
+      this.equipedItemNames = Object.keys(this.$store.getters['getFighterEquipment']) ///
       console.log(this.equipedItemNames)
     },
     setLoginStatus() {
