@@ -86,12 +86,17 @@ export default {
   methods: {
     enlistForArena() {
       if (this.canFight) {
+        console.log('Can fight with:')
+        console.log(this.fighterEquipment.armor)
+        console.log(this.fighterEquipment.lefthand)
+        console.log(this.fighterEquipment.righthand)
+        console.log(this.fighterEquipment.nft.ID)
         this.$store
           .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
             value: {
               '@type': '/Pylonstech.pylons.pylons.MsgEnlistForArena',
               creator: this.$store.getters['common/wallet/address'],
-              nft: this.fighterEquipment.ID,
+              nft: this.fighterEquipment.nft.ID,
               cookbookID: 'nftarena',
               lHitem: this.fighterEquipment.lefthand,
               rHitem: this.fighterEquipment.righthand,
@@ -101,7 +106,16 @@ export default {
           .then((res) => {
             console.log('EnlistForArena')
             console.log(res)
-
+            this.$store
+              .dispatch('Pylonstech.pylons.pylons/QueryFight', {
+                params: {
+                  '@type': 'Pylonstech.pylons.pylons/QueryFight',
+                },
+              })
+              .then((res) => {
+                console.log('All fights: ')
+                console.log(res)
+              })
             // if success link to page fight with id of the fight
             //<router-link to="/fight" class="">
             //</router-link>
