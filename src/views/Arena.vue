@@ -11,7 +11,7 @@
         <div class="hero_wrapper">
           <div class="nft-img_wrapper"></div>
           <div class="stats_wrapper"></div>
-          <button @click="craftWeapon()">
+          <button @click="enlistForArena()">
             <div class="fight-button">
               <img src="../assets/img/sword.png" class="sword-img" />
               <span class="fight-text">FIGHT!</span>
@@ -72,7 +72,6 @@ export default {
         "Boi, you don't even have an item your right hand.\nLet's see if you have any weapons, lol.",
       )
     }
-    this.enlistForArena()
   },
   methods: {
     enlistForArena() {
@@ -91,6 +90,10 @@ export default {
         .then((res) => {
           console.log('EnlistForArena')
           console.log(res)
+
+          // if success link to page fight with id of the fight
+          //<router-link to="/fight" class="">
+          //</router-link>
         })
     },
   },
