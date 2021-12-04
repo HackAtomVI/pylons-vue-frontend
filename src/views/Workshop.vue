@@ -147,10 +147,7 @@
       <div class="panel__right">
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
-          <!-- <StickyboiItem v-for="(item, index) in equipedItemNames"
-
-            :key=index
-           /> -->
+          <StickyItem v-for="(item, index) in equipedItemNames" :name="item" class="equipped-item" :key="index" />
           <!-- <img
             src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
             style="z-index: 10"
@@ -174,7 +171,7 @@ import { getNft } from '../utils/pylonsInteraction.js'
 import { getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
-import StickyboiItem from '@/components/StickyboiItem.vue'
+import StickyItem from '@/components/StickyItem.vue'
 import { StringKeyValue } from '@/store/generated/Pylons-tech/pylons/Pylonstech.pylons.pylons'
 
 export default {
@@ -182,7 +179,7 @@ export default {
   components: {
     PleaseLogIn,
     EquipmentItem,
-    //StickyboiItem,
+    StickyItem,
   },
   beforeCreate() {
     this.getNft = getNft.bind(this)
@@ -219,6 +216,7 @@ export default {
     if (this.isLoggedIn) {
       this.init()
     }
+    this.updateEquipedItemNames()
   },
   computed: {},
   methods: {
@@ -305,30 +303,44 @@ export default {
       switch (this.selectedItemType) {
         case 'weapon': {
           if (this.selectedOneHanded === 'true') {
-            if (hand === 'right') this.$store.commit('setFighterRightHand', this.selectedItemID)
+            if (hand === 'right') {
+              this.$store.commit('setFighterRightHand', this.selectedItemID)
+              this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
+            }
             //TODO: Unequip the other weapon if its two handed
-            else if (hand === 'left') this.$store.commit('setFighterLeftHand', this.selectedItemID)
+            else if (hand === 'left') {
+              this.$store.commit('setFighterLeftHand', this.selectedItemID)
+              this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
+            }
           } else {
             this.$store.commit('setFighterRightHand', this.selectedItemID)
             this.$store.commit('setFighterLeftHand', {})
-          }
 
+            this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
+            this.$store.commit('setEquipmentNameLeftHand', '')
+          }
           break
         }
         case 'armor': {
           this.$store.commit('setFighterArmor', this.selectedItemID)
+          this.$store.commit('setEquipmentNameArmor', this.selectedItemName)
           break
         }
         case 'shield': {
           if (hand === 'right') this.$store.commit('setFighterRightHand', this.selectedItemID)
           //TODO: Unequip the other weapon if its two handed
-          else if (hand === 'left') this.$store.commit('setFighterLeftHand', this.selectedItemID)
+          else if (hand === 'left') {
+            this.$store.commit('setFighterLeftHand', this.selectedItemID)
+            this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
+          }
           break
         }
       }
-      //TODO: WHY THIS NOT WORK
-      this.equipedItemNames = Object.keys(this.$store.getters['getFighterEquipment']) ///
-      console.log(this.equipedItemNames)
+      this.updateEquipedItemNames()
+      //console.log(this.$store.getters['getFighterEquipment'])
+    },
+    updateEquipedItemNames() {
+      this.equipedItemNames = Object.values(this.$store.getters['getFighterEquipment'])
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
