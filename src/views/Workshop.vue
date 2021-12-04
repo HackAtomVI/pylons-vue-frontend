@@ -52,14 +52,105 @@
             </div>
             <div class="inventory__right">
               <div class="item-name">{{ this.selectedItemName }}</div>
+
+              <div
+                class="item-stats-container"
+                v-if="this.selectedItemName !== '' && this.selectedItemType === 'weapon'"
+              >
+                <div class="item-stat">
+                  <span class="stat-description">Enchantment: </span>{{ this.selectedEnchantment }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Damage Type: </span>{{ this.selectedDamageType }}
+                </div>
+                <div class="item-stat"><span class="stat-description">Damage: </span>{{ this.selectedDamage }}</div>
+                <div class="item-stat">
+                  <span class="stat-description">Damage Type:</span>{{ this.selectedAccuracy }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">One Handed:</span>{{ this.selectedOneHanded }}
+                </div>
+              </div>
+
+              <div
+                class="item-stats-container"
+                v-if="this.selectedItemName !== '' && this.selectedItemType === 'armor'"
+              >
+                <div class="item-stat">
+                  <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Accuracy Modifier: </span> {{ this.selectedAccuracyMod }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Initiative: </span>{{ this.selectedInitiative }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Blunt Res: </span>{{ this.selectedBluntRes }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Arrow Res: </span>{{ this.selectedArrowDef }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Slice Res: </span>{{ this.selectedSliceDef }}
+                </div>
+                <div class="item-stat"><span class="stat-description">Stab Res: </span>{{ this.selectedStabDef }}</div>
+              </div>
+
+              <div
+                class="item-stats-container"
+                v-if="this.selectedItemName !== '' && this.selectedItemType === 'shield'"
+              >
+                <div class="item-stat">
+                  <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Accuracy Modifier: </span> {{ this.selectedAccuracyMod }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Blunt Res: </span>{{ this.selectedBluntRes }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Arrow Res: </span>{{ this.selectedArrowDef }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Slice Res: </span>{{ this.selectedSliceDef }}
+                </div>
+                <div class="item-stat"><span class="stat-description">Stab Res: </span>{{ this.selectedStabDef }}</div>
+              </div>
+              <button
+                v-on:click="equipItem('')"
+                class="equip"
+                v-if="this.selectedItemName !== '' && singleButton() === true"
+              >
+                Equip
+              </button>
+              <button
+                v-on:click="equipItem('right')"
+                class="equip"
+                v-if="this.selectedItemName !== '' && singleButton() === false"
+              >
+                Right
+              </button>
+              <button
+                v-on:click="equipItem('left')"
+                class="equip"
+                v-if="this.selectedItemName !== '' && singleButton() === false"
+              >
+                Left
+              </button>
             </div>
           </div>
-          <button v-on:click="buyNft()" class="buy-items">BUY MORE ITEMS</button>
+          <router-link to="/market" class="buy-items">BUY MORE ITEMS</router-link>
         </div>
       </div>
       <div class="panel__right">
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
+          <!-- <StickyboiItem v-for="(item, index) in equipedItemNames"
+
+            :key=index
+           /> -->
           <!-- <img
             src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
             style="z-index: 10"
@@ -83,7 +174,7 @@ import { getNft } from '../utils/pylonsInteraction.js'
 import { getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
-import StickyboiItem from '@/components/EquipmentItem.vue'
+import StickyboiItem from '@/components/StickyboiItem.vue'
 import { StringKeyValue } from '@/store/generated/Pylons-tech/pylons/Pylonstech.pylons.pylons'
 
 export default {
@@ -103,7 +194,21 @@ export default {
       walletName: '',
       selectedItem: -1,
       selectedItemName: '',
-      heroNft: {},
+      selectedEnchantment: '',
+      //Weapon specific
+      selectedDamageType: '',
+      selectedAccuracy: '',
+      selectedDamage: '',
+      selectedOneHanded: '',
+      //armor specific
+      selectedBluntRes: '',
+      selectedAccuracyMod: '',
+      selectedArrowDef: '',
+      selectedInitiative: '',
+      selectedSliceDef: '',
+      selectedStabDef: '',
+
+      equipedItemNames: [],
       equippedItems: [{}],
       ownedItems: [],
     }
@@ -159,33 +264,34 @@ export default {
         console.log('items:', this.ownedItems)
       })
     },
-    buyNft() {
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-          value: {
-            '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-            creator: this.$store.getters['common/wallet/address'],
-            cookbookID: 'nftarena',
-            recipeID: 'importnft',
-            coinInputsIndex: '0',
-            itemIDs: [],
-            paymentInfos: [],
-          },
-        })
-        .then((res) => {
-          console.log(res)
-        })
-        .then(this.getNft)
-        .then((res) => {
-          console.log('nft:', res)
-        })
-    },
     onEquipmentClicked(item, index) {
+      this.selectedItemID = item.ID
       this.selectedItem = index
-      //this.selectedItem = item.id
+      this.selectedItemType = item.ItemType
+      this.selectedEnchantment = item.Enchantment
+
+      if (this.selectedItemType === 'weapon') {
+        this.selectedDamageType = item.DamageType
+        this.selectedDamage = item.damage
+        this.selectedOneHanded = item.oneHanded
+      } else if (this.selectedItemType === 'armor' || this.selectedItemType === 'shield') {
+        this.selectedBluntRes = item.bluntDef
+        this.selectedAccuracyMod = item.accuracyModifier
+        this.selectedArrowDef = item.boltDef
+        this.selectedSliceDef = item.sliceDef
+        this.selectedStabDef = item.stabDef
+        if (this.selectedItemType === 'armor') {
+          this.selectedInitiative = item.initiative
+        }
+      }
+
       let name = item.name
       this.selectedItemName = name.charAt(0).toUpperCase() + name.slice(1)
-      console.log(this.selectedItem + ' clicked.')
+    },
+    singleButton() {
+      if (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') {
+        return false
+      } else return true
     },
     isUserLoggedIn() {
       //console.log(this.$store)
@@ -193,6 +299,35 @@ export default {
     },
     log() {
       console.log('store:', this.$store)
+    },
+    equipItem(hand) {
+      switch (this.selectedItemType) {
+        case 'weapon': {
+          if (this.selectedOneHanded === 'true') {
+            if (hand === 'right') this.$store.commit('setFighterRightHand', this.selectedItemID)
+            //TODO: Unequip the other weapon if its two handed
+            else if (hand === 'left') this.$store.commit('setFighterLeftHand', this.selectedItemID)
+          } else {
+            this.$store.commit('setFighterRightHand', this.selectedItemID)
+            this.$store.commit('setFighterLeftHand', {})
+          }
+          console.log('Item equiped: ' + this.selectedItemID)
+          break
+        }
+        case 'armor': {
+          this.$store.commit('setFighterArmor', this.selectedItemID)
+          break
+        }
+        case 'shield': {
+          if (hand === 'right') this.$store.commit('setFighterRightHand', this.selectedItemID)
+          //TODO: Unequip the other weapon if its two handed
+          else if (hand === 'left') this.$store.commit('setFighterLeftHand', this.selectedItemID)
+          break
+        }
+      }
+      //TODO: WHY THIS NOT WORK
+      this.equipedItemNames = Object.keys(this.$store.getters['getFighterEquipment'])
+      console.log(this.equipedItemNames)
     },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
@@ -225,6 +360,9 @@ export default {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
+.item-stats-container {
+  font-size: 11px;
+}
 .arrow-right {
   margin-left: 20px;
   //background: rgb(18, 209, 209);
@@ -234,9 +372,28 @@ export default {
   width: 21px;
   height: 21px;
 }
-.buy-items {
+.equip {
+  align-self: center;
+  justify-self: end;
+  text-align: center;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 5px;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  border-width: 0px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 3px 2px;
+  width: 50%;
+}
+.buy-items {
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 20px;
   background-color: black;
   color: white;
   font-size: 16px;
@@ -264,11 +421,12 @@ export default {
   border-bottom-right-radius: 10px;
 }
 #item-list {
+  overflow-y: auto;
   padding: 5px;
-  row-gap: 5px;
-  column-gap: 5px;
-  width: 190px;
-  height: 190px;
+  row-gap: 3px;
+  column-gap: 3px;
+  width: 197px;
+  height: 197px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -283,11 +441,16 @@ export default {
   border-bottom-right-radius: 10px;
 }
 .inventory__right {
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   height: auto;
+  width: 100%;
 }
 .item-name {
-  font-size: 22px;
+  text-align: center;
+  font-size: 21px;
+  margin-bottom: 5px;
   color: white;
 }
 .inventory-container {

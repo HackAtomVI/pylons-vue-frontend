@@ -37,13 +37,13 @@ export default {
         //Weapons
         axe: axe,
         sword: sword,
-        greatsword: greatsword,
+        greatSword: greatsword,
         //Armor
         chainmail: chainmail,
         gambeson: gambeson,
         brigandine: brigandine,
-        platearmor: platearmor,
-        paddedvest: paddedvest,
+        plateArmor: platearmor,
+        paddedVest: paddedvest,
         //Shields
         roundShield: roundShield,
         kiteShield: kiteShield,
@@ -55,6 +55,7 @@ export default {
   methods: {
     getSrc() {
       //console.log(require('@/assets/' + this.imgs[this.itemName]))
+      //console.log("name: " + this.itemName + " || img: " + this.imgs[this.itemName])
       return this.imgs[this.itemName]
       //return require('@/assets/' + this.imgs[this.itemName]).default
     },
