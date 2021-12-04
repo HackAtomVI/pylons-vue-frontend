@@ -10,10 +10,10 @@
             <router-link to="/upload"> UPLOAD NFT </router-link>
           </li>
           <li>
-            <router-link to="/workshop"> NFT HERO </router-link>
+            <router-link to="/workshop"> MY NFT HERO </router-link>
           </li>
           <li>
-            <router-link to="/market"> MARKET </router-link>
+            <router-link to="/market"> FORGE </router-link>
           </li>
           <li>
             <router-link to="/arena"> ARENA </router-link>

@@ -41,6 +41,7 @@ const store = createStore({
       state.fighterEquipment.righthand = righthand
     },
     setFighterArmor(state, armor) {
+      console.log('wrote to state.fighterEquipment.armor')
       state.fighterEquipment.armor = armor
     },
     setFighterHelmet(state, helmet) {
