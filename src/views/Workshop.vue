@@ -66,9 +66,12 @@
                 <div class="item-stat">
                   <span class="stat-description">Damage Type: </span>{{ this.selectedDamageType }}
                 </div>
-                <div class="item-stat"><span class="stat-description">Damage: </span>{{ this.selectedDamage }}</div>
                 <div class="item-stat">
-                  <span class="stat-description">Damage Type:</span>{{ this.selectedAccuracy }}
+                  <span class="stat-description">Damage: </span>{{ Number.parseFloat(this.selectedDamage).toFixed(0) }}
+                </div>
+                <div class="item-stat">
+                  <span class="stat-description">Accuracy:</span
+                  >{{ Number.parseFloat(this.selectedAccuracy).toFixed(2) }}
                 </div>
                 <div class="item-stat">
                   <span class="stat-description">One Handed:</span>{{ this.selectedOneHanded }}
@@ -83,21 +86,29 @@
                   <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Accuracy Modifier: </span> {{ this.selectedAccuracyMod }}
+                  <span class="stat-description">Accuracy Modifier: </span>
+                  {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Initiative: </span>{{ this.selectedInitiative }}
+                  <span class="stat-description">Initiative: </span
+                  >{{ Number.parseFloat(this.selectedInitiative).toFixed(0) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Blunt Res: </span>{{ this.selectedBluntRes }}
+                  <span class="stat-description">Blunt Res: </span
+                  >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Arrow Res: </span>{{ this.selectedArrowDef }}
+                  <span class="stat-description">Arrow Res: </span
+                  >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Slice Res: </span>{{ this.selectedSliceDef }}
+                  <span class="stat-description">Slice Res: </span
+                  >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
                 </div>
-                <div class="item-stat"><span class="stat-description">Stab Res: </span>{{ this.selectedStabDef }}</div>
+                <div class="item-stat">
+                  <span class="stat-description">Stab Res: </span
+                  >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
+                </div>
               </div>
 
               <div
@@ -108,18 +119,25 @@
                   <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Accuracy Modifier: </span> {{ this.selectedAccuracyMod }}
+                  <span class="stat-description">Accuracy Modifier: </span>
+                  {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Blunt Res: </span>{{ this.selectedBluntRes }}
+                  <span class="stat-description">Blunt Res: </span
+                  >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Arrow Res: </span>{{ this.selectedArrowDef }}
+                  <span class="stat-description">Arrow Res: </span
+                  >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">Slice Res: </span>{{ this.selectedSliceDef }}
+                  <span class="stat-description">Slice Res: </span
+                  >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
                 </div>
-                <div class="item-stat"><span class="stat-description">Stab Res: </span>{{ this.selectedStabDef }}</div>
+                <div class="item-stat">
+                  <span class="stat-description">Stab Res: </span
+                  >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
+                </div>
               </div>
               <button
                 v-on:click="equipItem('')"
@@ -215,6 +233,7 @@ export default {
       selectedSliceDef: '',
       selectedStabDef: '',
 
+      equipRightHandNext: true,
       equipedItemNames: [],
       equippedItems: [{}],
       ownedItems: [],
@@ -289,6 +308,7 @@ export default {
         this.selectedDamageType = item.DamageType
         this.selectedDamage = item.damage
         this.selectedOneHanded = item.oneHanded
+        this.selectedAccuracy = item.accuracy
       } else if (this.selectedItemType === 'armor' || this.selectedItemType === 'shield') {
         this.selectedBluntRes = item.bluntDef
         this.selectedAccuracyMod = item.accuracyModifier
@@ -318,28 +338,77 @@ export default {
       return this.$store.getters['common/wallet/loggedIn']
     },
     equipItem(hand) {
-      //console.log('!!!equipping!!! ' + this.selectedItemType)
+      let equipment = this.$store.getters['getFighterEquipment']
+
       switch (this.selectedItemType) {
         case 'weapon': {
           if (this.selectedOneHanded === 'true') {
-            this.$store.commit('setFighterRightHand', this.selectedItemID)
+            console.log('equipping 1H')
+
+            if (R.isEmpty(equipment.righthand)) {
+              console.log('righthand empty')
+              this.$store.commit('setFighterRightHand', this.selectedItemID)
+            } else if (R.isEmpty(equipment.lefthand)) {
+              console.log('lefthand empty')
+              if (equipment.lefthand === this.selectedItemID || equipment.righthand === this.selectedItemID) {
+                this.notifyFail('Already worn', 'You already wear this item. Pick another one.')
+              } else {
+                this.$store.commit('setFighterLeftHand', this.selectedItemID)
+              }
+            } else {
+              console.log('no hand empty')
+              if (this.selectedItemID === equipment.righthand) {
+                this.notifyFail('Already worn', 'You already wear this item in your right hand.')
+              } else if (this.selectedItemID === equipment.lefthand) {
+                this.notifyFail('Already worn', 'You already wear this item in your left hand.')
+              } else {
+                if (this.equipRightHandNext) {
+                  this.$store.commit('setFighterRightHand', this.selectedItemID)
+                  this.equipRightHandNext = false
+                } else {
+                  this.$store.commit('setFighterLeftHand', this.selectedItemID)
+                  this.equipRightHandNext = true
+                }
+              }
+            }
+
+            // when do we need this here?
             this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
           } else {
-            this.$store.commit('setFighterRightHand', this.selectedItemID)
-            this.$store.commit('setFighterLeftHand', {})
+            // 2H Weapon case
+            if (this.selectedItemID === equipment.righthand) {
+              this.notifyFail('Already worn', 'You already wear this item.')
+            } else {
+              console.log('equipping 2H')
+              this.$store.commit('setFighterRightHand', this.selectedItemID)
+              this.$store.commit('setFighterLeftHand', {})
 
-            this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
-            this.$store.commit('setEquipmentNameLeftHand', '')
+              this.$store.commit('setEquipmentNameRightHand', this.selectedItemName)
+              this.$store.commit('setEquipmentNameLeftHand', '')
+            }
           }
           break
         }
         case 'armor': {
+          if (this.selectedItemID === equipment.armor) {
+            this.notifyFail('Already worn', 'You already wear this item.')
+          }
           this.$store.commit('setFighterArmor', this.selectedItemID)
           this.$store.commit('setEquipmentNameArmor', this.selectedItemName)
           break
         }
         case 'shield': {
+          if (this.selectedItemID === equipment.lefthand) {
+            this.notifyFail('Already worn', 'You already wear this shield.')
+          }
+          console.log('lefthand weapon', equipment.lefthand)
+          console.log('righthand weapon', equipment.righthand)
+          // this shit here should actually check if there is a 2h weapon, that must be unequipped
+          // unfortunately we do not save more than the item id and then we only have item names,
+          // which we must filter for all 2h weapons, which is stupid... maybe we should save the whole item in the store
           this.$store.commit('setFighterLeftHand', this.selectedItemID)
+
+          // when is this necessary?
           this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
           break
         }

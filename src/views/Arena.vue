@@ -38,6 +38,8 @@ export default {
     }
   },
   mounted() {
+    console.log('the whole store:', this.$store)
+
     this.queryMyNFT().then((nft) => {
       console.log('NFT:', nft)
       if (R.isEmpty(nft.name)) {
