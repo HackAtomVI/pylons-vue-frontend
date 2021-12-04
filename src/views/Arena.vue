@@ -41,7 +41,7 @@ export default {
       this.fighterEquipment = this.heroNft
     })
 
-    this.queryMyItems.then((items) => {
+    this.queryMyItems().then((items) => {
       this.ownedItems = items
       console.log('owned items', items)
     })

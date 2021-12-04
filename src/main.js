@@ -58,7 +58,7 @@ app.mixin({
           console.error(err)
         })
     },
-    queryMyItmes: function () {
+    queryMyItems: function () {
       return getItems
         .bind(this)()
         .then((items) => {
