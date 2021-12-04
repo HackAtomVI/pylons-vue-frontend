@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div v-if="this.isUserLoggedIn()" class="background">
     <div v-if="!initialized">LOADING....</div>
     <div v-if="initialized" class="container">
       <form @submit.prevent="upload">
@@ -23,12 +23,19 @@
       </form>
     </div>
   </div>
+  <div v-if="!this.isUserLoggedIn()" class="background">
+    <PleaseLogIn />
+  </div>
 </template>
 
 <script>
+import PleaseLogIn from '../components/PleaseLogIn.vue'
+
 export default {
   name: 'Upload',
-  components: {},
+  components: {
+    PleaseLogIn,
+  },
   data() {
     return {
       hasImg: false,
@@ -41,7 +48,8 @@ export default {
     }
   },
   mounted() {
-    this.loadNft()
+    if (this.isUserLoggedIn()) this.loadNft()
+    else this.notifyFail('Epic fail', 'You must be logged in to upload or update NFT')
   },
   methods: {
     loadNft() {
@@ -65,6 +73,7 @@ export default {
           console.log('Hero: ')
           console.log(this.heroNft)
           this.getNftData()
+          this.initialized = true
         }
       })
     },
@@ -122,8 +131,7 @@ export default {
       //console.log(vm.nftimg)
     },
     setNftData() {
-      console.log(this.heroNft.ID)
-      console.log(this.nftname)
+      this.notifyInfo('Updating NFT', 'Your NFT is being updated, please wait!')
       this.$store
         .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
           value: {
@@ -150,10 +158,13 @@ export default {
               },
             })
             .then((res) => {
-              console.log('Img updated')
-              console.log(res)
+              console.log('Img updated', res)
+              this.notifySuccess('Very Nice', 'NFT Name and Image successfully updated!')
             })
         })
+    },
+    isUserLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
     },
     getNftData() {
       this.nftname = this.heroNft.name

@@ -19,19 +19,67 @@
               <div class="arrow-right blue" />
             </div> -->
             <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 198, 98)">ARMOR</span>
+              <span class="selection-text" style="color: rgb(255, 198, 98)">ARMOR: </span>
+
+              <div
+                v-if="typeof this.$store.getters['getFighterEquipment'].armor.name === 'undefined'"
+                class="selection-text selection-text__equiped"
+                style="color: gray"
+              >
+                not equiped
+              </div>
+              <div
+                v-else
+                @click="this.enchantEquipped('armor')"
+                class="selection-text selection-text__equiped"
+                style="color: rgb(255, 198, 98)"
+              >
+                {{ getEquipedItemDisplayName('armor') }}
+              </div>
               <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.armor}}</div> -->
               <!-- <div class="arrow-left orange" />
               <div class="arrow-right orange" /> -->
             </div>
             <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND</span>
+              <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND:</span>
+
+              <div
+                v-if="typeof this.$store.getters['getFighterEquipment'].righthand.name === 'undefined'"
+                class="selection-text selection-text__equiped"
+                style="color: gray"
+              >
+                not equiped
+              </div>
+              <div
+                v-else
+                @click="this.enchantEquipped('right')"
+                class="selection-text selection-text__equiped"
+                style="color: rgb(255, 118, 118)"
+              >
+                {{ getEquipedItemDisplayName('right') }}
+              </div>
               <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.RightHand}}</div> -->
               <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
             </div>
             <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND</span>
+              <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND:</span>
+              <div
+                v-if="typeof this.$store.getters['getFighterEquipment'].lefthand.name === 'undefined'"
+                class="selection-text selection-text__equiped"
+                style="color: gray"
+              >
+                not equiped
+              </div>
+              <div
+                v-else
+                @click="this.enchantEquipped('left')"
+                class="selection-text selection-text__equiped"
+                style="color: rgb(255, 118, 118)"
+              >
+                {{ getEquipedItemDisplayName('left') }}
+              </div>
+
               <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.LeftHand}}</div> -->
               <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
@@ -77,7 +125,7 @@
                   >{{ Number.parseFloat(this.selectedAccuracy).toFixed(2) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">One Handed:</span>{{ this.selectedOneHanded }}
+                  <span class="stat-description">One Handed: </span>{{ this.selectedOneHanded }}
                 </div>
               </div>
 
@@ -249,6 +297,7 @@ export default {
     this.setLoginStatus()
     if (this.isLoggedIn) {
       this.init()
+      //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
     }
     this.updateEquipedItemNames()
   },
@@ -358,7 +407,7 @@ export default {
             } else if (R.isEmpty(equipment.lefthand)) {
               console.log('lefthand empty')
               if (equipment.lefthand.ID === this.selectedItem.ID || equipment.righthand.ID === this.selectedItem.ID) {
-                this.notifyFail('Already worn', 'You already wear this item. Pick another one.')
+                this.notifyFail('Already worn', 'You are already wearing this item. ')
                 successfulEquip = false
               } else {
                 this.$store.commit('setFighterLeftHand', this.selectedItem)
@@ -366,10 +415,10 @@ export default {
             } else {
               console.log('no hand empty')
               if (this.selectedItem.ID === equipment.righthand.ID) {
-                this.notifyFail('Already worn', 'You already wear this item in your right hand.')
+                this.notifyFail('Already worn', 'You are already wearing this item. ')
                 successfulEquip = false
               } else if (this.selectedItem.ID === equipment.lefthand.ID) {
-                this.notifyFail('Already worn', 'You already wear this item in your left hand.')
+                this.notifyFail('Already worn', 'You are already wearing this item. ')
                 successfulEquip = false
               } else {
                 if (this.equipRightHandNext) {
@@ -384,7 +433,7 @@ export default {
           } else {
             // 2H Weapon case
             if (this.selectedItem.ID === equipment.righthand.ID) {
-              this.notifyFail('Already worn', 'You already wear this item.')
+              this.notifyFail('Already worn', 'You are already wearing this item. ')
               successfulEquip = false
             } else {
               console.log('equipping 2H')
@@ -397,7 +446,7 @@ export default {
         }
         case 'armor': {
           if (this.selectedItem.ID === equipment.armor.ID) {
-            this.notifyFail('Already worn', 'You already wear this item.')
+            this.notifyFail('Already worn', 'You are already wearing this item. ')
             successfulEquip = false
           }
           this.$store.commit('setFighterArmor', this.selectedItem)
@@ -408,7 +457,7 @@ export default {
           console.log('right hand empty?', R.isEmpty(equipment.righthand))
           console.log('right hand onehanded?', equipment.righthand.oneHanded)
           if (this.selectedItem.ID === equipment.lefthand.ID) {
-            this.notifyFail('Already worn', 'You already wear this shield.')
+            this.notifyFail('Already worn', 'You are already wearing this item. ')
             successfulEquip = false
           } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
             console.log('REMOVE 2H')
@@ -443,6 +492,30 @@ export default {
         params: { itemNew: false, id: this.selectedItem.ID },
       })
     },
+    enchantEquipped(slot) {
+      let equippedID
+      switch (slot) {
+        case 'left': {
+          equippedID = this.$store.getters['getFighterEquipment'].lefthand.ID
+          break
+        }
+        case 'right': {
+          equippedID = this.$store.getters['getFighterEquipment'].righthand.ID
+          break
+        }
+        case 'armor': {
+          equippedID = this.$store.getters['getFighterEquipment'].armor.ID
+          break
+        }
+      }
+      if (typeof equippedID === 'undefined') {
+        return
+      }
+      this.$router.push({
+        name: 'Enchant',
+        params: { itemNew: false, id: equippedID },
+      })
+    },
     setLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
       console.log('walletname:', this.walletName)
@@ -450,6 +523,30 @@ export default {
         this.isLoggedIn = true
       } else {
         this.isLoggedIn = false
+      }
+    },
+    getEquipedItemDisplayName(slot) {
+      switch (slot) {
+        case 'left': {
+          return (
+            this.$store.getters['getFighterEquipment'].lefthand.name.charAt(0).toUpperCase() +
+            this.$store.getters['getFighterEquipment'].lefthand.name.slice(1)
+          )
+        }
+        case 'right': {
+          return (
+            this.$store.getters['getFighterEquipment'].righthand.name.charAt(0).toUpperCase() +
+            this.$store.getters['getFighterEquipment'].righthand.name.slice(1)
+          )
+        }
+        case 'armor': {
+          return (
+            this.$store.getters['getFighterEquipment'].armor.name.charAt(0).toUpperCase() +
+            this.$store.getters['getFighterEquipment'].armor.name.slice(1)
+          )
+        }
+        default:
+          return
       }
     },
   },
@@ -724,5 +821,9 @@ export default {
   font-size: 21px;
   margin-bottom: 5px;
   color: white;
+}
+.selection-text__equiped:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 </style>

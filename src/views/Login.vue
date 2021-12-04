@@ -30,7 +30,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 150%;
   background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
 }
 .wallet--local {
