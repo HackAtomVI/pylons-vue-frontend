@@ -1,5 +1,4 @@
 export function getNft() {
-  console.log('What the actual fuck')
   return this.$store
     .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
       params: {

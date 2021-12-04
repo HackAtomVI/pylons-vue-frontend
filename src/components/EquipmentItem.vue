@@ -51,8 +51,8 @@ export default {
   },
   methods: {
     getSrc() {
-      //console.log(require('@/assets/' + this.imgs[this.itemName]))
       //console.log("name: " + this.itemName + " || img: " + this.imgs[this.itemName])
+      console.log('My name is: ' + this.itemName)
       return this.imgs[this.itemName]
       //return require('@/assets/' + this.imgs[this.itemName]).default
     },
