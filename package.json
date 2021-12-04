@@ -1,5 +1,5 @@
 {
-  "name": "@starport/template",
+  "name": "NFT-Arena",
   "version": "0.1.54",
   "description": "A Vue 3 boilerplate project utilizing @starport/vue and @starport/vuex",
   "author": "Tendermint, Inc <hello@tendermint.com>",

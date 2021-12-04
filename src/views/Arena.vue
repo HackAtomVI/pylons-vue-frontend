@@ -52,7 +52,8 @@ export default {
         }
       })
       .catch((err) => {
-        console.log('NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?')
+        this.notifyFail('LOGGED IN?', "'NOT LOGGED IN? IS IT POSSIBLE THAT YOU ARE NOT LOGGED IN YES?'")
+        console.log()
         console.error(err)
       })
 
@@ -85,30 +86,7 @@ export default {
       )
     }
   },
-  methods: {
-    getNft() {
-      return this.$store
-        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-          params: {
-            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-            owner: this.$store.getters['common/wallet/address'],
-          },
-        })
-        .then((res) => {
-          let found = false
-          res.Items.forEach((item) => {
-            if (!found) {
-              item.strings.forEach((str) => {
-                if (!found && str.Key === 'ItemType' && str.Value === 'nft') {
-                  found = item
-                }
-              })
-            }
-          })
-          return found
-        })
-    },
-  },
+  methods: {},
 }
 </script>
 
