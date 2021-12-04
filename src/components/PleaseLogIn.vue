@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div style="text-align: center">Please log in before proceeding to this! :)</div>
+    <div style="text-align: center">Please log in before proceeding to this page! :)</div>
   </div>
 </template>
 

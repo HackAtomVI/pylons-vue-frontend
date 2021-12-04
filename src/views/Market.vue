@@ -1,7 +1,7 @@
 <template>
   <div class="background">
     <div class="container">
-      <div class="title">Marketplace</div>
+      <div class="title">Forge</div>
       <div class="description">Chose the item category</div>
       <div class="category-container">
         <div class="armor-wrapper">

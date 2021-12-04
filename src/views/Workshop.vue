@@ -143,7 +143,7 @@
                 </div>
               </div>
               <button
-                v-on:click="equipItem('')"
+                v-on:click="equipItem()"
                 class="equip"
                 v-if="this.selectedItemName !== '' && singleButton() === true"
               >
@@ -343,7 +343,8 @@ export default {
       //console.log(this.$store)
       return this.$store.getters['common/wallet/loggedIn']
     },
-    equipItem(hand) {
+    equipItem() {
+      let successfulEquip = true
       let equipment = this.$store.getters['getFighterEquipment']
 
       switch (this.selectedItemType) {
@@ -358,6 +359,7 @@ export default {
               console.log('lefthand empty')
               if (equipment.lefthand.ID === this.selectedItem.ID || equipment.righthand.ID === this.selectedItem.ID) {
                 this.notifyFail('Already worn', 'You already wear this item. Pick another one.')
+                successfulEquip = false
               } else {
                 this.$store.commit('setFighterLeftHand', this.selectedItem)
               }
@@ -365,8 +367,10 @@ export default {
               console.log('no hand empty')
               if (this.selectedItem.ID === equipment.righthand.ID) {
                 this.notifyFail('Already worn', 'You already wear this item in your right hand.')
+                successfulEquip = false
               } else if (this.selectedItem.ID === equipment.lefthand.ID) {
                 this.notifyFail('Already worn', 'You already wear this item in your left hand.')
+                successfulEquip = false
               } else {
                 if (this.equipRightHandNext) {
                   this.$store.commit('setFighterRightHand', this.selectedItem)
@@ -381,6 +385,7 @@ export default {
             // 2H Weapon case
             if (this.selectedItem.ID === equipment.righthand.ID) {
               this.notifyFail('Already worn', 'You already wear this item.')
+              successfulEquip = false
             } else {
               console.log('equipping 2H')
               this.$store.commit('setFighterRightHand', this.selectedItem)
@@ -393,6 +398,7 @@ export default {
         case 'armor': {
           if (this.selectedItem.ID === equipment.armor.ID) {
             this.notifyFail('Already worn', 'You already wear this item.')
+            successfulEquip = false
           }
           this.$store.commit('setFighterArmor', this.selectedItem)
 
@@ -403,6 +409,7 @@ export default {
           console.log('right hand onehanded?', equipment.righthand.oneHanded)
           if (this.selectedItem.ID === equipment.lefthand.ID) {
             this.notifyFail('Already worn', 'You already wear this shield.')
+            successfulEquip = false
           } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
             console.log('REMOVE 2H')
             this.$store.commit('setFighterRightHand', {})
@@ -415,6 +422,7 @@ export default {
           break
         }
       }
+      if (successfulEquip) this.notifySuccess('Very Nice', 'Item equiped!')
       this.updateEquipedItemNames()
       console.log('vvvv=== Get Fighter equipment ===vvv')
       console.log(this.$store.getters['getFighterEquipment'])
