@@ -1,0 +1,80 @@
+<template>
+  <!--   v-class="{active: isClicked}" -->
+  <div>
+    <img :src="getSrc()" class="item-image" :class="{ flip: this.flipImg() }" />
+  </div>
+</template>
+
+<script>
+//Weapons
+import axe from '@/assets/img/stick_items/axe.png'
+import sword from '../assets/img/stick_items/sword.png'
+import greatsword from '../assets/img/stick_items/greatsword.png'
+
+import roundShield from '../assets/img/stick_items/roundShield.png'
+import kiteShield from '../assets/img/stick_items/kiteShield.png'
+import heaterShield from '../assets/img/stick_items/heaterShield.png'
+import towerShield from '../assets/img/stick_items/towerShield.png'
+
+export default {
+  name: 'StickyRight',
+  props: {
+    name: String,
+  },
+  data() {
+    return {
+      itemType: this.type,
+      itemName: this.name,
+      imgs: {
+        //Weapons
+        axe: axe,
+        sword: sword,
+        greatSword: greatsword,
+        //Shields
+        roundShield: roundShield,
+        kiteShield: kiteShield,
+        heaterShield: heaterShield,
+        towerShield: towerShield,
+      },
+    }
+  },
+  watch: {
+    '$store.state.fighterEquipment.righthand': function () {
+      console.log('righthand has changed:', this.$store.state.fighterEquipment.righthand.name)
+      this.itemName = this.$store.state.fighterEquipment.righthand.name
+    },
+  },
+  methods: {
+    flipImg() {
+      switch (this.itemName) {
+        case 'RoundShield':
+        case 'KiteShield':
+        case 'HeaterShield':
+        case 'TowerShield':
+          return true
+      }
+      return false
+    },
+    getSrc() {
+      console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
+      return this.imgs[this.itemName]
+      //return require('@/assets/' + this.imgs[this.itemName]).default
+    },
+  },
+}
+</script>
+
+<style scoped lang="scss">
+@import '../scss/variables';
+
+.zclass {
+  z-index: 9999;
+}
+.flip {
+  transform: scaleY(-1);
+}
+.item-image {
+  width: 100%;
+  height: 100%;
+}
+</style>

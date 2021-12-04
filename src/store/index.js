@@ -5,10 +5,10 @@ const store = createStore({
   state: {
     fighterEquipment: {
       nft: {},
-      lefthand: -1,
-      righthand: -1,
-      armor: -1,
-      helmet: -1,
+      lefthand: {},
+      righthand: {},
+      armor: {},
+      helmet: {},
     },
     equipedItemNames: {
       lefthand: '',

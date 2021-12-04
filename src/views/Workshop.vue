@@ -42,6 +42,7 @@
               <div id="item-list">
                 <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
                 <!-- v-on:click="EquimpentItemSelected(item.id)" -->
+
                 <EquipmentItem
                   class="grid-item"
                   v-for="(item, index) in ownedItems"
@@ -168,21 +169,17 @@
       <div class="panel__right">
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
-          <StickyItem
-            v-for="(item, index) in this.equipedItemNames"
-            :id="index"
-            :name="this.equipedItemNames[index]"
+          <StickyLeft
+            :name="this.$store.getters['getFighterEquipment'].lefthand.name"
             class="equipped-item"
-            :key="index + this.componentKey"
+            style="z-index: 100"
           />
-          <!-- <img
-            src="../assets/img/stick_items/Stickyboi_Items_Helmet_Greathelm.png"
-            style="z-index: 10"
+          <StickyRight
+            :name="this.$store.getters['getFighterEquipment'].righthand.name"
             class="equipped-item"
-          /> -->
-          <!-- <img src="../assets/img/stick_items/Stickyboi_Items_SR_PoleAxe.png" class="equipped-item" />
-          <img src="../assets/img/stick_items/Stickyboi_Items_SL_ShieldHeater.png" class="equipped-item" />
-          <img src="../assets/img/stick_items/Stickyboi_Items_Armor_Gambeson.png" class="equipped-item" /> -->
+            style="z-index: 100"
+          />
+          <StickyArmor :name="this.$store.getters['getFighterEquipment'].armor.name" class="equipped-item" />
         </div>
       </div>
     </div>
@@ -198,7 +195,10 @@ import { getNft } from '../utils/pylonsInteraction.js'
 import { getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
-import StickyItem from '@/components/StickyItem.vue'
+import StickyLeft from '@/components/StickyLeft.vue'
+import StickyRight from '@/components/StickyRight.vue'
+import StickyArmor from '@/components/StickyArmor.vue'
+
 import { StringKeyValue } from '@/store/generated/Pylons-tech/pylons/Pylonstech.pylons.pylons'
 
 export default {
@@ -206,7 +206,9 @@ export default {
   components: {
     PleaseLogIn,
     EquipmentItem,
-    StickyItem,
+    StickyLeft,
+    StickyRight,
+    StickyArmor,
   },
   beforeCreate() {
     this.getNft = getNft.bind(this)
@@ -327,7 +329,7 @@ export default {
       //console.log(this.singleButton())
     },
     singleButton() {
-      return true //WHILE Equipment is limited to being equiped in specific hand
+      return true //While Equipment is limited to being equiped in specific hand
       // if (
       //   (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') &&
       //   this.selectedItemType !== 'armor'
@@ -418,8 +420,6 @@ export default {
 
           console.log('worn items:', this.$store.getters['getFighterEquipment'])
 
-          // when is this necessary? REMOVE IT
-          this.$store.commit('setEquipmentNameLeftHand', this.selectedItemName)
           break
         }
       }

@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       itemName: this.name,
+      doFlip: true,
       imgs: {
         //Weapons
         axe: axe,
