@@ -47,7 +47,6 @@ app.mixin({
             this.notifyFail('No NFT', 'You have not uploaded a NFT yet.\n Please go to Upload NFT and do so.')
             console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
           } else {
-            console.log('getnft', nft)
             this.$store.commit('setFighterNft', nft)
             return nft
           }
