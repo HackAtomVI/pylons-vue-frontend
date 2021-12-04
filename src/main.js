@@ -63,14 +63,13 @@ app.mixin({
         .bind(this)()
         .then((items) => {
           let ownedItems = R.reject((x) => x.ItemType === 'nft', items)
-
-          if (this.ownedItems.length === 0) {
+          console.log('ownedItems:', ownedItems)
+          if (ownedItems.length === 0) {
             this.notifyFail(
               'No Items owned',
               "You don't have any equipment,\n do you want to stay naked your whole life?\n Go to the Forge and craft some.",
             )
           }
-
           return ownedItems
         })
     },
