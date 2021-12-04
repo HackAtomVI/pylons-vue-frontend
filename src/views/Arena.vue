@@ -24,14 +24,15 @@
 </template>
 
 <script>
+import * as R from 'ramda'
+
 export default {
   name: 'Arena',
   components: {},
   data() {
     return {
       fighterEquipment: {},
-      fighterName: 'loserboi',
-      heroNft: {},
+      fighterName: 'undefined',
       canFight: false,
       ownedItems: [],
     }
@@ -39,8 +40,12 @@ export default {
   mounted() {
     this.queryMyNFT().then((nft) => {
       console.log('NFT:', nft)
-      this.heroNft = nft
-      this.fighterEquipment = this.heroNft
+      if (R.isEmpty(nft.name)) {
+        this.fighterName = 'please give your NFT a proper name'
+      } else {
+        this.fighterName = nft.name
+      }
+      this.fighterEquipment.nft = nft
     })
 
     this.queryMyItems().then((items) => {
@@ -51,22 +56,27 @@ export default {
     console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
     this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
+    this.canFight = true
     if (!this.fighterEquipment.nft) {
+      this.canFight = false
       this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")
     }
     if (!this.fighterEquipment.armor) {
+      this.canFight = false
       this.notifyFail(
         'No Armor worn',
         "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
       )
     }
     if (!this.fighterEquipment.lefthand) {
+      this.canFight = false
       this.notifyFail(
         'No Weapon in Left Hand',
         "Boi, you don't even have an item in your left hand.\nLet's see if you have any weapons, lol.",
       )
     }
     if (!this.fighterEquipment.righthand) {
+      this.canFight = false
       this.notifyFail(
         'No Weapon in Right Hand',
         "Boi, you don't even have an item your right hand.\nLet's see if you have any weapons, lol.",
@@ -75,26 +85,33 @@ export default {
   },
   methods: {
     enlistForArena() {
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
-          value: {
-            '@type': '/Pylonstech.pylons.pylons.MsgEnlistForArena',
-            creator: this.$store.getters['common/wallet/address'],
-            nft: this.heroNft.ID,
-            cookbookID: 'nftarena',
-            lHitem: this.fighterEquipment.lefthand,
-            rHitem: this.fighterEquipment.righthand,
-            armoritem: this.fighterEquipment.armor,
-          },
-        })
-        .then((res) => {
-          console.log('EnlistForArena')
-          console.log(res)
+      if (this.canFight) {
+        this.$store
+          .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
+            value: {
+              '@type': '/Pylonstech.pylons.pylons.MsgEnlistForArena',
+              creator: this.$store.getters['common/wallet/address'],
+              nft: this.fighterEquipment.ID,
+              cookbookID: 'nftarena',
+              lHitem: this.fighterEquipment.lefthand,
+              rHitem: this.fighterEquipment.righthand,
+              armoritem: this.fighterEquipment.armor,
+            },
+          })
+          .then((res) => {
+            console.log('EnlistForArena')
+            console.log(res)
 
-          // if success link to page fight with id of the fight
-          //<router-link to="/fight" class="">
-          //</router-link>
-        })
+            // if success link to page fight with id of the fight
+            //<router-link to="/fight" class="">
+            //</router-link>
+          })
+      } else {
+        this.notifyFail(
+          'Not ready for Fight!',
+          "You don't meet the requirements for the Arena. \nNot listening to the error messages here, eh?",
+        )
+      }
     },
   },
 }
