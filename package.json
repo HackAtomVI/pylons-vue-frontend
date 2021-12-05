@@ -21,6 +21,7 @@
     "core-js": "^3.18.2",
     "ramda": "^0.27.1",
     "vue": "^3.2.6",
+    "vue-advanced-cropper": "^2.7.0",
     "vue-router": "^4.0.3",
     "vue3-notification": "^1.0.0",
     "vuex": "^4.0.0"

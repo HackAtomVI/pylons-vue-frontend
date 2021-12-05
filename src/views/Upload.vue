@@ -2,8 +2,43 @@
   <div v-if="this.isUserLoggedIn()" class="background">
     <div v-if="!initialized">LOADING....</div>
     <div v-if="initialized" class="container">
+      <input v-model="nftname" class="e60_170" type="text" name="nftname" :placeholder="nftname" required />
+
+      <!--input
+        id="file"
+        class="inputfile"
+        name="file"
+        type="file"
+        @change="inputFile"
+      >
+        <label
+          class="button--file"
+          for="file"
+        >
+        Choose a file without copyright violation
+      </label>
+
+      <Cropper
+        class="cropper"
+        :src="cropImage"
+        :auto-zoom="true"
+        :stencil-size="{
+          width: 500,
+          height: 500
+        }"
+        :default-position="{
+          left: 0,
+          top: 0
+        }"
+        :default-size="{
+          width: 838,
+          height: 1300
+        }"
+        image-restriction="stencil"
+        @change="changeCrop"
+      /-->
+
       <form @submit.prevent="upload">
-        <input v-model="nftname" class="e60_170" type="text" name="nftname" :placeholder="nftname" required />
         <div class="img-container">
           <input
             @change="onFileChange"
@@ -16,11 +51,10 @@
           />
           <img class="uploaded-img" :src="nftimg" />
         </div>
-        <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD</button>
-        <!-- <button v-on:click="createNft()">create nft lul</button> -->
-        <button v-on:click="printAllItems()">print all items</button>
-        <button v-on:click="loadNft()">Load NFT</button>
       </form>
+      <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD to Blockchain</button>
+      <button v-on:click="printAllItems()">print all items</button>
+      <button v-on:click="loadNft()">Load NFT</button>
     </div>
   </div>
   <div v-if="!this.isUserLoggedIn()" class="background">
@@ -30,11 +64,15 @@
 
 <script>
 import PleaseLogIn from '../components/PleaseLogIn.vue'
+//import { Cropper } from 'vue-advanced-cropper'
+import 'vue-advanced-cropper/dist/style.css'
+import sampleGradient from '../assets/img/sampleGradient.svg'
 
 export default {
   name: 'Upload',
   components: {
     PleaseLogIn,
+    //Cropper,
   },
   data() {
     return {
@@ -45,6 +83,7 @@ export default {
       heroName: '',
       heroImg: '',
       initialized: true,
+      cropImage: sampleGradient,
     }
   },
   mounted() {
@@ -109,6 +148,19 @@ export default {
           })
       })
     },
+    changeCrop({ canvas }) {
+      this.cropImage = canvas.toDataURL()
+    },
+    inputFile(event) {
+      let file = event.target.files[0]
+
+      uploadImg(file, (result) => {
+        console.log('uploadImg result', result)
+        this.cropImage = result
+
+        this.nftimg = result
+      })
+    },
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files
       if (!files.length) return
@@ -146,6 +198,11 @@ export default {
         .then((res) => {
           console.log('name updated')
           console.log(res)
+
+          console.log('compressing: ', this.nftimg)
+          let compressedImg = compressImg(this.nftimg, 100)
+          console.log('img to upload:', compressedImg)
+
           this.$store
             .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
               value: {
@@ -154,12 +211,18 @@ export default {
                 cookbookID: 'nftarena',
                 ID: this.heroNft.ID,
                 field: 'image',
-                value: this.nftimg,
+                value: compressedImg,
               },
+              fee: [],
             })
             .then((res) => {
-              console.log('Img updated', res)
-              this.notifySuccess('Very Nice', 'NFT Name and Image successfully updated!')
+              if (res.code == 0) {
+                console.log('Img updated', res)
+                this.notifySuccess('Very Nice', 'NFT Name and Image successfully updated!')
+              } else {
+                console.error(res)
+                this.notifyFail('Sad :(', 'TX FAILED!')
+              }
             })
         })
     },
@@ -177,10 +240,78 @@ export default {
     },
   },
 }
+
+function uploadImg(file, callback) {
+  let resolution = { height: 1300, width: 838 }
+
+  const reader = new FileReader()
+
+  reader.onload = function (readerEvent) {
+    var image = new Image()
+    image.onload = function () {
+      // Resize the image
+      let canvas = document.createElement('canvas')
+      let maxSize = resolution.height
+      let width = image.width
+      let height = image.height
+      if (height > maxSize) {
+        width *= maxSize / height
+        height = maxSize
+      }
+      // centering
+      let widthAdjust = 0
+      if (width > resolution.width) {
+        widthAdjust = (width - resolution.width) / 2
+      }
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d').drawImage(image, -widthAdjust, 0, width, height)
+
+      let dataUrl = canvas.toDataURL('image/png')
+
+      callback(dataUrl)
+    }
+    image.src = readerEvent.target.result
+  }
+  reader.onerror = (error) => console.error(error)
+  reader.readAsDataURL(file)
+}
+
+function compressImg(dataURL, maxKB) {
+  var image = new Image()
+  image.src = dataURL
+  console.log('image.src', image.src)
+  console.log('image.width', image.width)
+  console.log('image.height', image.height)
+
+  let canvas = document.createElement('canvas')
+  canvas.width = image.width
+  canvas.height = image.height
+  canvas.getContext('2d').drawImage(image, 0, 0, image.width, image.height)
+
+  let quality = 0.9
+  let newDataURL = canvas.toDataURL('image/jpeg', quality)
+  console.log('newDataURL', newDataURL)
+  console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
+
+  while (Math.round(newDataURL.length) / 1000 > maxKB) {
+    quality -= 0.1
+    newDataURL = canvas.toDataURL('image/jpeg', quality)
+    console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
+
+    if (quality <= 0) return ''
+  }
+  return newDataURL
+}
 </script>
 
 <style scoped lang="scss">
 @import '../scss/variables';
+.cropper {
+  height: 600px;
+  background: #ddd;
+}
+
 .disabled {
   display: none;
   background-image: none;
