@@ -35,6 +35,8 @@ export default {
   data() {
     return {
       initialized: false,
+      isLoggedIn: false,
+      walletName: '',
     }
   },
   mounted() {
@@ -46,50 +48,70 @@ export default {
       return this.$store.hasModule(['common', 'wallet', 'loggedIn'])
     },
   },
+  methods: {
+    setLoginStatus() {
+      this.walletName = this.$store.getters['common/wallet/walletName']
+      console.log('walletname:', this.walletName)
+      if (this.walletName != null) {
+        this.isLoggedIn = true
+      } else {
+        this.isLoggedIn = false
+      }
+    },
+  },
   watch: {
     '$store.state.common.wallet.selectedAddress': function () {
       console.log('address:', this.$store.state.common.wallet.selectedAddress)
 
-      this.$axios
-        .post(
-          'http://v2202008103543124756.megasrv.de:4500',
-          {
-            address: this.$store.getters['common/wallet/address'],
-            coins: ['5000upylon'],
-          },
-          {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          },
-        )
-        .then((res) => {
-          console.log('Faucet Initiated: ', res)
-          this.$store
-            .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-              value: {
-                '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-                creator: this.$store.getters['common/wallet/address'],
-                username: this.$store.getters['common/wallet/walletName'],
-              },
+      this.setLoginStatus()
+
+      if (this.isLoggedIn) {
+        this.$axios
+          .post(
+            'http://v2202008103543124756.megasrv.de:4500',
+            {
+              address: this.$store.getters['common/wallet/address'],
+              coins: ['5000upylon'],
+            },
+            {
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            },
+          )
+          .then((res) => {
+            console.log('Faucet Initiated: ', res)
+            console.log('dispatch this:', {
+              '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+              creator: this.$store.getters['common/wallet/address'],
+              username: this.$store.getters['common/wallet/walletName'],
             })
-            .then((res) => {
-              console.log('after create account, yes', res)
-              this.$store
-                .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-                  value: {
-                    '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-                    creator: this.$store.getters['common/wallet/address'],
-                    cookbookID: 'nftarena',
-                    recipeID: 'getcoins',
-                    coinInputsIndex: '0',
-                    itemIDs: [],
-                    paymentInfos: [],
-                  },
-                })
-                .then((res) => {
-                  console.log('GottenCoins: ', res)
-                })
-            })
-        })
+            this.$store
+              .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+                value: {
+                  '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+                  creator: this.$store.getters['common/wallet/address'],
+                  username: this.$store.getters['common/wallet/walletName'],
+                },
+              })
+              .then((res) => {
+                console.log('after create account, yes', res)
+                this.$store
+                  .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+                    value: {
+                      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+                      creator: this.$store.getters['common/wallet/address'],
+                      cookbookID: 'nftarena',
+                      recipeID: 'getcoins',
+                      coinInputsIndex: '0',
+                      itemIDs: [],
+                      paymentInfos: [],
+                    },
+                  })
+                  .then((res) => {
+                    console.log('GottenCoins: ', res)
+                  })
+              })
+          })
+      }
     },
   },
   '$store.state.common.wallet': {
