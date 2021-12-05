@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     loadNft() {
+      let nftLocalScope
       this.queryMyNFT().then((res) => {
         console.log('First res is: ')
         console.log(res)
@@ -99,6 +100,7 @@ export default {
           this.createNft().then(() => {
             console.log('Created NFT: ')
             this.queryMyNFT().then((res) => {
+              this.heroNft = res
               this.getNftData()
               this.initialized = true
               console.log('Final Result: ')
