@@ -65,6 +65,18 @@ export default {
 
       this.setLoginStatus()
 
+      function delay(t, v) {
+        return new Promise(function (resolve) {
+          setTimeout(resolve.bind(null, v), t)
+        })
+      }
+
+      Promise.prototype.delay = function (t) {
+        return this.then(function (v) {
+          return delay(t, v)
+        })
+      }
+
       if (this.isLoggedIn) {
         this.$axios
           .post(
@@ -77,6 +89,7 @@ export default {
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             },
           )
+          .delay(1000)
           .then((res) => {
             console.log('Faucet Initiated: ', res)
             console.log('dispatch this:', {
