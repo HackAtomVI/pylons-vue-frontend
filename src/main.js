@@ -44,8 +44,9 @@ app.mixin({
         .bind(this)()
         .then((nft) => {
           if (nft === false) {
-            this.notifyFail('No NFT', 'You have not uploaded a NFT yet.\n Please go to Upload NFT and do so.')
+            //this.notifyFail('No NFT', 'You have not uploaded a NFT yet.\n Please go to Upload NFT and do so.')
             console.log('YOU DONT OWN NFT - GO TO "UPLOAD NFT" - DONT PASS GO - DONT COLLECT $400')
+            return false
           } else {
             this.$store.commit('setFighterNft', nft)
             return nft

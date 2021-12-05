@@ -11,12 +11,10 @@
         <div class="hero_wrapper">
           <div class="nft-img_wrapper"></div>
           <div class="stats_wrapper"></div>
-          <button @click="enlistForArena()">
-            <div class="fight-button">
-              <img src="../assets/img/sword.png" class="sword-img" />
-              <span class="fight-text">FIGHT!</span>
-            </div>
-          </button>
+          <div @click="enlistForArena()" class="fight-button">
+            <img src="../assets/img/sword.png" class="sword-img" />
+            <span class="fight-text">FIGHT!</span>
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +59,7 @@ export default {
     this.canFight = true
     if (R.isEmpty(this.fighterEquipment.nft)) {
       this.canFight = false
-      this.notifyFail('No NFT', "Boi, you don't even have uploaded an NFT... \nDo it in the Hero workshop.")
+      this.notifyFail('No NFT', "Boi, you haven't even uploaded an NFT... \nDo it in the UPLAOD page!.")
     }
     if (R.isEmpty(this.fighterEquipment.armor)) {
       this.canFight = false
@@ -81,12 +79,13 @@ export default {
       this.canFight = false
       this.notifyFail(
         'No Weapon in Right Hand',
-        "Boi, you don't even have an item your right hand.\nLet's see if you have any weapons, lol.",
+        "Boi, you don't even have an item in your right hand.\nLet's see if you have any weapons, lol.",
       )
     }
   },
   methods: {
     enlistForArena() {
+      this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
       if (this.canFight) {
         console.log('Can fight with:')
         console.log(this.fighterEquipment.armor.ID)
@@ -152,6 +151,7 @@ export default {
   color: black;
 }
 .fight-button {
+  cursor: pointer;
   width: 180px;
   height: 180px;
   font-weight: bold;

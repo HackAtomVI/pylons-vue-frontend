@@ -98,7 +98,7 @@ export default {
         if (res === false) {
           this.createNft().then(() => {
             console.log('Created NFT: ')
-            this.getNft().then((res) => {
+            this.queryMyNFT().then((res) => {
               this.getNftData()
               this.initialized = true
               console.log('Final Result: ')
