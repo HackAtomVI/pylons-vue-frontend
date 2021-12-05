@@ -8,6 +8,7 @@
       </div>
       <img src="../assets/img/StickyMockup.png" />
     </div>
+    <div v-if="!$store.state.isLoggedIn">SHIT FROM HELL</div>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ export default {
   data() {
     return {}
   },
+  mounted() {},
 }
 </script>
 

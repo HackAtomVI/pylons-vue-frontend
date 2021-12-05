@@ -53,8 +53,8 @@
         </div>
       </form>
       <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD to Blockchain</button>
-      <button v-on:click="printAllItems()">print all items</button>
-      <button v-on:click="loadNft()">Load NFT</button>
+      <!--button v-on:click="printAllItems()">print all items</button-->
+      <!--button v-on:click="loadNft()">Load NFT</button-->
     </div>
   </div>
   <div v-if="!this.isUserLoggedIn()" class="background">

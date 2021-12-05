@@ -129,11 +129,14 @@ export default {
     enlistForArena() {
       this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
       if (this.canFight) {
-        console.log('Can fight with:')
-        console.log(this.fighterEquipment.armor.ID)
-        console.log(this.fighterEquipment.lefthand.ID)
-        console.log(this.fighterEquipment.righthand.ID)
-        console.log(this.fighterEquipment.nft.ID)
+        let leftID = this.fighterEquipment.lefthand.ID
+        let rightID = this.fighterEquipment.righthand.ID
+        if (this.fighterEquipment.lefthand.oneHanded === 'false') {
+          rightID = this.fighterEquipment.lefthand.ID
+        }
+        if (this.fighterEquipment.righthand.oneHanded === 'false') {
+          leftID = this.fighterEquipment.righthand.ID
+        }
         this.$store
           .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
             value: {
@@ -141,8 +144,8 @@ export default {
               creator: this.$store.getters['common/wallet/address'],
               nft: this.fighterEquipment.nft.ID,
               cookbookID: 'nftarena',
-              lHitem: this.fighterEquipment.lefthand.ID,
-              rHitem: this.fighterEquipment.righthand.ID,
+              lHitem: leftID,
+              rHitem: rightID,
               armoritem: this.fighterEquipment.armor.ID,
             },
           })
