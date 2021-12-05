@@ -1,16 +1,45 @@
 <template>
   <div class="background">
-    <div class="container">
+    <div v-if="isLoggedIn()" class="container">
       <div class="container--top">
         <div class="title">Arena</div>
+        <div class="description">Enter into battle with your NFT Hero!</div>
       </div>
       <div class="container--bot">
         <div class="nft-name" id="nftName">
           <span>Fighter {{ fighterName }}</span>
         </div>
         <div class="hero_wrapper">
-          <div class="nft-img_wrapper"></div>
-          <div class="stats_wrapper"></div>
+          <div class="nft-img_wrapper">
+            <div class="stickfigure-background">
+              <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
+              <StickyLeft
+                :name="this.$store.getters['getFighterEquipment'].lefthand.name"
+                class="equipped-item"
+                style="z-index: 100"
+              />
+              <StickyRight
+                :name="this.$store.getters['getFighterEquipment'].righthand.name"
+                class="equipped-item"
+                style="z-index: 100"
+              />
+              <StickyArmor
+                :name="this.$store.getters['getFighterEquipment'].armor.name"
+                class="equipped-item"
+                style="z-index: 10"
+              />
+              <img :src="nftImg" class="nft-image" />
+            </div>
+          </div>
+          <div class="stats_wrapper">
+            <div class="stats-column">
+              <div class="stat-text"><span style="font-weight: bold">WINS:</span> {{ this.getWins() }}</div>
+              <div class="stat-text"><span style="font-weight: bold">LOSSES:</span> {{ this.getLosses() }}</div>
+              <div class="stat-text">
+                <span style="font-weight: bold">W/L ratio:</span> {{ this.getWinLossRatio() }}
+              </div>
+            </div>
+          </div>
           <div @click="enlistForArena()" class="fight-button">
             <img src="../assets/img/sword.png" class="sword-img" />
             <span class="fight-text">FIGHT!</span>
@@ -18,32 +47,49 @@
         </div>
       </div>
     </div>
+    <PleaseLogIn v-else />
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
+import StickyLeft from '@/components/StickyLeft.vue'
+import StickyRight from '@/components/StickyRight.vue'
+import StickyArmor from '@/components/StickyArmor.vue'
+import PleaseLogIn from '../components/PleaseLogIn.vue'
 
 export default {
   name: 'Arena',
-  components: {},
+  components: {
+    PleaseLogIn,
+    StickyLeft,
+    StickyRight,
+    StickyArmor,
+  },
   data() {
     return {
       fighterEquipment: {},
       fighterName: 'undefined',
       canFight: false,
       ownedItems: [],
+      nftImg: 'undefined',
     }
   },
   mounted() {
     console.log('the whole store:', this.$store)
-
+    //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
+    this.nftImg = this.$store.getters['getFighterEquipment'].nft.image
     this.queryMyNFT().then((nft) => {
       console.log('NFT:', nft)
       if (R.isEmpty(nft.name)) {
         this.fighterName = 'please give your NFT a proper name'
       } else {
         this.fighterName = nft.name
+      }
+      if (R.isEmpty(nft.image)) {
+        this.nftImg = ''
+      } else {
+        this.nftImg = nft.image
       }
       this.fighterEquipment.nft = nft
     })
@@ -128,6 +174,21 @@ export default {
         )
       }
     },
+    getWinLossRatio() {
+      if (typeof this.fighterEquipment.nft !== 'undefined')
+        return this.fighterEquipment.nft.wins / this.fighterEquipment.nft.losses
+    },
+    getWins() {
+      if (typeof this.fighterEquipment.nft !== 'undefined')
+        return Number.parseFloat(this.fighterEquipment.nft.wins).toFixed(0)
+    },
+    getLosses() {
+      if (typeof this.fighterEquipment.nft !== 'undefined')
+        return Number.parseFloat(this.fighterEquipment.nft.losses).toFixed(0)
+    },
+    isLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
+    },
   },
 }
 </script>
@@ -160,21 +221,59 @@ export default {
   font-size: 18px;
   padding: 20px;
   margin: 2.5%;
-  background-color: #d61224;
+  background-color: #29eddb;
+  // background-color: #d61224;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  filter: invert(1);
+  -webkit-filter: invert(1);
 }
 .stats_wrapper {
   width: 65%;
+  padding: 20px;
 }
+.stat-text {
+  font-size: 20px;
+  margin: 5px;
+  color: black;
+}
+
 .nft-img_wrapper {
   width: 250px;
-  height: 250px;
   background-color: white;
   // height: 20%;
+}
+.stickfigure-background {
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/img/stick_items/sboiBG.png');
+  display: grid;
+  z-index: -3;
+}
+.stickfigure {
+  width: 100%;
+  height: 100%;
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 0;
+  //background-image: url("../assets/img/stick_items/sboi.png");
+}
+.equipped-item {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+}
+.nft-image {
+  grid-column: 1;
+  grid-row: 1;
+  width: 30%;
+  height: 30%;
+  margin: 0px auto;
+  z-index: 1;
 }
 .hero_wrapper {
   display: flex;
@@ -220,6 +319,11 @@ export default {
   font-family: $font-family;
   padding-top: 35px;
   font-weight: bold;
+}
+.description {
+  margin-top: 30px;
+  font-size: 25px;
+  color: white;
 }
 .background {
   top: 0;

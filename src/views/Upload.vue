@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     loadNft() {
-      let nftLocalScope
       this.queryMyNFT().then((res) => {
         console.log('First res is: ')
         console.log(res)

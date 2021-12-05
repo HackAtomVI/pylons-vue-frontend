@@ -60,8 +60,8 @@ export default {
           //this.enchant()
         })
         .catch((err) => {
-          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
-          console.error('YES SHIT, YOU DUN GOOFED:', err)
+          this.notifyFail('YOU FAIL', "Maybe you're trying to send transactions too quickly, yes?" + err)
+          console.error('YES, YOU DUN GOOFED:', err)
         })
     },
     craftArmor() {
@@ -74,15 +74,12 @@ export default {
           //this.enchant()
         })
         .catch((err) => {
-          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
-          console.error('YES SHIT, YOU DUN GOOFED:', err)
+          this.notifyFail('YOU FAIL', 'Crafting armor failed' + err)
+          console.error('YES, YOU DUN GOOFED:', err)
         })
     },
     craftShield() {
       this.notifyInfo('Shield', 'Crafting it \nPlease wait')
-      console.log(
-        'CRAFT RANDOM ITEM, ARE YOU RETARDED? WE HAVE NO RANDOM ITEM, I WILL CRAFT A SHIELD NOW YOU FUCKING IDIOT',
-      )
       craftShield
         .bind(this)()
         .then((res) => {
@@ -91,8 +88,8 @@ export default {
           //this.enchant()
         })
         .catch((err) => {
-          this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
-          console.error('YES SHIT, YOU DUN GOOFED:', err)
+          this.notifyFail('YOU FAIL', 'Crafting shield failed' + err)
+          console.error('YES, YOU DUN GOOFED:', err)
         })
     },
     enchant() {
