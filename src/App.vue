@@ -6,6 +6,9 @@
         <PageHeader />
         <PageMenu />
         <!-- <SpWallet ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" /> -->
+        <button @click="this.initAxios()">INIT AXIOS</button>
+        <button @click="this.msgCreateAcc()">MSG CREATE ACC</button>
+        <button @click="this.coinsYes()">GET COINS</button>
         <router-view />
       </template>
     </SpLayout>
@@ -46,10 +49,8 @@ export default {
       return this.$store.hasModule(['common', 'wallet', 'loggedIn'])
     },
   },
-  watch: {
-    '$store.state.common.wallet.selectedAddress': function () {
-      console.log('address:', this.$store.state.common.wallet.selectedAddress)
-
+  methods: {
+    initAxios() {
       this.$axios
         .post(
           'http://v2202008103543124756.megasrv.de:4500',
@@ -62,42 +63,93 @@ export default {
           },
         )
         .then((res) => {
-          console.log('Faucet Initiated: ', res)
-          this.$store
-            .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-              value: {
-                '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-                creator: this.$store.getters['common/wallet/address'],
-                username: this.$store.getters['common/wallet/walletName'],
-              },
-            })
-            .then((res) => {
-              console.log('after create account, yes', res)
-              this.$store
-                .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-                  value: {
-                    '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-                    creator: this.$store.getters['common/wallet/address'],
-                    cookbookID: 'nftarena',
-                    recipeID: 'getcoins',
-                    coinInputsIndex: '0',
-                    itemIDs: [],
-                    paymentInfos: [],
-                  },
-                })
-                .then((res) => {
-                  console.log('GottenCoins: ', res)
-                })
-            })
+          console.log('axios: ', res)
+        })
+    },
+    msgCreateAcc() {
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+            creator: this.$store.getters['common/wallet/address'],
+            username: this.$store.getters['common/wallet/walletName'],
+          },
+        })
+        .then((res) => {
+          console.log('create: ', res)
+        })
+    },
+    coinsYes() {
+      console.log('coins starting')
+      this.$store
+        .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+          value: {
+            '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+            creator: this.$store.getters['common/wallet/address'],
+            cookbookID: 'nftarena',
+            recipeID: 'getcoins',
+            coinInputsIndex: '0',
+            itemIDs: [],
+            paymentInfos: [],
+          },
+        })
+        .then((res) => {
+          console.log('GottenCoins: ', res)
         })
     },
   },
-  '$store.state.common.wallet': {
-    deep: true,
-    handler() {
-      console.log('OHA', this.$store.state.common.wallet)
-    },
-  },
+  // watch: {
+  //   '$store.state.common.wallet.selectedAddress': function () {
+  //     console.log('address:', this.$store.state.common.wallet.selectedAddress)
+
+  //     this.$axios
+  //       .post(
+  //         'http://v2202008103543124756.megasrv.de:4500',
+  //         {
+  //           address: this.$store.getters['common/wallet/address'],
+  //           coins: ['5000upylon'],
+  //         },
+  //         {
+  //           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  //         },
+  //       )
+  //       .then((res) => {
+  //         console.log('Faucet Initiated: ', res)
+  //         this.$store
+  //           .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+  //             value: {
+  //               '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+  //               creator: this.$store.getters['common/wallet/address'],
+  //               username: this.$store.getters['common/wallet/walletName'],
+  //             },
+  //           })
+  //           .then((res) => {
+  //             console.log('after create account, yes', res)
+  //             this.$store
+  //               .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+  //                 value: {
+  //                   '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+  //                   creator: this.$store.getters['common/wallet/address'],
+  //                   cookbookID: 'nftarena',
+  //                   recipeID: 'getcoins',
+  //                   coinInputsIndex: '0',
+  //                   itemIDs: [],
+  //                   paymentInfos: [],
+  //                 },
+  //               })
+  //               .then((res) => {
+  //                 console.log('GottenCoins: ', res)
+  //               })
+  //           })
+  //       })
+  //   },
+  // },
+  // '$store.state.common.wallet': {
+  //   deep: true,
+  //   handler() {
+  //     console.log('OHA', this.$store.state.common.wallet)
+  //   },
+  // },
   async created() {
     let local = {
       apiNode: 'http://localhost:1317',

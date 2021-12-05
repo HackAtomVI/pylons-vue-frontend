@@ -27,11 +27,11 @@ export default {
       walletName: '',
     }
   },
-  watch: {
-    "$store.getters['common/wallet/walletName']": function () {
-      this.getLoginStatus()
-    },
-  },
+  // watch: {
+  //   "$store.getters['common/wallet/walletName']": function () {
+  //     this.getLoginStatus()
+  //   },
+  // },
 
   computed: {
     getUserCredits() {
