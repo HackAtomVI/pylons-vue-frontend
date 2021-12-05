@@ -71,7 +71,7 @@ export default {
 }
 .flip {
   transform: scaleX(-1);
-  -webkit-transform: scaleY(-1);
+  -webkit-transform: scaleX(-1);
 }
 .item-image {
   width: 100%;
