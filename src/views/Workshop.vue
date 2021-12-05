@@ -612,8 +612,8 @@ export default {
   border-top-left-radius: 10px;
 }
 .stickfigure-background {
-  width: 450px;
-  height: 450px;
+  width: 468px;
+  height: 468px;
   background-image: url('../assets/img/stick_items/sboiBG.png');
   display: grid;
 }

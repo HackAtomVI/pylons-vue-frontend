@@ -12,23 +12,26 @@
         <div class="hero_wrapper">
           <div class="nft-img_wrapper">
             <div class="stickfigure-background">
-              <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
+              <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
               <StickyLeft
+                v-if="exists(this.$store.getters['getFighterEquipment'].lefthand.name)"
                 :name="this.$store.getters['getFighterEquipment'].lefthand.name"
-                class="equipped-item"
+                class="equipped-item shifted-down"
                 style="z-index: 100"
               />
               <StickyRight
+                v-if="exists(this.$store.getters['getFighterEquipment'].righthand.name)"
                 :name="this.$store.getters['getFighterEquipment'].righthand.name"
-                class="equipped-item"
+                class="equipped-item shifted-down"
                 style="z-index: 100"
               />
               <StickyArmor
+                v-if="exists(this.$store.getters['getFighterEquipment'].armor.name)"
                 :name="this.$store.getters['getFighterEquipment'].armor.name"
-                class="equipped-item"
+                class="equipped-item shifted-down"
                 style="z-index: 10"
               />
-              <img :src="nftImg" class="nft-image" />
+              <img :src="nftImg" class="nft-image shifted-down" />
             </div>
           </div>
           <div class="stats_wrapper">
@@ -127,7 +130,8 @@ export default {
   },
   methods: {
     enlistForArena() {
-      let fightID
+      let fighterID
+      let opponentFighterID
       this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
@@ -152,26 +156,28 @@ export default {
           })
           .then((res) => {
             console.log('EnlistForArena', res)
-            fightID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
-            console.log('fighterID: ', fightID)
+            fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
+            //console.log("fighterID: ", fighterID)
             this.$store
               .dispatch('Pylonstech.pylons.pylons/QueryFight', {
                 params: {
                   '@type': 'Pylonstech.pylons.pylons/QueryFight',
-                  id: '0',
+                  ID: fighterID,
                 },
               })
               .then((res) => {
+                opponentFighterID = JSON.parse(res.Fighter.opponentFighter)
                 console.log('fight: ', res)
                 this.$store
                   .dispatch('Pylonstech.pylons.pylons/QueryFight', {
                     params: {
                       '@type': 'Pylonstech.pylons.pylons/QueryFight',
-                      ID: '2',
+                      ID: opponentFighterID,
                     },
                   })
                   .then((res) => {
                     console.log('Opponent Fighter: ', res)
+                    console.log('fighterIDs: ', fighterID, ' |vs| ', opponentFighterID)
                   })
               })
             // if success link to page fight with id of the fight
@@ -342,6 +348,11 @@ export default {
   margin-top: 30px;
   font-size: 25px;
   color: white;
+}
+.shifted-down {
+  margin-top: 5px;
+  border-radius: 100%;
+  border-width: 0px;
 }
 .background {
   top: 0;

@@ -121,6 +121,13 @@ export default {
                   })
                   .then((res) => {
                     console.log('GottenCoins: ', res)
+                    this.queryMyNFT().then((res) => {
+                      if (res == false) {
+                        this.notifyInfo('Welcome!', ' You should go to the Upload page to create an NFT Hero!')
+                      } else {
+                        this.notifyInfo('Welcome Back!', 'Your Hero is waiting for a battle!')
+                      }
+                    })
                   })
               })
           })

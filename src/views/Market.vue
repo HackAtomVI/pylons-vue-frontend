@@ -26,8 +26,8 @@
         </div>
         <div class="surprise-wrapper">
           <div @click="craftShield()" class="blackbox">
-            <img class="blackbox-img" src="../assets/img/market/surprise.svg" />
-            <div class="blackbox-description">CRAFT RANDOM ITEM</div>
+            <img class="blackbox-img" src="../assets/img/market/shield.png" />
+            <div class="blackbox-description">CRAFT SHIELD ITEM</div>
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
