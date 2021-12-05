@@ -44,7 +44,7 @@ export default {
         flail: flail,
         maul: maul,
         mace: mace,
-        poleaxe: poleaxe,
+        poleAxe: poleaxe,
         spear: spear,
 
         bow: bow,
@@ -81,7 +81,7 @@ export default {
       return false
     },
     getSrc() {
-      console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
+      //console.log('name: ' + this.itemName + ' || img: ' + this.imgs[this.itemName])
       return this.imgs[this.itemName]
       //return require('@/assets/' + this.imgs[this.itemName]).default
     },

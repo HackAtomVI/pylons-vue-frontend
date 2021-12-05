@@ -76,11 +76,11 @@ export default {
     }
   },
   mounted() {
-    console.log('the whole store:', this.$store)
+    //console.log('the whole store:', this.$store)
     //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
     this.nftImg = this.$store.getters['getFighterEquipment'].nft.image
     this.queryMyNFT().then((nft) => {
-      console.log('NFT:', nft)
+      //console.log('NFT:', nft)
       if (R.isEmpty(nft.name)) {
         this.fighterName = 'please give your NFT a proper name'
       } else {
@@ -96,10 +96,10 @@ export default {
 
     this.queryMyItems().then((items) => {
       this.ownedItems = items
-      console.log('owned items', items)
+      //console.log('owned items', items)
     })
 
-    console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
+    //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
     this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
     this.canFight = true
@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     enlistForArena() {
+      let fightID
       this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
@@ -150,17 +151,28 @@ export default {
             },
           })
           .then((res) => {
-            console.log('EnlistForArena')
-            console.log(res)
+            console.log('EnlistForArena', res)
+            fightID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
+            console.log('fighterID: ', fightID)
             this.$store
               .dispatch('Pylonstech.pylons.pylons/QueryFight', {
                 params: {
                   '@type': 'Pylonstech.pylons.pylons/QueryFight',
+                  id: '0',
                 },
               })
               .then((res) => {
-                console.log('All fights: ')
-                console.log(res)
+                console.log('fight: ', res)
+                this.$store
+                  .dispatch('Pylonstech.pylons.pylons/QueryFight', {
+                    params: {
+                      '@type': 'Pylonstech.pylons.pylons/QueryFight',
+                      ID: '2',
+                    },
+                  })
+                  .then((res) => {
+                    console.log('Opponent Fighter: ', res)
+                  })
               })
             // if success link to page fight with id of the fight
             //<router-link to="/fight" class="">
@@ -226,9 +238,15 @@ export default {
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
   filter: invert(1);
   -webkit-filter: invert(1);
+}
+.fight-button:hover {
+  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
+}
+.fight-button:active {
+  box-shadow: none;
 }
 .stats_wrapper {
   width: 65%;

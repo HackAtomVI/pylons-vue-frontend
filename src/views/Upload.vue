@@ -334,21 +334,20 @@ function compressImg(dataURL, maxKB) {
   display: grid;
 }
 .uploaded-img {
+  max-width: 100%;
   margin: 70px auto;
   grid-column: 1;
   grid-row: 1;
 }
 .e60_150 {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 1);
-  width: 250px;
-  height: 50px;
+  background-color: black;
+  color: white;
+  width: 50%;
   border-width: 0px;
   font-size: 25px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 4px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding: 3px 2px;
 }
 
 .e60_170 {
@@ -395,7 +394,7 @@ function compressImg(dataURL, maxKB) {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   background: $background-gradient;
 }
 </style>
