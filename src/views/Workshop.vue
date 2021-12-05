@@ -316,6 +316,7 @@ export default {
           },
         )
         .then((res) => {
+          console.log('Faucet Initiated: ', res)
           this.$store
             .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
               value: {
@@ -325,18 +326,22 @@ export default {
               },
             })
             .then((res) => {
-              //console.log('after create account, yes')
-              this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-                value: {
-                  '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-                  creator: this.$store.getters['common/wallet/address'],
-                  cookbookID: 'nftarena',
-                  recipeID: 'getcoins',
-                  coinInputsIndex: '0',
-                  itemIDs: [],
-                  paymentInfos: [],
-                },
-              })
+              console.log('after create account, yes', res)
+              this.$store
+                .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+                  value: {
+                    '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+                    creator: this.$store.getters['common/wallet/address'],
+                    cookbookID: 'nftarena',
+                    recipeID: 'getcoins',
+                    coinInputsIndex: '0',
+                    itemIDs: [],
+                    paymentInfos: [],
+                  },
+                })
+                .then((res) => {
+                  console.log('GottenCoins: ', res)
+                })
             })
         })
 

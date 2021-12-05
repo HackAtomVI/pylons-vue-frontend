@@ -5,42 +5,37 @@
       <div class="description">Chose the item category</div>
       <div class="category-container">
         <div class="armor-wrapper">
-          <button @click="craftArmor()">
-            <div class="blackbox">
-              <img class="blackbox-img" src="../assets/img/market/armor.png" />
-              <div class="blackbox-description">CRAFT ARMOR ITEM</div>
-            </div>
-          </button>
+          <div @click="craftArmor()" class="blackbox">
+            <img class="blackbox-img" src="../assets/img/market/armor.png" />
+            <div class="blackbox-description">CRAFT ARMOR ITEM</div>
+          </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             25 token
           </div>
         </div>
         <div class="weapon-wrapper">
-          <button @click="craftWeapon()">
-            <div class="blackbox">
-              <img class="blackbox-img" src="../assets/img/market/sword.png" />
-              <div class="blackbox-description">CRAFT WEAPON ITEM</div>
-            </div>
-          </button>
+          <div @click="craftWeapon()" class="blackbox">
+            <img class="blackbox-img" src="../assets/img/market/sword.png" />
+            <div class="blackbox-description">CRAFT WEAPON ITEM</div>
+          </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             25 token
           </div>
         </div>
         <div class="surprise-wrapper">
-          <button @click="craftShield()">
-            <div class="blackbox">
-              <img class="blackbox-img" src="../assets/img/market/surprise.svg" />
-              <div class="blackbox-description">CRAFT RANDOM ITEM</div>
-            </div>
-          </button>
+          <div @click="craftShield()" class="blackbox">
+            <img class="blackbox-img" src="../assets/img/market/surprise.svg" />
+            <div class="blackbox-description">CRAFT RANDOM ITEM</div>
+          </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
             20 token
           </div>
         </div>
       </div>
+      <router-link to="/workshop" class="my-hero-router">GO TO MY HERO PAGE</router-link>
     </div>
   </div>
 </template>
@@ -62,7 +57,7 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Weapon crafting successful!')
-          this.enchant()
+          //this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
@@ -76,7 +71,7 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Armor crafting successful!')
-          this.enchant()
+          //this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
@@ -93,7 +88,7 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Shield crafting successful!')
-          this.enchant()
+          //this.enchant()
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'You are a fucking piece of shit' + err)
@@ -140,6 +135,7 @@ export default {
 }
 .container {
   padding: 5% 12%;
+  margin: 0 auto;
 }
 .category-container {
   margin-top: 50px;
@@ -154,6 +150,8 @@ export default {
   padding: 10px;
   background-color: black;
   border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 .blackbox-img {
   padding-top: 10px;
@@ -166,5 +164,23 @@ export default {
   font-family: $font-family;
   font-weight: bolder;
   padding-top: 20px;
+}
+.my-hero-router {
+  display: block;
+  text-decoration: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  cursor: pointer;
+  margin: 80px auto;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  border-width: 0px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 5px 4px;
+  width: 30%;
 }
 </style>
