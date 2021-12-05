@@ -36,7 +36,6 @@
               >
                 {{ getEquipedItemDisplayName('armor') }}
               </div>
-              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.armor}}</div> -->
               <!-- <div class="arrow-left orange" />
               <div class="arrow-right orange" /> -->
             </div>
@@ -58,7 +57,6 @@
               >
                 {{ getEquipedItemDisplayName('right') }}
               </div>
-              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.RightHand}}</div> -->
               <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
             </div>
@@ -80,7 +78,6 @@
                 {{ getEquipedItemDisplayName('left') }}
               </div>
 
-              <!-- <div class="selection-text__equiped">{{this.$store.getEquipedItemNames.LeftHand}}</div> -->
               <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
             </div>
@@ -287,7 +284,6 @@ export default {
       selectedStabDef: '',
 
       equipRightHandNext: true,
-      equipedItemNames: [],
       equippedItems: [{}],
       ownedItems: [],
     }
@@ -299,7 +295,6 @@ export default {
       this.init()
       //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
     }
-    this.updateEquipedItemNames()
   },
   computed: {},
   methods: {
@@ -480,18 +475,8 @@ export default {
         }
       }
       if (successfulEquip) this.notifySuccess('Very Nice', 'Item equiped!')
-      this.updateEquipedItemNames()
       console.log('vvvv=== Get Fighter equipment ===vvv')
       console.log(this.$store.getters['getFighterEquipment'])
-    },
-    updateEquipedItemNames() {
-      // console.log(this.$store.getters['getEquipedItemNames'])
-      this.equipedItemNames = []
-      this.equipedItemNames = Object.values(this.$store.getters['getEquipedItemNames'])
-      this.equipedItemNames.reverse()
-      console.log('Equiped item names: ' + this.equipedItemNames)
-      this.$forceUpdate()
-      this.componentKey += 1
     },
     enchant() {
       //console.log("selectedItem ID: " + this.selectedItem.ID)

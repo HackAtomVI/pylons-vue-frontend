@@ -10,6 +10,16 @@
 import axe from '@/assets/img/item_icons/axe.png'
 import sword from '../assets/img/item_icons/sword.png'
 import greatsword from '../assets/img/item_icons/greatsword.png'
+import dagger from '../assets/img/item_icons/dagger.png'
+import flail from '../assets/img/item_icons/flail.png'
+import maul from '../assets/img/item_icons/maul.png'
+import mace from '../assets/img/item_icons/mace.png'
+import poleaxe from '../assets/img/item_icons/poleaxe.png'
+import spear from '../assets/img/item_icons/spear.png'
+
+import bow from '../assets/img/item_icons/bow.png'
+import crossbow from '../assets/img/item_icons/crossbow.png'
+import javelin from '../assets/img/item_icons/javelin.png'
 
 import gambeson from '../assets/img/item_icons/gambeson.png'
 import chainmail from '../assets/img/item_icons/chainmail.png'
@@ -36,6 +46,16 @@ export default {
         axe: axe,
         sword: sword,
         greatSword: greatsword,
+        dagger: dagger,
+        flail: flail,
+        maul: maul,
+        mace: mace,
+        poleaxe: poleaxe,
+        spear: spear,
+
+        bow: bow,
+        crossbow: crossbow,
+        javelin: javelin,
         //Armor
         chainmail: chainmail,
         gambeson: gambeson,

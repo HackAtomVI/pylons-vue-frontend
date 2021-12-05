@@ -10,6 +10,16 @@
 import axe from '@/assets/img/stick_items/axe.png'
 import sword from '../assets/img/stick_items/sword.png'
 import greatsword from '../assets/img/stick_items/greatsword.png'
+import dagger from '../assets/img/stick_items/dagger.png'
+import flail from '../assets/img/stick_items/flail.png'
+import maul from '../assets/img/stick_items/maul.png'
+import mace from '../assets/img/stick_items/mace.png'
+import poleaxe from '../assets/img/stick_items/poleaxe.png'
+import spear from '../assets/img/stick_items/spear.png'
+
+import bow from '../assets/img/stick_items/bow.png'
+import crossbow from '../assets/img/stick_items/crossbow.png'
+import javelin from '../assets/img/stick_items/javelin.png'
 
 import roundShield from '../assets/img/stick_items/roundShield.png'
 import kiteShield from '../assets/img/stick_items/kiteShield.png'
@@ -30,6 +40,16 @@ export default {
         axe: axe,
         sword: sword,
         greatSword: greatsword,
+        dagger: dagger,
+        flail: flail,
+        maul: maul,
+        mace: mace,
+        poleaxe: poleaxe,
+        spear: spear,
+
+        bow: bow,
+        crossbow: crossbow,
+        javelin: javelin,
         //Shields
         roundShield: roundShield,
         kiteShield: kiteShield,
