@@ -162,7 +162,7 @@ export default {
   },
   errorCaptured(err) {
     console.log(err)
-    this.notifyFail('YOU FAIL', '' + err)
+    this.notifyFail('YOU FAIL', ' ' + err)
     return false
   },
 }

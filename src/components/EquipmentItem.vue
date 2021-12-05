@@ -50,7 +50,7 @@ export default {
         flail: flail,
         maul: maul,
         mace: mace,
-        poleaxe: poleaxe,
+        poleAxe: poleaxe,
         spear: spear,
 
         bow: bow,
@@ -73,7 +73,7 @@ export default {
   methods: {
     getSrc() {
       //console.log("name: " + this.itemName + " || img: " + this.imgs[this.itemName])
-      //console.log('My name is: ' + this.itemName)
+      console.log('My name is: ' + this.itemName)
       return this.imgs[this.itemName]
       //return require('@/assets/' + this.imgs[this.itemName]).default
     },

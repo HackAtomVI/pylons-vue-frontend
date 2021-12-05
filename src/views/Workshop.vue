@@ -263,7 +263,6 @@ export default {
   },
   data() {
     return {
-      isLoggedIn: false,
       componentKey: 0,
       walletName: '',
       selectedItem: {},
@@ -290,8 +289,7 @@ export default {
   },
   mounted() {
     console.log(this.$store)
-
-    if (this.isLoggedIn) {
+    if (this.isUserLoggedIn()) {
       this.init()
       //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
     }
