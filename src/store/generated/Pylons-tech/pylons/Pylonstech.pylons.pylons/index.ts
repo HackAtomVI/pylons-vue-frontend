@@ -837,7 +837,7 @@ export default {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgEnlistForArena(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "2000000" }, memo})
+	gas: "200000000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
