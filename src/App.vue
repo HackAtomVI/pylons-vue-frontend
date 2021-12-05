@@ -39,6 +39,7 @@ export default {
   },
   computed: {
     hasWallet() {
+      console.log('HASWALLET')
       return this.$store.hasModule(['common', 'wallet'])
     },
   },

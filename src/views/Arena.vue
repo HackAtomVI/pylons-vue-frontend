@@ -114,18 +114,14 @@ export default {
         "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
       )
     }
-    if (R.isEmpty(this.fighterEquipment.lefthand)) {
+    if (
+      (R.isEmpty(this.fighterEquipment.lefthand) || this.fighterEquipment.lefthand.ItemType === 'shield') &&
+      R.isEmpty(this.fighterEquipment.righthand || this.fighterEquipment.righthand.ItemType === 'shield')
+    ) {
       this.canFight = false
       this.notifyFail(
-        'No Weapon in Left Hand',
-        "Boi, you don't even have an item in your left hand.\nLet's see if you have any weapons, lol.",
-      )
-    }
-    if (R.isEmpty(this.fighterEquipment.righthand)) {
-      this.canFight = false
-      this.notifyFail(
-        'No Weapon in Right Hand',
-        "Boi, you don't even have an item in your right hand.\nLet's see if you have any weapons, lol.",
+        'No Weapon in Hand',
+        "Boi, you don't even have an item in your hand.\nLet's see if you have any weapons, lol.",
       )
     }
   },
