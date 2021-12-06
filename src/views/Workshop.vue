@@ -10,233 +10,239 @@
           HERO
         </div>
       </div> -->
-      <div class="panel-wrapper">
-        <div class="panel__left">
-          <div class="selection-wrapper">
-            <!-- <div class="selection-item">
+      <div class="top-panels">
+        <div class="panel-wrapper">
+          <div class="panel__left">
+            <div class="selection-wrapper">
+              <!-- <div class="selection-item">
               <span class="selection-text" style="color: rgb(18, 209, 209)">HELMET</span>
               <div class="arrow-left blue" />
               <div class="arrow-right blue" />
             </div> -->
-            <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 198, 98)">ARMOR: </span>
+              <div class="selection-item">
+                <span class="selection-text" style="color: rgb(255, 198, 98)">ARMOR: </span>
 
-              <div
-                v-if="typeof this.$store.getters['getFighterEquipment'].armor.name === 'undefined'"
-                class="selection-text selection-text__equiped"
-                style="color: gray"
-              >
-                not equiped
-              </div>
-              <div
-                v-else
-                @click="this.enchantEquipped('armor')"
-                class="selection-text selection-text__equiped"
-                style="color: rgb(255, 198, 98)"
-              >
-                {{ getEquipedItemDisplayName('armor') }}
-              </div>
-              <!-- <div class="arrow-left orange" />
+                <div
+                  v-if="typeof this.$store.getters['getFighterEquipment'].armor.name === 'undefined'"
+                  class="selection-text selection-text__equiped"
+                  style="color: gray"
+                >
+                  not equiped
+                </div>
+                <div
+                  v-else
+                  @click="this.enchantEquipped('armor')"
+                  class="selection-text selection-text__equiped"
+                  style="color: rgb(255, 198, 98)"
+                >
+                  {{ getEquipedItemDisplayName('armor') }}
+                </div>
+                <!-- <div class="arrow-left orange" />
               <div class="arrow-right orange" /> -->
-            </div>
-            <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND:</span>
+              </div>
+              <div class="selection-item">
+                <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND:</span>
 
-              <div
-                v-if="typeof this.$store.getters['getFighterEquipment'].righthand.name === 'undefined'"
-                class="selection-text selection-text__equiped"
-                style="color: gray"
-              >
-                not equiped
-              </div>
-              <div
-                v-else
-                @click="this.enchantEquipped('right')"
-                class="selection-text selection-text__equiped"
-                style="color: rgb(255, 118, 118)"
-              >
-                {{ getEquipedItemDisplayName('right') }}
-              </div>
-              <!-- <div class="arrow-left red" />
+                <div
+                  v-if="typeof this.$store.getters['getFighterEquipment'].righthand.name === 'undefined'"
+                  class="selection-text selection-text__equiped"
+                  style="color: gray"
+                >
+                  not equiped
+                </div>
+                <div
+                  v-else
+                  @click="this.enchantEquipped('right')"
+                  class="selection-text selection-text__equiped"
+                  style="color: rgb(255, 118, 118)"
+                >
+                  {{ getEquipedItemDisplayName('right') }}
+                </div>
+                <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
-            </div>
-            <div class="selection-item">
-              <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND:</span>
-              <div
-                v-if="typeof this.$store.getters['getFighterEquipment'].lefthand.name === 'undefined'"
-                class="selection-text selection-text__equiped"
-                style="color: gray"
-              >
-                not equiped
               </div>
-              <div
-                v-else
-                @click="this.enchantEquipped('left')"
-                class="selection-text selection-text__equiped"
-                style="color: rgb(255, 118, 118)"
-              >
-                {{ getEquipedItemDisplayName('left') }}
-              </div>
+              <div class="selection-item">
+                <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND:</span>
+                <div
+                  v-if="typeof this.$store.getters['getFighterEquipment'].lefthand.name === 'undefined'"
+                  class="selection-text selection-text__equiped"
+                  style="color: gray"
+                >
+                  not equiped
+                </div>
+                <div
+                  v-else
+                  @click="this.enchantEquipped('left')"
+                  class="selection-text selection-text__equiped"
+                  style="color: rgb(255, 118, 118)"
+                >
+                  {{ getEquipedItemDisplayName('left') }}
+                </div>
 
-              <!-- <div class="arrow-left red" />
+                <!-- <div class="arrow-left red" />
               <div class="arrow-right red" /> -->
+              </div>
             </div>
+            <div class="inventory-container" style="">
+              <div class="inventory__left">
+                <div id="item-list">
+                  <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
+                  <!-- v-on:click="EquimpentItemSelected(item.id)" -->
+
+                  <EquipmentItem
+                    class="grid-item"
+                    v-for="(item, index) in ownedItems"
+                    :class="{ wrapper__highlight: selectedItemIndex === index }"
+                    :name="item.name"
+                    :item="item.ItemType"
+                    :key="item.id"
+                    @click="onEquipmentClicked(item, index)"
+                  />
+                </div>
+              </div>
+              <div class="inventory__right">
+                <div @click="this.enchant()" v-if="this.selectedItemName !== ''" class="item-name">
+                  {{ this.selectedItemName }} <img class="enchant-icon" src="../assets/img/market/enchant.png" />
+                </div>
+
+                <div
+                  class="item-stats-container"
+                  v-if="this.selectedItemName !== '' && this.selectedItemType === 'weapon'"
+                >
+                  <div class="item-stat">
+                    <span class="stat-description">Enchantment: </span>{{ this.selectedEnchantment }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Damage Type: </span>{{ this.selectedDamageType }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Damage: </span
+                    >{{ Number.parseFloat(this.selectedDamage).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Accuracy:</span
+                    >{{ Number.parseFloat(this.selectedAccuracy).toFixed(2) }}
+                  </div>
+                  <div class="item-stat">
+                    <span v-if="this.selectedOneHanded == false" class="stat-description"> </span>
+                    {{ this.selectedOneHanded == 'true' ? 'Wield: One-Handed' : 'Wield: Two-Handed' }}
+                  </div>
+                </div>
+
+                <div
+                  class="item-stats-container"
+                  v-if="this.selectedItemName !== '' && this.selectedItemType === 'armor'"
+                >
+                  <div class="item-stat">
+                    <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Accuracy Modifier: </span>
+                    {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Initiative: </span
+                    >{{ Number.parseFloat(this.selectedInitiative).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Blunt Res: </span
+                    >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Arrow Res: </span
+                    >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Slice Res: </span
+                    >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Stab Res: </span
+                    >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
+                  </div>
+                </div>
+
+                <div
+                  class="item-stats-container"
+                  v-if="this.selectedItemName !== '' && this.selectedItemType === 'shield'"
+                >
+                  <div class="item-stat">
+                    <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Accuracy Modifier: </span>
+                    {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Blunt Res: </span
+                    >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Arrow Res: </span
+                    >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Slice Res: </span
+                    >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
+                  </div>
+                  <div class="item-stat">
+                    <span class="stat-description">Stab Res: </span
+                    >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
+                  </div>
+                </div>
+                <button
+                  v-on:click="equipItem()"
+                  class="equip"
+                  v-if="this.selectedItemName !== '' && singleButton() === true"
+                >
+                  Equip
+                </button>
+                <button
+                  v-on:click="this.enchant()"
+                  class="equip"
+                  v-if="this.selectedItemName !== '' && singleButton() === true && this.selectedEnchantment === 'none'"
+                >
+                  Enchant
+                </button>
+              </div>
+            </div>
+            <router-link to="/market">
+              <div
+                class="awesome-button smaller-button"
+                style="height: 50px; padding: 5px; float: left; margin-top: 50px"
+              >
+                <span class="awesome-button-text" style="padding-top: 10px">BUY MORE ITEMS</span>
+              </div>
+            </router-link>
           </div>
-          <div class="inventory-container">
-            <div class="inventory__left">
-              <div id="item-list">
-                <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
-                <!-- v-on:click="EquimpentItemSelected(item.id)" -->
-
-                <EquipmentItem
-                  class="grid-item"
-                  v-for="(item, index) in ownedItems"
-                  :class="{ wrapper__highlight: selectedItemIndex === index }"
-                  :name="item.name"
-                  :item="item.ItemType"
-                  :key="item.id"
-                  @click="onEquipmentClicked(item, index)"
-                />
-              </div>
-            </div>
-            <div class="inventory__right">
-              <div @click="this.enchant()" v-if="this.selectedItemName !== ''" class="item-name">
-                {{ this.selectedItemName }} <img class="enchant-icon" src="../assets/img/market/enchant.png" />
-              </div>
-
-              <div
-                class="item-stats-container"
-                v-if="this.selectedItemName !== '' && this.selectedItemType === 'weapon'"
-              >
-                <div class="item-stat">
-                  <span class="stat-description">Enchantment: </span>{{ this.selectedEnchantment }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Damage Type: </span>{{ this.selectedDamageType }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Damage: </span>{{ Number.parseFloat(this.selectedDamage).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Accuracy:</span
-                  >{{ Number.parseFloat(this.selectedAccuracy).toFixed(2) }}
-                </div>
-                <div class="item-stat">
-                  <span v-if="this.selectedOneHanded == false" class="stat-description"> </span>
-                  {{ this.selectedOneHanded == 'true' ? 'Wield: One-Handed' : 'Wield: Two-Handed' }}
-                </div>
-              </div>
-
-              <div
-                class="item-stats-container"
-                v-if="this.selectedItemName !== '' && this.selectedItemType === 'armor'"
-              >
-                <div class="item-stat">
-                  <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Accuracy Modifier: </span>
-                  {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Initiative: </span
-                  >{{ Number.parseFloat(this.selectedInitiative).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Blunt Res: </span
-                  >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Arrow Res: </span
-                  >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Slice Res: </span
-                  >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Stab Res: </span
-                  >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
-                </div>
-              </div>
-
-              <div
-                class="item-stats-container"
-                v-if="this.selectedItemName !== '' && this.selectedItemType === 'shield'"
-              >
-                <div class="item-stat">
-                  <span class="stat-description">Enchantment: </span> {{ this.selectedEnchantment }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Accuracy Modifier: </span>
-                  {{ Number.parseFloat(this.selectedAccuracyMod).toFixed(2) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Blunt Res: </span
-                  >{{ Number.parseFloat(this.selectedBluntRes).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Arrow Res: </span
-                  >{{ Number.parseFloat(this.selectedArrowDef).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Slice Res: </span
-                  >{{ Number.parseFloat(this.selectedSliceDef).toFixed(0) }}
-                </div>
-                <div class="item-stat">
-                  <span class="stat-description">Stab Res: </span
-                  >{{ Number.parseFloat(this.selectedStabDef).toFixed(0) }}
-                </div>
-              </div>
-              <button
-                v-on:click="equipItem()"
-                class="equip"
-                v-if="this.selectedItemName !== '' && singleButton() === true"
-              >
-                Equip
-              </button>
-              <button
-                v-on:click="this.enchant()"
-                class="equip"
-                v-if="this.selectedItemName !== '' && singleButton() === true && this.selectedEnchantment === 'none'"
-              >
-                Enchant
-              </button>
-            </div>
-          </div>
-          <router-link to="/market">
-            <div class="awesome-button smaller-button" style="height: 90px; margin-top: 100px">
-              <span class="awesome-button-text">BUY MORE ITEMS</span>
-            </div>
-          </router-link>
         </div>
-      </div>
-      <div class="panel__right">
-        <div class="stickfigure-background">
-          <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
-          <StickyLeft
-            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].lefthand)"
-            :name="this.$store.getters['getFighterEquipment'].lefthand.name"
-            class="equipped-item shifted-down"
-            style="z-index: 100"
-          />
-          <StickyRight
-            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].righthand)"
-            :name="this.$store.getters['getFighterEquipment'].righthand.name"
-            class="equipped-item shifted-down"
-            style="z-index: 100"
-          />
-          <StickyArmor
-            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].armor)"
-            :name="this.$store.getters['getFighterEquipment'].armor.name"
-            class="equipped-item shifted-down"
-          />
-          <img
-            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].nft.image)"
-            :src="this.$store.getters['getFighterEquipment'].nft.image"
-            class="nft-image shifted-down"
-            style="z-index: 9999"
-          />
+        <div class="panel__right">
+          <div class="stickfigure-background">
+            <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+            <StickyLeft
+              v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].lefthand)"
+              :name="this.$store.getters['getFighterEquipment'].lefthand.name"
+              class="equipped-item shifted-down"
+              style="z-index: 100"
+            />
+            <StickyRight
+              v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].righthand)"
+              :name="this.$store.getters['getFighterEquipment'].righthand.name"
+              class="equipped-item shifted-down"
+              style="z-index: 100"
+            />
+            <StickyArmor
+              v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].armor)"
+              :name="this.$store.getters['getFighterEquipment'].armor.name"
+              class="equipped-item shifted-down"
+            />
+            <img
+              v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].nft.image)"
+              :src="this.$store.getters['getFighterEquipment'].nft.image"
+              class="nft-image shifted-down"
+              style="z-index: 9999"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -533,6 +539,8 @@ export default {
 }
 .item-stats-container {
   font-size: 12px;
+  color: white;
+  padding-left: 20px;
 }
 .arrow-right {
   margin-left: 20px;
@@ -619,6 +627,7 @@ export default {
   padding: 15px;
   height: auto;
   width: 100%;
+  border-radius: 10px;
 }
 
 .inventory-container {
@@ -626,13 +635,13 @@ export default {
   flex-direction: row;
   background-color: rgba(255, 198, 98, 0.3);
   width: 450px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
+  border-radius: 10px;
+  margin-top: 50px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }
 .stickfigure-background {
-  width: 468px;
-  height: 468px;
+  width: 450px;
+  height: 450px;
   background-image: url('../assets/img/stick_items/sboiBG.png');
   background-size: 100%;
   display: grid;
@@ -653,14 +662,14 @@ export default {
 }
 .selection-wrapper {
   width: 100%;
-  height: 30%;
+  //margin-bottom: 30px;
   font-size: 21px;
   display: flex;
   font-family: $font-family;
   font-weight: bolder;
-  padding: 30px 0;
+  // padding: 30px 0;
   flex-direction: column;
-  justify-content: space-evenly;
+  // justify-content: space-evenly;
 }
 .selection-item {
   display: flex;
@@ -737,9 +746,7 @@ export default {
 }
 
 .container {
-  padding-top: 50px;
-  display: flex;
-  flex-direction: row;
+  padding-top: 110px;
   width: 85%;
   height: 100%;
 }
@@ -755,6 +762,11 @@ export default {
 .panel__right {
   width: 50%;
   padding-left: 2%;
+}
+.top-panels {
+  display: flex;
+  flex-direction: row;
+  height: 70%;
 }
 .title {
   color: white;

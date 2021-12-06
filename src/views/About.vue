@@ -13,7 +13,7 @@
       </div>
 
       <a target="_blank" href="https://discord.gg/ZKKbhUs">
-        <div class="awesome-button">
+        <div class="awesome-button" style="margin-top: 65px; float: left">
           <img class="img-fit" src="../assets/icon/discord.png" style="" />
           <span class="awesome-button-text">JOIN US</span>
         </div>
@@ -47,7 +47,7 @@ export default {
 .title {
   font-size: 50px;
   color: white;
-  padding: 20px;
+  padding: 30px 0;
 }
 .description {
   font-size: 25px;
@@ -61,7 +61,7 @@ export default {
   background: $background-gradient;
 }
 .container {
-  padding: 20px 10%;
+  padding: 90px 10%;
 }
 .e90_483 {
   cursor: pointer;

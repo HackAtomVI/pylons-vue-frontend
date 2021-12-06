@@ -5,7 +5,7 @@
       <div class="title">The NFT Arena game</div>
 
       <router-link to="/login" v-on:click="isStartClicked = !isStartClicked">
-        <div class="awesome-button wide top-margin">
+        <div class="awesome-button wide top-margin" style="margin: 40px auto; height: 40px; padding: 10px">
           <span class="awesome-button-text" style="text-decoration: none"> GET STARTED NOW </span>
         </div>
       </router-link>

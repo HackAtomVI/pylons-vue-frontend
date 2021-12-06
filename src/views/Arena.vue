@@ -2,16 +2,16 @@
   <div class="background">
     <div v-if="isLoggedIn()" class="container">
       <div class="container--top">
-        <div class="title">Arena</div>
+        <div class="title" style="text-align: right">Arena</div>
         <div class="description">Enter into battle with your NFT Hero!</div>
       </div>
       <div class="container--bot">
         <div class="nft-name" id="nftName">
           <span>Fighter {{ fighterName }}</span>
         </div>
-        <div class="hero_wrapper">
+        <div class="hero_wrapper" style="height: 250px">
           <div class="nft-img_wrapper">
-            <div class="stickfigure-background">
+            <div class="stickfigure-background" style="height: 250px">
               <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
               <StickyLeft
                 v-if="exists(this.$store.getters['getFighterEquipment'].lefthand.name)"
@@ -62,10 +62,14 @@
             >
               <span class="awesome-button-text">CLICK TO CHECK BATTLE RESULT!</span>
             </div>
-            <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%">
+            <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%; margin: 10px auto">
               <div class="nft-img_wrapper" style="height: 100% !important">
-                <div class="stickfigure-background">
-                  <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+                <div class="stickfigure-background" style="width: 126px; height: 126px">
+                  <img
+                    src="../assets/img/stick_items/sboi.png"
+                    class="stickfigure shifted-down"
+                    style="width: 126px; height: 126px"
+                  />
                   <StickyLeft
                     v-if="exists(this.opponentEquipment.lefthand.name)"
                     :name="this.opponentEquipment.lefthand.name"
@@ -397,6 +401,7 @@ export default {
   color: black;
 }
 .fight-button {
+  margin: auto 3%;
   cursor: pointer;
   width: 180px;
   height: 180px;
@@ -405,7 +410,6 @@ export default {
   text-align: center;
   font-size: 18px;
   padding: 20px;
-  margin: 2.5%;
   background-color: #29eddb;
   // background-color: #d61224;
   border-top-left-radius: 10px;
@@ -446,17 +450,15 @@ export default {
   // height: 20%;
 }
 .stickfigure-background {
-  height: 100%;
-  width: 100%;
   background-image: url('../assets/img/stick_items/sboiBG.png');
-  background-size: stretch;
+  background-size: 100%;
   //background-image: url('../assets/img/stick_items/sboiBG.png');
   display: grid;
   z-index: -3;
 }
 .stickfigure {
-  width: 100%;
-  height: 100%;
+  width: 250px;
+  height: 250px;
   grid-column: 1;
   grid-row: 1;
   z-index: 0;
@@ -480,6 +482,7 @@ export default {
   display: flex;
   flex-direction: row;
   background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.5);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -495,7 +498,7 @@ export default {
 }
 .queue-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
   column-gap: 5px;
