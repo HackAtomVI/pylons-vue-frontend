@@ -3,9 +3,12 @@
     <div class="container">
       <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
       <div class="title">The NFT Arena game</div>
-      <router-link to="/login" v-on:click="isStartClicked = !isStartClicked" type="button" class="get-started"
-        >GET STARTED NOW</router-link
-      >
+
+      <router-link to="/login" v-on:click="isStartClicked = !isStartClicked">
+        <div class="awesome-button wide top-margin">
+          <span class="awesome-button-text" style="text-decoration: none"> GET STARTED NOW </span>
+        </div>
+      </router-link>
       <div v-if="isStartClicked" style="text-align: center">
         <!-- <SpWallet class="wallet" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" /> -->
       </div>
@@ -27,6 +30,17 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
+.top-margin {
+  margin-top: 5%;
+}
+.wide {
+  width: 220px;
+  height: 60px;
+}
+.logo {
+  margin-top: 10%;
+  width: 50%;
+}
 .sp-fill {
   padding-top: 0;
 }

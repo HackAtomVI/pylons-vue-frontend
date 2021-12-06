@@ -106,7 +106,7 @@ export default {
   .nav__menu__item {
     font-family: $font-family-header;
     padding: 1.5rem;
-    font-size: $font-size * 1.15;
+    font-size: $font-size;
     color: white;
     text-align: center;
 
@@ -188,11 +188,5 @@ export default {
 }
 
 .nav__menu--hidden {
-}
-.discord-button {
-  background-color: white;
-  color: black;
-  padding: 0;
-  font-size: $font-size;
 }
 </style>

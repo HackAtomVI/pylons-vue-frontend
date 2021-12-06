@@ -2,11 +2,11 @@
   <header>
     <div class="header-content-container">
       <router-link to="/" class="nav__logo">
-        <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
+        <img class="logo" alt="Crowd Control" src="../assets/logo2.gif" />
       </router-link>
 
-      <router-link to="/login">
-        <div v-if="!isLoggedIn" class="awesome-button">
+      <router-link v-if="!getLoggedIn" to="/login">
+        <div class="awesome-button">
           <span class="awesome-button-text">Login</span>
         </div>
       </router-link>
@@ -119,7 +119,7 @@ header {
   right: 10%;
   cursor: pointer;
   width: 180px;
-  height: 90px;
+  height: 60px;
   font-weight: bold;
   text-decoration: none;
   text-align: center;
