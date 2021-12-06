@@ -182,34 +182,45 @@ export default {
 
     this.queryMyItems().then((items) => {
       this.ownedItems = items
-      //console.log('owned items', items)
+      //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
+      this.fighterEquipment = this.$store.getters['getFighterEquipment']
+
+      this.canFight = true
+      if (R.isEmpty(this.fighterEquipment.nft)) {
+        this.canFight = false
+        this.notifyFail('No NFT', "Boi, you haven't even uploaded an NFT... \nDo it in the UPLAOD page!.")
+      }
+      if (R.isEmpty(this.fighterEquipment.armor)) {
+        let armor = this.ownedItems.find((item) => item.ItemType === 'armor')
+        if (typeof armor === 'undefined') {
+          this.canFight = false
+          this.notifyFail(
+            'No Armor worn',
+            "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
+          )
+        } else {
+          this.fighterEquipment.armor = armor
+          console.log('Auto-Equip: Armor')
+        }
+      }
+      if (R.isEmpty(this.fighterEquipment.lefthand) && R.isEmpty(this.fighterEquipment.righthand)) {
+        let weapon = this.ownedItems.find((item) => item.ItemType === 'weapon')
+        if (typeof weapon !== 'undefined') {
+          this.fighterEquipment.righthand = weapon
+          console.log('Auto-Equip: Weapon')
+        }
+      }
+      if (
+        (R.isEmpty(this.fighterEquipment.lefthand) || this.fighterEquipment.lefthand.ItemType === 'shield') &&
+        R.isEmpty(this.fighterEquipment.righthand || this.fighterEquipment.righthand.ItemType === 'shield')
+      ) {
+        this.canFight = false
+        this.notifyFail(
+          'No Weapon in Hand',
+          "Boi, you don't even have an item in your hand.\nLet's see if you have any weapons, lol.",
+        )
+      }
     })
-
-    //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
-    this.fighterEquipment = this.$store.getters['getFighterEquipment']
-
-    this.canFight = true
-    if (R.isEmpty(this.fighterEquipment.nft)) {
-      this.canFight = false
-      this.notifyFail('No NFT', "Boi, you haven't even uploaded an NFT... \nDo it in the UPLAOD page!.")
-    }
-    if (R.isEmpty(this.fighterEquipment.armor)) {
-      this.canFight = false
-      this.notifyFail(
-        'No Armor worn',
-        "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
-      )
-    }
-    if (
-      (R.isEmpty(this.fighterEquipment.lefthand) || this.fighterEquipment.lefthand.ItemType === 'shield') &&
-      R.isEmpty(this.fighterEquipment.righthand || this.fighterEquipment.righthand.ItemType === 'shield')
-    ) {
-      this.canFight = false
-      this.notifyFail(
-        'No Weapon in Hand',
-        "Boi, you don't even have an item in your hand.\nLet's see if you have any weapons, lol.",
-      )
-    }
   },
   methods: {
     enlistForArena() {
