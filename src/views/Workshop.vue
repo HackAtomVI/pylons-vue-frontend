@@ -122,7 +122,8 @@
                   >{{ Number.parseFloat(this.selectedAccuracy).toFixed(2) }}
                 </div>
                 <div class="item-stat">
-                  <span class="stat-description">One Handed: </span>{{ this.selectedOneHanded }}
+                  <span v-if="this.selectedOneHanded == false" class="stat-description"> </span>
+                  {{ this.selectedOneHanded == 'true' ? 'Wield: One-Handed' : 'Wield: Two-Handed' }}
                 </div>
               </div>
 
@@ -195,18 +196,11 @@
                 Equip
               </button>
               <button
-                v-on:click="equipItem('right')"
+                v-on:click="this.enchant()"
                 class="equip"
-                v-if="this.selectedItemName !== '' && singleButton() === false"
+                v-if="this.selectedItemName !== '' && singleButton() === true"
               >
-                Right
-              </button>
-              <button
-                v-on:click="equipItem('left')"
-                class="equip"
-                v-if="this.selectedItemName !== '' && singleButton() === false"
-              >
-                Left
+                Enchant
               </button>
             </div>
           </div>
@@ -446,11 +440,15 @@ export default {
       console.log(this.$store.getters['getFighterEquipment'])
     },
     enchant() {
-      //console.log("selectedItem ID: " + this.selectedItem.ID)
-      this.$router.push({
-        name: 'Enchant',
-        params: { itemNew: false, id: this.selectedItem.ID },
-      })
+      console.log('selectedItem: ', this.selectedItem)
+      if (this.selectedItem.Enchantment === 'none') {
+        this.$router.push({
+          name: 'Enchant',
+          params: { itemNew: false, id: this.selectedItem.ID },
+        })
+      } else {
+        this.notifyInfo('Already Enchanted', 'This item is already enchanted.')
+      }
     },
     enchantEquipped(slot) {
       let equippedID

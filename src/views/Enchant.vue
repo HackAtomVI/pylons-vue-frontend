@@ -116,6 +116,7 @@ export default {
       invalidItem: false,
       isNew: false,
       isEnchanted: false,
+      enchantmentTitle: '',
       item: {},
       itemName: '',
       isInitialized: false,
@@ -147,7 +148,7 @@ export default {
     },
     getItem() {
       console.log(this.itemID)
-      this.getItems().then((res) => {
+      return this.getItems().then((res) => {
         this.item = R.find(R.propEq('ID', this.itemID), res)
         //console.log(this.item)
 
@@ -159,6 +160,9 @@ export default {
         } else {
           this.itemName = this.item.name.toUpperCase()
           this.isEnchanted = this.item.Enchantment === 'none' ? false : true
+          if (this.isEnchanted) {
+            this.enchantmentTitle = this.item.Enchantment
+          }
           this.isInitialized = true
         }
       })
@@ -173,8 +177,10 @@ export default {
       this.enchantItem(this.item.ItemType, this.itemID)
         .then((res) => {
           console.log('enchantment finished: ', res)
-          this.notifySuccess('Very Nice', 'Enchantment Successful!!')
-          this.getItem()
+
+          this.getItem().then(() => {
+            this.notifySuccess('Very Nice', this.enchantmentTitle + ' Enchantment applied.')
+          })
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'Enchantment Unsuccessful :(' + err)
