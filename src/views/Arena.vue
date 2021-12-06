@@ -212,6 +212,17 @@ export default {
         let weapon = this.ownedItems.find((item) => item.ItemType === 'weapon')
         if (typeof weapon !== 'undefined') {
           this.fighterEquipment.righthand = weapon
+
+          if (weapon.oneHanded === 'true') {
+            let secondary = this.ownedItems.find(
+              (item) =>
+                (item.ItemType === 'weapon' && item.oneHanded === 'true' && item.ID !== weapon.ID) ||
+                item.ItemType === 'shield',
+            )
+            if (typeof secondary !== 'undefined') {
+              this.fighterEquipment.lefthand = secondary
+            }
+          }
           console.log('Auto-Equip: Weapon')
         }
       }
