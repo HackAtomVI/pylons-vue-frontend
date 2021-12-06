@@ -274,6 +274,12 @@ export default {
             console.log('Enlisted Successfully: ', res)
             console.log('TEST: ', JSON.parse(res.rawLog))
             this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
+
+            if (this.fighterID.includes('pylo')) {
+              //We got a wallet address lmao, try the other one
+              this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[0].value
+            }
+
             this.fighterID = this.fighterID.replace(/[^a-zA-Z0-9]/g, '')
             //this.queuedFights.push(fighterID)
             this.fightQueued = true
@@ -544,6 +550,10 @@ export default {
 }
 .battle-log-text {
   font-size: 20px;
+}
+.battle-log {
+  padding: 10px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
 }
 .background {
   top: 0;
