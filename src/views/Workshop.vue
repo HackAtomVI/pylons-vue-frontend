@@ -213,19 +213,25 @@
           <StickyLeft
             v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].lefthand)"
             :name="this.$store.getters['getFighterEquipment'].lefthand.name"
-            class="equipped-item"
+            class="equipped-item shifted-down"
             style="z-index: 100"
           />
           <StickyRight
             v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].righthand)"
             :name="this.$store.getters['getFighterEquipment'].righthand.name"
-            class="equipped-item"
+            class="equipped-item shifted-down"
             style="z-index: 100"
           />
           <StickyArmor
             v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].armor)"
             :name="this.$store.getters['getFighterEquipment'].armor.name"
-            class="equipped-item"
+            class="equipped-item shifted-down"
+          />
+          <img
+            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].nft.image)"
+            :src="this.$store.getters['getFighterEquipment'].nft.image"
+            class="nft-image shifted-down"
+            style="z-index: 9999"
           />
         </div>
       </div>
@@ -772,8 +778,20 @@ export default {
   margin-bottom: 5px;
   color: white;
 }
+.nft-image {
+  grid-column: 1;
+  grid-row: 1;
+  width: 30%;
+  height: 30%;
+  margin: 0px auto;
+  z-index: 1;
+}
 .selection-text__equiped:hover {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+}
+.shifted-down {
+  margin-top: 10px;
+  border-width: 0px;
 }
 </style>
