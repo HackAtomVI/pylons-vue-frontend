@@ -401,6 +401,7 @@ function compressImg(dataURL, maxKB) {
   left: 0;
   width: 100%;
   height: auto;
+  min-height: 120%;
   background: $background-gradient;
 }
 </style>

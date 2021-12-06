@@ -69,13 +69,9 @@ export default {
       switch (this.itemName) {
         case 'axe':
         case 'sword':
-        case 'greatSword':
         case 'dagger':
         case 'flail':
-        case 'maul':
         case 'mace':
-        case 'poleaxe':
-        case 'spear':
           return true
       }
       return false

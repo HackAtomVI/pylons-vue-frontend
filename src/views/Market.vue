@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <div class="container">
+    <div v-if="isUserLoggedIn()" class="container">
       <div class="title">Forge</div>
       <div class="description">Chose the item category</div>
       <div class="category-container">
@@ -37,19 +37,29 @@
       </div>
       <router-link to="/workshop" class="my-hero-router">GO TO MY HERO PAGE</router-link>
     </div>
+    <div v-if="!isUserLoggedIn()">
+      <PleaseLogIn />
+    </div>
   </div>
 </template>
 
 <script>
 import { craftWeapon, craftArmor, craftShield, getItems } from '../utils/pylonsInteraction.js'
+import PleaseLogIn from '../components/PleaseLogIn.vue'
 
 export default {
   name: 'Market',
-  components: {},
+  components: {
+    PleaseLogIn,
+  },
   data() {
     return {
       lock: false,
     }
+  },
+  mounted() {
+    if (!this.isUserLoggedIn())
+      this.notifyFail('Epic fail', 'What would you even do with forged items without logging in?')
   },
   methods: {
     craftWeapon() {
@@ -106,6 +116,9 @@ export default {
           console.error('YES, YOU DUN GOOFED:', err)
           this.lock = false
         })
+    },
+    isUserLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
     },
     enchant() {
       let craftedItem

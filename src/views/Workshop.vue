@@ -297,7 +297,7 @@ export default {
     if (this.isUserLoggedIn()) {
       this.init()
       //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
-    }
+    } else this.notifyFail('Epic fail', "How could you have an NFT Hero, if you're not even logged in??")
 
     console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
   },

@@ -139,7 +139,7 @@ export default {
           'You tried to enchant an non existant item?,\n Go to the forge and get a real one!',
         )
       }
-    }
+    } else this.notifyFail('Epic fail', "You can't enchant anything without loggin in...")
   },
 
   methods: {
