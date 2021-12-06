@@ -14,55 +14,25 @@
 
       <input v-model="nftname" class="e60_170" type="text" name="nftname" :placeholder="nftname" required />
 
-      <!--input
-        id="file"
-        class="inputfile"
-        name="file"
-        type="file"
-        @change="inputFile"
-      >
-        <label
-          class="button--file"
-          for="file"
-        >
-        Choose a file without copyright violation
-      </label>
+      <form @submit.prevent="upload"></form>
 
-      <Cropper
-        class="cropper"
-        :src="cropImage"
-        :auto-zoom="true"
-        :stencil-size="{
-          width: 500,
-          height: 500
-        }"
-        :default-position="{
-          left: 0,
-          top: 0
-        }"
-        :default-size="{
-          width: 838,
-          height: 1300
-        }"
-        image-restriction="stencil"
-        @change="changeCrop"
-      /-->
+      <div class="img-container">
+        <input
+          @change="onFileChange"
+          class="e60_156"
+          type="file"
+          id="nftimg"
+          name="image"
+          accept="image/png, image/jpeg"
+          v-bind:style="[hasImg ? { display: none } : { display: block }]"
+        />
+        <img class="uploaded-img" :src="nftimg" />
+      </div>
 
-      <form @submit.prevent="upload">
-        <div class="img-container">
-          <input
-            @change="onFileChange"
-            class="e60_156"
-            type="file"
-            id="nftimg"
-            name="image"
-            accept="image/png, image/jpeg"
-            v-bind:style="[hasImg ? { display: none } : { display: block }]"
-          />
-          <img class="uploaded-img" :src="nftimg" />
-        </div>
-      </form>
-      <button class="e60_150" type="submit" v-on:click="setNftData()">UPLOAD to Blockchain</button>
+      <div @click="setNftData()" class="awesome-button">
+        <!--img src="../assets/img/sword.png" class="sword-img" /-->
+        <span class="awesome-button-text">Upload to Blockchain</span>
+      </div>
       <!--button v-on:click="printAllItems()">print all items</button-->
       <!--button v-on:click="loadNft()">Load NFT</button-->
     </div>
@@ -74,15 +44,11 @@
 
 <script>
 import PleaseLogIn from '../components/PleaseLogIn.vue'
-//import { Cropper } from 'vue-advanced-cropper'
-import 'vue-advanced-cropper/dist/style.css'
-import sampleGradient from '../assets/img/sampleGradient.svg'
 
 export default {
   name: 'Upload',
   components: {
     PleaseLogIn,
-    //Cropper,
   },
   data() {
     return {
@@ -93,7 +59,6 @@ export default {
       heroName: '',
       heroImg: '',
       initialized: true,
-      cropImage: sampleGradient,
     }
   },
   mounted() {
@@ -159,16 +124,11 @@ export default {
           })
       })
     },
-    changeCrop({ canvas }) {
-      this.cropImage = canvas.toDataURL()
-    },
     inputFile(event) {
       let file = event.target.files[0]
 
       uploadImg(file, (result) => {
         console.log('uploadImg result', result)
-        this.cropImage = result
-
         this.nftimg = result
       })
     },
@@ -318,10 +278,6 @@ function compressImg(dataURL, maxKB) {
 
 <style scoped lang="scss">
 @import '../scss/variables';
-.cropper {
-  height: 600px;
-  background: #ddd;
-}
 .title {
   font-size: 40px;
   color: black;
@@ -357,6 +313,38 @@ function compressImg(dataURL, maxKB) {
   grid-column: 1;
   grid-row: 1;
 }
+.awesome-button {
+  cursor: pointer;
+  width: 180px;
+  height: 90px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-style: white;
+  padding: 20px;
+  margin: auto;
+  background-color: black;
+  // background-color: #d61224;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
+  filter: invert(1);
+  -webkit-filter: invert(1);
+}
+.awesome-button:hover {
+  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
+}
+.awesome-button:active {
+  box-shadow: none;
+}
+.awesome-button-text {
+  text-decoration: none;
+  color: white;
+}
+
 .e60_150 {
   background-color: black;
   color: white;
