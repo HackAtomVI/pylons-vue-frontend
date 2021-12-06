@@ -55,12 +55,12 @@
         <div class="queue-container">
           <div v-if="this.fightQueued || this.keepLog" class="fight-box">
             <div
+              class="awesome-button smaller-button"
               v-if="!this.fightFinished"
               @click="checkFightResult(this.fighterID)"
-              class="hero_wrapper"
               style="cursor: pointer; background-color: rgba(255, 255, 255, 0.8)"
             >
-              <div class="stat-text">CLICK TO CHECK BATTLE RESULT!</div>
+              <span class="awesome-button-text">CLICK TO CHECK BATTLE RESULT!</span>
             </div>
             <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%">
               <div class="nft-img_wrapper" style="height: 100% !important">
@@ -117,7 +117,9 @@
           </div>
           <div v-if="this.fightFinished" class="battle-log">
             <div class="battle-log-text">
-              {{ this.getBattleLog() }}
+              <div v-for="(line, index) in this.getBattleLog()" :key="'log' + index">
+                {{ line }}
+              </div>
             </div>
           </div>
         </div>
@@ -347,7 +349,9 @@ export default {
         })
     },
     getBattleLog() {
-      return this.battleLog
+      let logarray = this.battleLog.split(/\r?\n/)
+      console.log('battlelog yes:', logarray)
+      return logarray
     },
     getWinLossRatio() {
       if (typeof this.fighterEquipment.nft !== 'undefined')

@@ -205,7 +205,7 @@
             </div>
           </div>
           <router-link to="/market">
-            <div class="awesome-button" style="height: 90px; margin-top: 100px">
+            <div class="awesome-button smaller-button" style="height: 90px; margin-top: 100px">
               <span class="awesome-button-text">BUY MORE ITEMS</span>
             </div>
           </router-link>
@@ -798,37 +798,10 @@ export default {
   cursor: pointer;
 }
 
-.awesome-button {
-  cursor: pointer;
-  width: 180px;
+.smaller-button {
   height: 90px;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  font-style: white;
-  padding: 20px;
-  margin: auto;
-  background-color: black;
-  // background-color: #d61224;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
-  filter: invert(1);
-  -webkit-filter: invert(1);
 }
-.awesome-button:hover {
-  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
-}
-.awesome-button:active {
-  box-shadow: none;
-}
-.awesome-button-text {
-  text-decoration: none;
-  color: white;
-}
+
 .shifted-down {
   margin-top: 5%;
   border-width: 0px;
