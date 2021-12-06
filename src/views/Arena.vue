@@ -50,8 +50,65 @@
         </div>
       </div>
       <div class="footer-container">
-        <div v-for="(fight, index) in queuedFights" @click="checkFightResult(fight)" class="fight-box" :key="index">
-          CHECK FIGHT RESULT
+        <div class="title">Queued Battle</div>
+        <div class="queue-container">
+          <div v-if="this.fightQueued" @click="checkFightResult(this.fighterID)" class="fight-box">
+            <div v-if="!this.fightFinished" class="hero_wrapper" style="background-color: rgba(255, 255, 255, 0.8)">
+              <div class="stat-text">CLICK TO CHECK BATTLE RESULT!</div>
+            </div>
+            <div v-if="this.fightFinished" class="hero_wrapper">
+              <div class="nft-img_wrapper" style="width: 150px !important">
+                <div class="stickfigure-background">
+                  <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+                  <StickyLeft
+                    v-if="exists(this.opponentEquipment.lefthand.name)"
+                    :name="this.opponentEquipment.lefthand.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 100"
+                  />
+                  <StickyRight
+                    v-if="exists(this.opponentEquipment.righthand.name)"
+                    :name="this.opponentEquipment.righthand.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 100"
+                  />
+                  <StickyArmor
+                    v-if="exists(this.opponentEquipment.armor.name)"
+                    :name="this.opponentEquipment.armor.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 10"
+                  />
+                  <img
+                    v-if="exists(this.opponentEquipment.nft.image)"
+                    :src="this.opponentEquipment.nft.image"
+                    class="nft-image shifted-down"
+                    style="z-index: 9999"
+                  />
+                </div>
+              </div>
+              <div class="stats_wrapper">
+                <div class="stats-column" style="padding-top: 5px !important">
+                  <div class="stat-text__small">
+                    <span v-if="this.isWinner" style="font-weight: bold; color: green">YOU WIN!!!</span>
+                    <span v-else style="font-weight: bold; color: red">YOU LOST!</span>
+                  </div>
+                  <div class="stat-text__small">
+                    <span style="font-weight: bold">NAME:</span> {{ this.opponentEquipment.nft.name }}
+                  </div>
+                </div>
+              </div>
+              <div class="stats-column" style="padding-top: 5px !important">
+                <div class="stat-text__small">
+                  <span style="font-weight: bold">WINS:</span>
+                  {{ Number.parseFloat(this.opponentEquipment.nft.wins).toFixed(0) }}
+                </div>
+                <div class="stat-text__small">
+                  <span style="font-weight: bold">LOSSES:</span>
+                  {{ Number.parseFloat(this.opponentEquipment.nft.losses).toFixed(0) }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -78,8 +135,24 @@ export default {
   data() {
     return {
       fighterEquipment: {},
-      opponentEquipment: {},
-      queuedFights: [],
+      isWinner: false,
+      fightQueued: false,
+      fightFinished: false,
+      opponentEquipment: {
+        nft: {},
+        lefthand: {},
+        righthand: {},
+        armor: {},
+        helmet: {},
+      },
+      //queuedFights: [],
+      opponentFighter: {
+        nft: {},
+        lefthand: {},
+        righthand: {},
+        armor: {},
+        helmet: {},
+      },
       fighterName: 'undefined',
       fighterID: 'undefined',
       canFight: false,
@@ -88,8 +161,6 @@ export default {
     }
   },
   mounted() {
-    console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
-
     //console.log('query fight 0:', getFight(0))
     //console.log('the whole store:', this.$store)
     //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
@@ -141,21 +212,7 @@ export default {
     }
   },
   methods: {
-    querySomeFight() {
-      this.$axios
-        .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=15', {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        })
-        .then((res) => {
-          console.log('axios response omg: ', res)
-          console.log('deep: ', res.data.Fighter.Log)
-        })
-    },
     enlistForArena() {
-      let fighterID
-      let localFighter
-      let opponentFighterID
-      let opponentFighter
       this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
@@ -181,9 +238,10 @@ export default {
           .then((res) => {
             console.log('Enlisted Successfully: ', res)
             console.log('TEST: ', res)
-            fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
-            fighterID = fighterID.replace(/[^a-zA-Z0-9]/g, '')
-            this.queuedFights.push(fighterID)
+            this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
+            this.fighterID = this.fighterID.replace(/[^a-zA-Z0-9]/g, '')
+            //this.queuedFights.push(fighterID)
+            this.fightQueued = true
           })
       } else {
         this.notifyFail(
@@ -193,18 +251,11 @@ export default {
       }
     },
     postFightConfig(local, opponent) {
-      console.log('Local fighter: ', local)
-      console.log('Opponent fighter: ', opponent)
+      // console.log('Local fighter: ', local)
+      // console.log('Opponent fighter: ', opponent)
     },
     checkFightResult(id) {
       this.getFightDone(id)
-      // let response = this.getFightDone(id)
-      // if(response === false) {
-      //   this.notifyInfo('Waiting', "You are still waiting for the opponent!")
-      // }else{
-      //   console.log(response)
-      //   this.queuedFights.pop()
-      // }
     },
     getFightDone(id) {
       this.$axios
@@ -214,12 +265,15 @@ export default {
         .then((res) => {
           console.log('response arrived')
           if (res.data.Fighter.Status === 'waiting') {
+            this.notifyInfo('Pending', 'Your hero is still waiting for an opponent')
             console.log('waiting: ', res.data.Fighter)
           } else {
+            this.notifyInfo('Fight completed!', 'Your hero has fought in a battle!\nUpdating Fight log!')
             console.log('fight successful: ', res.data.Fighter)
-            this.queuedFights.pop()
+            //this.queuedFights.pop()
+            this.isWinner = res.data.Fighter.status === 'loss' ? false : true
             console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
-
+            this.fightFinished = true
             this.$axios
               .get(
                 'http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' +
@@ -318,7 +372,11 @@ export default {
   margin: 5px;
   color: black;
 }
-
+.stat-text__small {
+  font-size: 15px;
+  margin: 3px;
+  color: black;
+}
 .nft-img_wrapper {
   width: 250px;
   background-color: white;
@@ -371,6 +429,20 @@ export default {
   margin-bottom: 20px;
   display: block;
 }
+.queue-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  column-gap: 5px;
+  row-gap: 5px;
+  float: left;
+  //width: 100%;
+  padding: 10px;
+  height: 100%;
+  width: 50%;
+  margin: 0 auto;
+}
 .container {
   width: 100%;
   padding: 0;
@@ -393,10 +465,11 @@ export default {
 }
 .title {
   //margin-right: 5%;
+  text-align: center;
   color: white;
   font-size: 40px;
   font-family: $font-family;
-  padding-top: 35px;
+  padding-top: 10px;
   font-weight: bold;
 }
 .description {
@@ -409,14 +482,16 @@ export default {
   border-width: 0px;
 }
 .fight-box {
-  cursor: pointer;
-  padding: 20px;
-  text-align: center;
-  width: 150px;
-  height: 150px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: white;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  margin-top: 10px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .background {
   top: 0;
@@ -427,8 +502,9 @@ export default {
   background: $background-gradient;
 }
 .footer-container {
-  padding: 5% 10%;
-  height: 35%;
+  padding: 0 10%;
+  height: auto;
+  min-height: 40%;
   width: 100%;
   background: $background-gradient;
 }
