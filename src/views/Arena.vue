@@ -50,8 +50,53 @@
         </div>
       </div>
       <div class="footer-container">
-        <div v-for="(fight, index) in queuedFights" @click="checkFightResult(fight)" class="fight-box" :key="index">
-          CHECK FIGHT RESULT
+        <div class="title">Queued Battles</div>
+        <div class="queue-container">
+          <div v-for="(fight, index) in queuedFights" @click="checkFightResult(fight)" class="fight-box" :key="index">
+            <div class="nft-img_wrapper" style="width: 150px !important">
+              <div class="stickfigure-background">
+                <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+                <StickyLeft
+                  v-if="exists(this.opponentFighter.lefthand.name)"
+                  :name="this.opponentFighter.lefthand.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 100"
+                />
+                <StickyRight
+                  v-if="exists(this.opponentFighter.righthand.name)"
+                  :name="this.opponentFighter.righthand.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 100"
+                />
+                <StickyArmor
+                  v-if="exists(this.opponentFighter.armor.name)"
+                  :name="this.opponentFighter.armor.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 10"
+                />
+                <img
+                  v-if="exists(this.opponentFighter.nft.image)"
+                  :src="exists(this.opponentFighter.nft.image)"
+                  class="nft-image shifted-down"
+                  style="z-index: 9999"
+                />
+              </div>
+            </div>
+            <div class="stats_wrapper">
+              <div class="stats-column" style="padding-top: 5px !important">
+                <div class="stat-text__small">
+                  <span style="font-weight: bold">NAME:</span> {{ this.opponentFighter.nft.name }}
+                </div>
+              </div>
+            </div>
+            <div class="stats-column" style="padding-top: 5px !important">
+              <div class="stat-text__small"><span style="font-weight: bold">WINS:</span> {{ this.getWins() }}</div>
+              <div class="stat-text__small"><span style="font-weight: bold">LOSSES:</span> {{ this.getLosses() }}</div>
+              <div class="stat-text__small">
+                <span style="font-weight: bold">W/L ratio:</span> {{ this.getWinLossRatio() }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -79,6 +124,13 @@ export default {
     return {
       fighterEquipment: {},
       queuedFights: [],
+      opponentFighter: {
+        nft: {},
+        lefthand: {},
+        righthand: {},
+        armor: {},
+        helmet: {},
+      },
       fighterName: 'undefined',
       fighterID: 'undefined',
       canFight: false,
@@ -87,8 +139,6 @@ export default {
     }
   },
   mounted() {
-    console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
-
     //console.log('query fight 0:', getFight(0))
     //console.log('the whole store:', this.$store)
     //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
@@ -203,7 +253,7 @@ export default {
       // }else{
       //   console.log(response)
       //   this.queuedFights.pop()
-      // }
+      // }//
     },
     getFightDone(id) {
       this.$axios
@@ -298,7 +348,11 @@ export default {
   margin: 5px;
   color: black;
 }
-
+.stat-text__small {
+  font-size: 15px;
+  margin: 3px;
+  color: black;
+}
 .nft-img_wrapper {
   width: 250px;
   background-color: white;
@@ -351,6 +405,19 @@ export default {
   margin-bottom: 20px;
   display: block;
 }
+.queue-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  column-gap: 5px;
+  row-gap: 5px;
+  float: left;
+  //width: 100%;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
 .container {
   width: 100%;
   padding: 0;
@@ -373,10 +440,11 @@ export default {
 }
 .title {
   //margin-right: 5%;
+  text-align: center;
   color: white;
   font-size: 40px;
   font-family: $font-family;
-  padding-top: 35px;
+  padding-top: 10px;
   font-weight: bold;
 }
 .description {
@@ -389,14 +457,16 @@ export default {
   border-width: 0px;
 }
 .fight-box {
-  cursor: pointer;
-  padding: 20px;
-  text-align: center;
-  width: 150px;
-  height: 150px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: white;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  margin-top: 10px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .background {
   top: 0;
@@ -407,8 +477,9 @@ export default {
   background: $background-gradient;
 }
 .footer-container {
-  padding: 5% 10%;
-  height: 35%;
+  padding: 0 10%;
+  height: auto;
+  min-height: 40%;
   width: 100%;
   background: $background-gradient;
 }
