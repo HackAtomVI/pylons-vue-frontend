@@ -103,7 +103,7 @@
                   </div>
                 </div>
               </div>
-              <div class="stats-column" style="padding-top: 5px !important">
+              <div class="stats-column" style="padding-top: 5px !important; width: 100%">
                 <div class="stat-text__small">
                   <span style="font-weight: bold">WINS:</span>
                   {{ Number.parseFloat(this.opponentEquipment.nft.wins).toFixed(0) }}
@@ -261,7 +261,7 @@ export default {
           })
           .then((res) => {
             console.log('Enlisted Successfully: ', res)
-            console.log('TEST: ', res)
+            console.log('TEST: ', JSON.parse(res.rawLog))
             this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
             this.fighterID = this.fighterID.replace(/[^a-zA-Z0-9]/g, '')
             //this.queuedFights.push(fighterID)
@@ -299,7 +299,7 @@ export default {
             //this.queuedFights.pop()
             console.log('Status: ', res.data.Fighter.Status)
 
-            this.isWinner = res.data.Fighter.Status === 'loss' ? false : true
+            this.isWinner = res.data.Fighter.Status === 'win' ? true : false
             console.log('Is winner', this.isWinner)
             console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
             this.fightFinished = true

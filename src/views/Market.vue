@@ -47,10 +47,17 @@ export default {
   name: 'Market',
   components: {},
   data() {
-    return {}
+    return {
+      lock: false,
+    }
   },
   methods: {
     craftWeapon() {
+      if (this.lock) {
+        this.notifyInfo('CHILL OUT!', 'Please wait for your item to finish crafting before getting another one!')
+        return
+      }
+      this.lock = true
       this.notifyInfo('Weapon', 'Crafting it \nPlease wait')
       craftWeapon
         .bind(this)()
@@ -58,13 +65,16 @@ export default {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Weapon crafting successful!')
           //this.enchant()
+          this.lock = false
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', "Maybe you're trying to send transactions too quickly, yes?" + err)
           console.error('YES, YOU DUN GOOFED:', err)
+          this.lock = false
         })
     },
     craftArmor() {
+      this.lock = true
       this.notifyInfo('Armor', 'Crafting it \nPlease wait')
       craftArmor
         .bind(this)()
@@ -72,13 +82,16 @@ export default {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Armor crafting successful!')
           //this.enchant()
+          this.lock = false
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'Crafting armor failed' + err)
           console.error('YES, YOU DUN GOOFED:', err)
+          this.lock = false
         })
     },
     craftShield() {
+      this.lock = true
       this.notifyInfo('Shield', 'Crafting it \nPlease wait')
       craftShield
         .bind(this)()
@@ -86,10 +99,12 @@ export default {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Shield crafting successful!')
           //this.enchant()
+          this.lock = false
         })
         .catch((err) => {
           this.notifyFail('YOU FAIL', 'Crafting shield failed' + err)
           console.error('YES, YOU DUN GOOFED:', err)
+          this.lock = false
         })
     },
     enchant() {
