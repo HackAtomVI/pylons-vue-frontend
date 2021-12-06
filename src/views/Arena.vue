@@ -296,7 +296,10 @@ export default {
             this.notifyInfo('Fight completed!', 'Your hero has fought in a battle!\nUpdating Fight log!')
             console.log('fight successful: ', res.data.Fighter)
             //this.queuedFights.pop()
-            this.isWinner = res.data.Fighter.status === 'loss' ? false : true
+            console.log('Status: ', res.data.Fighter.Status)
+
+            this.isWinner = res.data.Fighter.Status === 'loss' ? false : true
+            console.log('Is winner', this.isWinner)
             console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
             this.fightFinished = true
             this.battleLog = res.data.Fighter.Log
