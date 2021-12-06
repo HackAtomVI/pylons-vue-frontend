@@ -209,9 +209,9 @@
             <router-link to="/market">
               <div
                 class="awesome-button smaller-button"
-                style="height: 50px; padding: 5px; float: left; margin-top: 50px"
+                style="float: left; margin-top: 50px; height: 40px; padding: 10px; width: 200px"
               >
-                <span class="awesome-button-text" style="padding-top: 10px">BUY MORE ITEMS</span>
+                <span class="awesome-button-text" style="">BUY MORE ITEMS</span>
               </div>
             </router-link>
           </div>

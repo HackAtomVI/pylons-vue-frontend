@@ -36,8 +36,8 @@
         </div>
       </div>
       <router-link to="/workshop">
-        <div class="awesome-button" style="height: 90px; margin-top: 100px">
-          <span class="awesome-button-text">GO TO MY HERO PAGE</span>
+        <div class="awesome-button" style="float: left; margin: 100px auto; height: 40px; padding: 10px; width: 300px">
+          <span class="awesome-button-text" style="padding-top: 0px">GO TO MY HERO PAGE</span>
         </div>
       </router-link>
     </div>
@@ -170,7 +170,8 @@ export default {
   margin-top: 50px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  column-gap: 100px;
 }
 .blackbox {
   text-align: center;
@@ -184,7 +185,6 @@ export default {
 }
 .blackbox-img {
   padding-top: 10px;
-  width: 80px;
   height: 80px;
 }
 .blackbox-description {
@@ -240,6 +240,7 @@ export default {
   box-shadow: none;
 }
 .awesome-button-text {
+  padding-top: 10px;
   text-decoration: none;
   color: white;
 }

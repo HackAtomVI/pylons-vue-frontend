@@ -51,18 +51,25 @@
         </div>
       </div>
       <div class="footer-container">
-        <div class="title">Queued Battle</div>
+        <!-- <div class="title" style="margin-top: 60px;text-align:left; display:inline;">Queued Battle</div> -->
+        <div
+          class="awesome-button smaller-button"
+          v-if="!this.fightFinished && this.fightQueued"
+          @click="checkFightResult(this.fighterID)"
+          style="
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.8);
+            height: 40px;
+            margin: 15px auto;
+            padding: 10px;
+            width: 400px;
+          "
+        >
+          <span class="awesome-button-text" style="color: black">CLICK TO CHECK BATTLE RESULT!</span>
+        </div>
         <div class="queue-container">
           <div v-if="this.fightQueued || this.keepLog" class="fight-box">
-            <div
-              class="awesome-button smaller-button"
-              v-if="!this.fightFinished"
-              @click="checkFightResult(this.fighterID)"
-              style="cursor: pointer; background-color: rgba(255, 255, 255, 0.8)"
-            >
-              <span class="awesome-button-text">CLICK TO CHECK BATTLE RESULT!</span>
-            </div>
-            <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%; margin: 10px auto">
+            <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%; margin: 10px">
               <div class="nft-img_wrapper" style="height: 100% !important">
                 <div class="stickfigure-background" style="width: 126px; height: 126px">
                   <img
@@ -99,8 +106,10 @@
               <div class="stats_wrapper__small">
                 <div class="stats-column" style="padding-top: 5px !important">
                   <div class="stat-text__small">
-                    <span v-if="this.isWinner" style="font-weight: bold; color: green">YOU WIN!!!</span>
-                    <span v-else style="font-weight: bold; color: red">YOU LOST!</span>
+                    <span v-if="this.isWinner" style="font-weight: bold; color: green"
+                      >{{ fighterName }} beat this fighter!</span
+                    >
+                    <span v-else style="font-weight: bold; color: red">{{ fighterName }} lost to this fighter!</span>
                   </div>
                   <div class="stat-text__small">
                     <span style="font-weight: bold">NAME:</span> {{ this.opponentEquipment.nft.name }}
@@ -520,14 +529,13 @@ export default {
 .container--top {
   text-align: right;
   padding: 5% 10%;
-  height: 35%;
   width: 100%;
   background-color: rgba(85.0000025331974, 5.000000176951289, 66.00000366568565, 1);
 }
 .container--bot {
-  height: 65%;
+  height: 38%;
   width: 100%;
-  padding: 5% 10%;
+  padding: 1% 10%;
   background-color: rgba(255, 198.00000339746475, 98.00000175833702, 1);
 }
 .title {
@@ -552,7 +560,7 @@ export default {
   display: flex;
   flex-direction: row;
   height: 126px;
-  margin-top: 10px;
+  margin: 0 0 50px 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -560,6 +568,7 @@ export default {
 }
 .battle-log-text {
   font-size: 20px;
+  color: white;
 }
 .battle-log {
   padding: 10px;
@@ -574,7 +583,7 @@ export default {
   background: $background-gradient;
 }
 .footer-container {
-  padding: 0 10%;
+  padding: 50px 10%;
   height: auto;
   min-height: 40%;
   overflow-y: auto;

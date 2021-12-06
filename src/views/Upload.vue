@@ -27,8 +27,12 @@
         <img class="uploaded-img" :src="nftimg" />
       </div>
 
-      <div @click="setNftData()" class="awesome-button">
-        <span class="awesome-button-text">Upload to Blockchain</span>
+      <div
+        @click="setNftData()"
+        class="awesome-button"
+        style="margin: -20px auto; height: 40px; padding: 10px; width: 300px"
+      >
+        <span class="awesome-button-text">UPLOAD TO BLOCKCHAIN</span>
       </div>
       <!--button v-on:click="printAllItems()">print all items</button-->
       <!--button v-on:click="loadNft()">Load NFT</button-->
@@ -283,6 +287,7 @@ function compressImg(dataURL, maxKB) {
 .description {
   font-size: 18px;
   color: black;
+  padding-bottom: 5px;
 }
 .disabled {
   display: none;
@@ -306,6 +311,7 @@ function compressImg(dataURL, maxKB) {
 }
 .uploaded-img {
   max-width: 100%;
+  max-height: 400px;
   margin: 70px auto;
   grid-column: 1;
   grid-row: 1;
