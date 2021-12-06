@@ -35,6 +35,16 @@
               </picture>
             </a>
           </li>
+          <li v-if="!getLoggedIn" style="float: right">
+            <router-link class="login-button" to="/login" style="padding: 1.8rem">
+              <span class="text-please-be-back"> LOGIN </span>
+            </router-link>
+          </li>
+          <li v-if="getLoggedIn" style="float: right">
+            <router-link to="/login" class="wallet-button" style="padding: 1.8rem">
+              <span class="text-please-be-teal"> WALLET </span>
+            </router-link>
+          </li>
         </ul>
       </div>
     </nav>
@@ -51,6 +61,9 @@ export default {
     }
   },
   computed: {
+    getLoggedIn() {
+      return this.$store.getters['common/wallet/loggedIn']
+    },
     showMenuClass() {
       if (this.displayMenu) {
         return 'nav__menu '
@@ -70,6 +83,31 @@ export default {
 * {
   font-family: $font-family;
 }
+.text-please-be-back {
+  color: black;
+}
+.text-please-be-teal {
+  color: #29eddb;
+}
+.discord-button {
+  background-color: white;
+  color: black;
+  padding: 0;
+  font-size: 18px;
+}
+.login-button {
+  background-color: #29eddb;
+  color: black;
+  font-style: black;
+  font-size: 18px;
+}
+.wallet-button {
+  color: #29eddb;
+  &:active {
+    color: $minor-color-c;
+  }
+}
+
 .nav-wrapper {
   width: 100%;
 }
