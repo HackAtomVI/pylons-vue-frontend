@@ -5,9 +5,9 @@
       <div class="description">Chose the item category</div>
       <div class="category-container">
         <div class="armor-wrapper">
-          <div @click="craftArmor()" class="blackbox">
+          <div @click="craftArmor()" class="awesome-button">
             <img class="blackbox-img" src="../assets/img/market/armor.png" />
-            <div class="blackbox-description">CRAFT ARMOR ITEM</div>
+            <div class="awesome-button-text">CRAFT ARMOR ITEM</div>
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
@@ -15,9 +15,9 @@
           </div>
         </div>
         <div class="weapon-wrapper">
-          <div @click="craftWeapon()" class="blackbox">
+          <div @click="craftWeapon()" class="awesome-button">
             <img class="blackbox-img" src="../assets/img/market/sword.png" />
-            <div class="blackbox-description">CRAFT WEAPON ITEM</div>
+            <div class="awesome-button-text">CRAFT WEAPON ITEM</div>
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
@@ -25,9 +25,9 @@
           </div>
         </div>
         <div class="surprise-wrapper">
-          <div @click="craftShield()" class="blackbox">
+          <div @click="craftShield()" class="awesome-button">
             <img class="blackbox-img" src="../assets/img/market/shield.png" />
-            <div class="blackbox-description">CRAFT SHIELD ITEM</div>
+            <div class="awesome-button-text">CRAFT SHIELD ITEM</div>
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
@@ -35,7 +35,11 @@
           </div>
         </div>
       </div>
-      <router-link to="/workshop" class="my-hero-router">GO TO MY HERO PAGE</router-link>
+      <router-link to="/workshop">
+        <div class="awesome-button" style="height: 90px; margin-top: 100px">
+          <span class="awesome-button-text">GO TO MY HERO PAGE</span>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -179,5 +183,36 @@ export default {
   border-bottom-right-radius: 4px;
   padding: 5px 4px;
   width: 30%;
+}
+.awesome-button {
+  cursor: pointer;
+  width: 180px;
+  height: 180px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-style: white;
+  padding: 20px;
+  margin: auto;
+  background-color: black;
+  // background-color: #d61224;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
+  filter: invert(1);
+  -webkit-filter: invert(1);
+}
+.awesome-button:hover {
+  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
+}
+.awesome-button:active {
+  box-shadow: none;
+}
+.awesome-button-text {
+  text-decoration: none;
+  color: white;
 }
 </style>
