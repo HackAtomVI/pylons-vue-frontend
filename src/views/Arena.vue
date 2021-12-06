@@ -53,12 +53,17 @@
       <div class="footer-container">
         <div class="title">Queued Battle</div>
         <div class="queue-container">
-          <div v-if="this.fightQueued" @click="checkFightResult(this.fighterID)" class="fight-box">
-            <div v-if="!this.fightFinished" class="hero_wrapper" style="background-color: rgba(255, 255, 255, 0.8)">
+          <div v-if="this.fightQueued || this.keepLog" class="fight-box">
+            <div
+              v-if="!this.fightFinished"
+              @click="checkFightResult(this.fighterID)"
+              class="hero_wrapper"
+              style="cursor: pointer; background-color: rgba(255, 255, 255, 0.8)"
+            >
               <div class="stat-text">CLICK TO CHECK BATTLE RESULT!</div>
             </div>
-            <div v-if="this.fightFinished" class="hero_wrapper">
-              <div class="nft-img_wrapper" style="width: 150px !important">
+            <div v-if="this.fightFinished" class="hero_wrapper" style="widht: auto; height: 100%">
+              <div class="nft-img_wrapper" style="height: 100% !important">
                 <div class="stickfigure-background">
                   <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
                   <StickyLeft
@@ -87,7 +92,7 @@
                   />
                 </div>
               </div>
-              <div class="stats_wrapper">
+              <div class="stats_wrapper__small">
                 <div class="stats-column" style="padding-top: 5px !important">
                   <div class="stat-text__small">
                     <span v-if="this.isWinner" style="font-weight: bold; color: green">YOU WIN!!!</span>
@@ -108,6 +113,11 @@
                   {{ Number.parseFloat(this.opponentEquipment.nft.losses).toFixed(0) }}
                 </div>
               </div>
+            </div>
+          </div>
+          <div v-if="this.fightFinished" class="battle-log">
+            <div class="battle-log-text">
+              {{ this.getBattleLog() }}
             </div>
           </div>
         </div>
@@ -135,19 +145,13 @@ export default {
   },
   data() {
     return {
+      battleLog: '',
+      keepLog: false,
       fighterEquipment: {},
       isWinner: false,
       fightQueued: false,
       fightFinished: false,
       opponentEquipment: {
-        nft: {},
-        lefthand: {},
-        righthand: {},
-        armor: {},
-        helmet: {},
-      },
-      //queuedFights: [],
-      opponentFighter: {
         nft: {},
         lefthand: {},
         righthand: {},
@@ -183,38 +187,57 @@ export default {
 
     this.queryMyItems().then((items) => {
       this.ownedItems = items
-      //console.log('owned items', items)
+      //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
+      this.fighterEquipment = this.$store.getters['getFighterEquipment']
+
+      this.canFight = true
+      if (R.isEmpty(this.fighterEquipment.nft)) {
+        this.canFight = false
+        this.notifyFail('No NFT', "Boi, you haven't even uploaded an NFT... \nDo it in the UPLAOD page!.")
+      }
+      if (R.isEmpty(this.fighterEquipment.armor)) {
+        let armor = this.ownedItems.find((item) => item.ItemType === 'armor')
+        if (typeof armor === 'undefined') {
+          this.canFight = false
+          this.notifyFail(
+            'No Armor worn',
+            "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
+          )
+        } else {
+          this.fighterEquipment.armor = armor
+          console.log('Auto-Equip: Armor')
+        }
+      }
+      if (R.isEmpty(this.fighterEquipment.lefthand) && R.isEmpty(this.fighterEquipment.righthand)) {
+        let weapon = this.ownedItems.find((item) => item.ItemType === 'weapon')
+        if (typeof weapon !== 'undefined') {
+          this.fighterEquipment.righthand = weapon
+          console.log('Auto-Equip: Weapon')
+        }
+      }
+      if (
+        (R.isEmpty(this.fighterEquipment.lefthand) || this.fighterEquipment.lefthand.ItemType === 'shield') &&
+        R.isEmpty(this.fighterEquipment.righthand || this.fighterEquipment.righthand.ItemType === 'shield')
+      ) {
+        this.canFight = false
+        this.notifyFail(
+          'No Weapon in Hand',
+          "Boi, you don't even have an item in your hand.\nLet's see if you have any weapons, lol.",
+        )
+      }
     })
-
-    //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
-    this.fighterEquipment = this.$store.getters['getFighterEquipment']
-
-    this.canFight = true
-    if (R.isEmpty(this.fighterEquipment.nft)) {
-      this.canFight = false
-      this.notifyFail('No NFT', "Boi, you haven't even uploaded an NFT... \nDo it in the UPLAOD page!.")
-    }
-    if (R.isEmpty(this.fighterEquipment.armor)) {
-      this.canFight = false
-      this.notifyFail(
-        'No Armor worn',
-        "Boi, you don't even wear an armor... \nI will look up if you own on and equip it.",
-      )
-    }
-    if (
-      (R.isEmpty(this.fighterEquipment.lefthand) || this.fighterEquipment.lefthand.ItemType === 'shield') &&
-      R.isEmpty(this.fighterEquipment.righthand || this.fighterEquipment.righthand.ItemType === 'shield')
-    ) {
-      this.canFight = false
-      this.notifyFail(
-        'No Weapon in Hand',
-        "Boi, you don't even have an item in your hand.\nLet's see if you have any weapons, lol.",
-      )
-    }
   },
   methods: {
     enlistForArena() {
+      if (this.fightQueued) {
+        this.notifyInfo('Nice Try', 'You are already enlisted into the arena!')
+        return
+      }
       this.notifyInfo('Enlisting', 'You are being enlisted into the arena, please wait')
+      this.fightQueued = true
+      this.isWinner = false
+      this.fightFinished = false
+      this.battleLog = ''
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
         let rightID = this.fighterEquipment.righthand.ID
@@ -245,6 +268,7 @@ export default {
             this.fightQueued = true
           })
       } else {
+        this.fightQueued = false
         this.notifyFail(
           'Not ready for Fight!',
           "You don't meet the requirements for the Arena. \nNot listening to the error messages here, eh?",
@@ -259,6 +283,7 @@ export default {
       this.getFightDone(id)
     },
     getFightDone(id) {
+      this.notifyInfo('Checking', 'Checking Battle status, please wait')
       this.$axios
         .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -275,6 +300,7 @@ export default {
             this.isWinner = res.data.Fighter.status === 'loss' ? false : true
             console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
             this.fightFinished = true
+            this.battleLog = res.data.Fighter.Log
             this.$axios
               .get(
                 'http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' +
@@ -290,10 +316,16 @@ export default {
                   .then((res) => {
                     this.opponentEquipment = res
                     console.log('opponent Equipment:', this.opponentEquipment)
+                    this.notifySuccess('Very Nice!', 'Fight log updated!')
+                    this.keepLog = true
+                    this.fightQueued = false
                   })
               })
           }
         })
+    },
+    getBattleLog() {
+      return this.battleLog
     },
     getWinLossRatio() {
       if (typeof this.fighterEquipment.nft !== 'undefined')
@@ -368,6 +400,10 @@ export default {
   width: 65%;
   padding: 20px;
 }
+.stats_wrapper__small {
+  padding: 5px;
+  width: 150%;
+}
 .stat-text {
   font-size: 20px;
   margin: 5px;
@@ -384,8 +420,8 @@ export default {
   // height: 20%;
 }
 .stickfigure-background {
-  width: 100%;
   height: 100%;
+  width: 100%;
   background: $background-gradient;
   //background-image: url('../assets/img/stick_items/sboiBG.png');
   display: grid;
@@ -441,7 +477,7 @@ export default {
   //width: 100%;
   padding: 10px;
   height: 100%;
-  width: 50%;
+  width: 100%;
   margin: 0 auto;
 }
 .container {
@@ -485,14 +521,15 @@ export default {
 .fight-box {
   display: flex;
   flex-direction: row;
-  height: 100px;
+  height: 126px;
   margin-top: 10px;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+.battle-log-text {
+  font-size: 20px;
 }
 .background {
   top: 0;
@@ -506,6 +543,7 @@ export default {
   padding: 0 10%;
   height: auto;
   min-height: 40%;
+  overflow-y: auto;
   width: 100%;
   background: $background-gradient;
 }
