@@ -80,7 +80,9 @@ export default {
     }
   },
   mounted() {
-    console.log('query fight 0:', getFight(0))
+    console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
+
+    //console.log('query fight 0:', getFight(0))
     //console.log('the whole store:', this.$store)
     //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
     this.nftImg = this.$store.getters['getFighterEquipment'].nft.image

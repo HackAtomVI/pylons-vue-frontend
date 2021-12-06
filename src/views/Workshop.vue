@@ -217,16 +217,22 @@
         <div class="stickfigure-background">
           <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
           <StickyLeft
+            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].lefthand)"
             :name="this.$store.getters['getFighterEquipment'].lefthand.name"
             class="equipped-item"
             style="z-index: 100"
           />
           <StickyRight
+            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].righthand)"
             :name="this.$store.getters['getFighterEquipment'].righthand.name"
             class="equipped-item"
             style="z-index: 100"
           />
-          <StickyArmor :name="this.$store.getters['getFighterEquipment'].armor.name" class="equipped-item" />
+          <StickyArmor
+            v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].armor)"
+            :name="this.$store.getters['getFighterEquipment'].armor.name"
+            class="equipped-item"
+          />
         </div>
       </div>
     </div>
@@ -292,6 +298,8 @@ export default {
       this.init()
       //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
     }
+
+    console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
   },
   computed: {},
   methods: {
@@ -306,6 +314,9 @@ export default {
             "You don't have any equipment,\n do you want to stay naked your whole life?\n Go to the Forge and craft some.",
           )
         }
+      })
+      this.queryMyNFT().then((res) => {
+        console.log('res of mynft:', res)
       })
     },
     onEquipmentClicked(item, index) {
