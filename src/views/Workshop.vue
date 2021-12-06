@@ -198,7 +198,7 @@
               <button
                 v-on:click="this.enchant()"
                 class="equip"
-                v-if="this.selectedItemName !== '' && singleButton() === true"
+                v-if="this.selectedItemName !== '' && singleButton() === true && this.selectedEnchantment === 'none'"
               >
                 Enchant
               </button>

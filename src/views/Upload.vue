@@ -2,6 +2,16 @@
   <div v-if="this.isUserLoggedIn()" class="background">
     <div v-if="!initialized">LOADING....</div>
     <div v-if="initialized" class="container">
+      <div class="title">Get Ready for Battle!</div>
+      <div class="description">
+        Here you can upload your NFT. Currently this is only possible via the right-click-save-as bridge. <br />
+        This means you upload your saved NFT here via the form and then you can send it to the Arena! <br />
+        However in the future we want to do this through IBC once Pylons supports IBC transfer of NFTs. <br />
+        This is also known as the Age of Awesomeness. You are currently in the Age of Crypto-Enthusiasm. <br />
+        <br />
+        Please enter the Name of your fighter:
+      </div>
+
       <input v-model="nftname" class="e60_170" type="text" name="nftname" :placeholder="nftname" required />
 
       <!--input
@@ -312,7 +322,15 @@ function compressImg(dataURL, maxKB) {
   height: 600px;
   background: #ddd;
 }
-
+.title {
+  font-size: 40px;
+  color: black;
+  padding: 20px;
+}
+.description {
+  font-size: 18px;
+  color: black;
+}
 .disabled {
   display: none;
   background-image: none;
