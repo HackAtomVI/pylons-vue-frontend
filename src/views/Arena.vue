@@ -39,7 +39,8 @@
               <div class="stat-text"><span style="font-weight: bold">WINS:</span> {{ this.getWins() }}</div>
               <div class="stat-text"><span style="font-weight: bold">LOSSES:</span> {{ this.getLosses() }}</div>
               <div class="stat-text">
-                <span style="font-weight: bold">W/L ratio:</span> {{ this.getWinLossRatio() }}
+                <span style="font-weight: bold">W/L ratio:</span>
+                {{ Number.parseFloat(this.getWinLossRatio()).toFixed(2) }}
               </div>
             </div>
           </div>
