@@ -124,6 +124,8 @@ export default {
                   })
               })
           })
+      } else {
+        console.log('LOGGED OUT')
       }
     },
   },
