@@ -10,6 +10,13 @@ const store = createStore({
       armor: {},
       helmet: {},
     },
+    opponentEquipment: {
+      nft: {},
+      lefthand: {},
+      righthand: {},
+      armor: {},
+      helmet: {},
+    },
     equipedItemNames: {
       lefthand: '',
       righthand: '',
@@ -41,11 +48,34 @@ const store = createStore({
       state.fighterEquipment.righthand = righthand
     },
     setFighterArmor(state, armor) {
-      console.log('wrote to state.fighterEquipment.armor')
       state.fighterEquipment.armor = armor
     },
     setFighterHelmet(state, helmet) {
       state.fighterEquipment.helmet = helmet
+    },
+    setOpponentEquipment(state, nft, lefthand, righthand, armor, helmet) {
+      state.opponentEquipment = {
+        nft: nft,
+        lefthand: lefthand,
+        righthand: righthand,
+        armor: armor,
+        helmet: helmet,
+      }
+    },
+    setOpponentNft(state, nft) {
+      state.opponentEquipment.nft = nft
+    },
+    setOpponentLeftHand(state, lefthand) {
+      state.opponentEquipment.lefthand = lefthand
+    },
+    setOpponentRightHand(state, righthand) {
+      state.opponentEquipment.righthand = righthand
+    },
+    setOpponentArmor(state, armor) {
+      state.opponentEquipment.armor = armor
+    },
+    setOpponentHelmet(state, helmet) {
+      state.opponentEquipment.helmet = helmet
     },
 
     setEquipmentNameLeftHand(state, lefthand) {
@@ -74,6 +104,9 @@ const store = createStore({
   actions: {},
   getters: {
     getFighterEquipment: (state) => {
+      return state.fighterEquipment
+    },
+    getOpponentEquipment: (state) => {
       return state.fighterEquipment
     },
     getEquipedItemNames: (state) => {

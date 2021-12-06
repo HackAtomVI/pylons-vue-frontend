@@ -56,6 +56,7 @@
 
 <script>
 import * as R from 'ramda'
+import { getFight } from '../utils/pylonsInteraction.js'
 import StickyLeft from '@/components/StickyLeft.vue'
 import StickyRight from '@/components/StickyRight.vue'
 import StickyArmor from '@/components/StickyArmor.vue'
@@ -79,6 +80,7 @@ export default {
     }
   },
   mounted() {
+    console.log('query fight 0:', getFight(0))
     //console.log('the whole store:', this.$store)
     //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
     this.nftImg = this.$store.getters['getFighterEquipment'].nft.image

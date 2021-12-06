@@ -1,3 +1,13 @@
+export function getFight(id) {
+  return this.$axios
+    .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    })
+    .then((res) => {
+      return res.data.Fighter
+    })
+}
+
 export function getNft() {
   return this.$store
     .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {

@@ -238,8 +238,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getNft } from '../utils/pylonsInteraction.js'
-import { getItems } from '../utils/pylonsInteraction.js'
+import { getNft, getItems } from '../utils/pylonsInteraction.js'
 import EquipmentItem from '@/components/EquipmentItem.vue'
 import PleaseLogIn from '../components/PleaseLogIn.vue'
 import StickyLeft from '@/components/StickyLeft.vue'

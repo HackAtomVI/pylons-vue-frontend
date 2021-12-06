@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { getFight } from '../utils/pylonsInteraction.js'
+
 export default {
   name: 'Result',
   components: {},
@@ -93,6 +95,8 @@ export default {
     }
   },
   mounted() {
+    console.log('FUCK THIS SHIT')
+    console.log('query fight 0:', getFight(0))
     this.init()
   },
   methods: {
