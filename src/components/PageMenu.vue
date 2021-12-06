@@ -22,7 +22,7 @@
             <router-link to="/about"> CROWD CONTROL </router-link>
           </li>
           <li>
-            <a class="discord-button" href="https://discord.gg/ZKKbhUs">
+            <a class="discord-button" target="_blank" href="https://discord.gg/ZKKbhUs">
               <picture style="color: black">
                 <source type="image/webp" srcset="../assets/icon/discord.webp" />
                 <source type="image/png" srcset="../assets/icon/discord.png" />

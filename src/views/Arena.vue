@@ -103,7 +103,7 @@
                   </div>
                 </div>
               </div>
-              <div class="stats-column" style="padding-top: 5px !important">
+              <div class="stats-column" style="padding-top: 5px !important; width: 100%">
                 <div class="stat-text__small">
                   <span style="font-weight: bold">WINS:</span>
                   {{ Number.parseFloat(this.opponentEquipment.nft.wins).toFixed(0) }}
@@ -212,6 +212,17 @@ export default {
         let weapon = this.ownedItems.find((item) => item.ItemType === 'weapon')
         if (typeof weapon !== 'undefined') {
           this.fighterEquipment.righthand = weapon
+
+          if (weapon.oneHanded === 'true') {
+            let secondary = this.ownedItems.find(
+              (item) =>
+                (item.ItemType === 'weapon' && item.oneHanded === 'true' && item.ID !== weapon.ID) ||
+                item.ItemType === 'shield',
+            )
+            if (typeof secondary !== 'undefined') {
+              this.fighterEquipment.lefthand = secondary
+            }
+          }
           console.log('Auto-Equip: Weapon')
         }
       }
@@ -261,8 +272,14 @@ export default {
           })
           .then((res) => {
             console.log('Enlisted Successfully: ', res)
-            console.log('TEST: ', res)
+            console.log('TEST: ', JSON.parse(res.rawLog))
             this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
+
+            if (this.fighterID.includes('pylo')) {
+              //We got a wallet address lmao, try the other one
+              this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[0].value
+            }
+
             this.fighterID = this.fighterID.replace(/[^a-zA-Z0-9]/g, '')
             //this.queuedFights.push(fighterID)
             this.fightQueued = true
@@ -297,7 +314,10 @@ export default {
             this.notifyInfo('Fight completed!', 'Your hero has fought in a battle!\nUpdating Fight log!')
             console.log('fight successful: ', res.data.Fighter)
             //this.queuedFights.pop()
-            this.isWinner = res.data.Fighter.status === 'loss' ? false : true
+            console.log('Status: ', res.data.Fighter.Status)
+
+            this.isWinner = res.data.Fighter.Status === 'win' ? true : false
+            console.log('Is winner', this.isWinner)
             console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
             this.fightFinished = true
             this.battleLog = res.data.Fighter.Log
@@ -530,6 +550,10 @@ export default {
 }
 .battle-log-text {
   font-size: 20px;
+}
+.battle-log {
+  padding: 10px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
 }
 .background {
   top: 0;
