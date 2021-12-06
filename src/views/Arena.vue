@@ -49,6 +49,11 @@
           </div>
         </div>
       </div>
+      <div class="footer-container">
+        <div v-for="(fight, index) in queuedFights" @click="checkFightResult(fight)" class="fight-box" :key="index">
+          CHECK FIGHT RESULT
+        </div>
+      </div>
     </div>
     <PleaseLogIn v-else />
   </div>
@@ -73,7 +78,9 @@ export default {
   data() {
     return {
       fighterEquipment: {},
+      queuedFights: [],
       fighterName: 'undefined',
+      fighterID: 'undefined',
       canFight: false,
       ownedItems: [],
       nftImg: 'undefined',
@@ -172,68 +179,10 @@ export default {
           })
           .then((res) => {
             console.log('Enlisted Successfully: ', res)
-
+            console.log('TEST: ', res)
             fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
             fighterID = fighterID.replace(/[^a-zA-Z0-9]/g, '')
-            this.$axios
-              .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + fighterID, {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              })
-              .then((res) => {
-                localFighter = res.data.Fighter
-                console.log('TEST: ', res.data.Fighter)
-                opponentFighterID = res.data.Fighter.opponentFighter
-                this.$axios
-                  .get(
-                    'http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' +
-                      opponentFighterID,
-                    {
-                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    },
-                  )
-                  .then((res) => {
-                    opponentFighter = res.data.Fighter
-                    this.postFightConfig(localFighter, opponentFighter)
-                  })
-              })
-
-            //console.log("fighterID: ", fighterID)
-            // this.$store
-            //   .dispatch('Pylonstech.pylons.pylons/QueryFight', {
-            //     params: {
-            //       '@type': 'Pylonstech.pylons.pylons/QueryFight',
-            //       ID: 1,
-            //     },
-            //   })
-            //   .then((res) => {
-            //     opponentFighterID = JSON.parse(res.Fighter.opponentFighter)
-            //     console.log('fight: ', res)
-            //     this.$store
-            //       .dispatch('Pylonstech.pylons.pylons/QueryFight', {
-            //         params: {
-            //           '@type': 'Pylonstech.pylons.pylons/QueryFight',
-            //           ID: 2,
-            //         },
-            //       })
-            //       .then((res) => {
-            //         this.$store
-            //           .dispatch('Pylonstech.pylons.pylons/QueryFight', {
-            //             params: {
-            //             '@type': 'Pylonstech.pylons.pylons/QueryFight',
-            //             ID: 3,
-            //           },
-            //       }).then((res) => {
-            //         console.log('3rd Fighter: ', res)
-            //       })
-            //         console.log('2nd Fighter: ', res)
-            //         console.log('fighterIDs: ', fighterID, ' |vs| ', opponentFighterID)
-
-            //       })
-            //   })
-
-            // if success link to page fight with id of the fight
-            //<router-link to="/fight" class="">
-            //</router-link>
+            this.queuedFights.push(fighterID)
           })
       } else {
         this.notifyFail(
@@ -243,8 +192,33 @@ export default {
       }
     },
     postFightConfig(local, opponent) {
-      //console.log("Local fighter: ", local)
-      //console.log("Opponent fighter: ", opponent)
+      console.log('Local fighter: ', local)
+      console.log('Opponent fighter: ', opponent)
+    },
+    checkFightResult(id) {
+      this.getFightDone(id)
+      // let response = this.getFightDone(id)
+      // if(response === false) {
+      //   this.notifyInfo('Waiting', "You are still waiting for the opponent!")
+      // }else{
+      //   console.log(response)
+      //   this.queuedFights.pop()
+      // }
+    },
+    getFightDone(id) {
+      this.$axios
+        .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        })
+        .then((res) => {
+          console.log('response arrived')
+          if (res.data.Fighter.Status === 'waiting') {
+            console.log('waiting: ', res.data.Fighter)
+          } else {
+            console.log('fight successful: ', res.data.Fighter)
+            this.queuedFights.pop()
+          }
+        })
     },
     getWinLossRatio() {
       if (typeof this.fighterEquipment.nft !== 'undefined')
@@ -272,6 +246,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
+
 .sp-fill {
   padding-top: 0;
 }
@@ -413,12 +388,28 @@ export default {
   margin-top: 10px;
   border-width: 0px;
 }
+.fight-box {
+  cursor: pointer;
+  padding: 20px;
+  text-align: center;
+  width: 150px;
+  height: 150px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  border-radius: 10px;
+}
 .background {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   padding: 0;
+  background: $background-gradient;
+}
+.footer-container {
+  padding: 5% 10%;
+  height: 35%;
+  width: 100%;
   background: $background-gradient;
 }
 </style>
