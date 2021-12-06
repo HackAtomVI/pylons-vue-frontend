@@ -3,27 +3,21 @@
     <div class="container">
       <div class="title">About Crowd Control</div>
       <div class="description">
-        Crowd Control is a decentralized online trading card game made by players, built on Cosmos blockchain. The game
-        is currently at pre-alpha stage.
+        Crowd Control is a DAO that develops a NFT trading card game made by players, built with Cosmos blockchain. The
+        CrowdControl team has build this contribution to the Hackatom VI.
         <br /><br />
-        More info on <a href="https://crowdcontrol.network/#/" target="_blank" class="cc"> Crowd Control Website</a>.
+        Find out more about us:
+        <a href="https://crowdcontrol.network/#/" target="_blank" class="cc"> Crowd Control Website</a>.
         <br />
-        Join our Discord server for updates.
+        Or join our Discord server and get in touch!
       </div>
 
-      <button class="e90_483">
-        <picture style="color: black">
-          <source type="image/webp" srcset="../assets/icon/discord.webp" />
-          <source type="image/png" srcset="../assets/icon/discord.png" />
-          <img
-            src="../assets/icon/discord.png"
-            style="display: inline; max-height: 40px; transform: translateY(4px); filter: invert(1)"
-            alt="Image description"
-          />
-          JOIN US
-        </picture>
-      </button>
-      <br /><br />
+      <a target="_blank" href="https://discord.gg/ZKKbhUs">
+        <div class="awesome-button">
+          <img class="img-fit" src="../assets/icon/discord.png" style="" />
+          <span class="awesome-button-text">JOIN US</span>
+        </div>
+      </a>
     </div>
   </div>
 </template>
@@ -41,6 +35,10 @@ export default {
 <style scoped lang="scss">
 @import '../scss/variables';
 
+.img-fit {
+  max-width: 100%;
+  max-height: 90%;
+}
 .cc {
   font-size: 30px;
   color: rgb(160, 192, 240);

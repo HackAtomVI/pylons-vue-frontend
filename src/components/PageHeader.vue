@@ -2,18 +2,14 @@
   <header>
     <div class="header-content-container">
       <router-link to="/" class="nav__logo">
-        <img class="logo" alt="Crowd Control" src="../assets/logo.svg" />
+        <img class="logo" alt="Crowd Control" src="../assets/logo2.gif" />
       </router-link>
-      <!-- <div class="header-item">Wallet / Tokens</div>
-      <div class="header-item">Visit CC website</div> -->
-      <!-- <router-link v-if="$store.getters.loggedIn" class="account-box" to="/me">
-        <button>My Account ({{ getUserCredits }} Credits)</button>
-      </router-link> -->
-      <router-link v-if="!isLoggedIn" to="/login" class="login"> Login </router-link>
-      <router-link v-if="isLoggedIn" to="/login" class="login">
-        {{ walletName }}
+
+      <router-link v-if="!getLoggedIn" to="/login">
+        <div class="awesome-button">
+          <span class="awesome-button-text">Login</span>
+        </div>
       </router-link>
-      <!-- <button v-if="getLoggedIn" v-on:click="addCoins()" class="get-coins">Get Coins!</button> -->
     </div>
   </header>
 </template>
@@ -42,62 +38,6 @@ export default {
     },
   },
   methods: {
-    testAxios() {
-      //Content-Type:application/x-www-form-urlencoded
-      //this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-
-      this.$axios.post(
-        'http://v2202008103543124756.megasrv.de:4500',
-        {
-          address: 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv',
-          coins: ['5000upylon'],
-        },
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        },
-      )
-    },
-    addCoins() {
-      //this.$axios.defaults.headers.common['allowAccess'] = "Access-Control-Allow-Origin", "*"
-      //console.log('Axios: ' + this.$axios)
-      //TODO:
-      // this.$axios.post('http://v2202008103543124756.megasrv.de:4500', {
-      //   address: this.$store.getters['common/wallet/address'],
-      //   coins: ['5000upylon'],
-      // },
-      // {
-      //   headers: {
-      //     'Content-Type':'application/x-www-form-urlencoded'
-      //   }
-      // }).then((res) => {
-      //   //console.log("Res: " + JSON.stringify(res));
-      // })
-      // this.$store.dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-      //     value: {
-      //       '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-      //       creator: this.$store.getters['common/wallet/address'],
-      //       username: this.$store.getters['common/wallet/walletName'],
-      //     },
-      //   })
-      //   .then((res) => {
-      //     //console.log('after create account, yes')
-      //     this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-      //       value: {
-      //         '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-      //         creator: this.$store.getters['common/wallet/address'],
-      //         cookbookID: 'nftarena',
-      //         recipeID: 'getcoins',
-      //         coinInputsIndex: '0',
-      //         itemIDs: [],
-      //         paymentInfos: [],
-      //       },
-      //     })
-      //   })
-      // console.log('Balance: ' + this.$store.getters['cosmos.bank.v1beta1/getBalance'], 'pylo10swe9z6qvuvfs2f7adhm74ecqfcnu645eamshv')
-    },
-
     getLoginStatus() {
       this.walletName = this.$store.getters['common/wallet/walletName']
       this.isLoggedIn = this.$store.getters['common/wallet/walletName'] != null ? true : false
@@ -172,5 +112,39 @@ header {
   position: absolute;
   top: 0;
   right: 2rem;
+}
+.awesome-button {
+  z-index: 100;
+  position: absolute;
+  right: 10%;
+  cursor: pointer;
+  width: 180px;
+  height: 60px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-style: white;
+  padding: 20px;
+  margin: auto;
+  background-color: black;
+  // background-color: #d61224;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
+  filter: invert(1);
+  -webkit-filter: invert(1);
+}
+.awesome-button:hover {
+  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
+}
+.awesome-button:active {
+  box-shadow: none;
+}
+.awesome-button-text {
+  text-decoration: none;
+  color: white;
 }
 </style>

@@ -30,7 +30,6 @@
       </div>
 
       <div @click="setNftData()" class="awesome-button">
-        <!--img src="../assets/img/sword.png" class="sword-img" /-->
         <span class="awesome-button-text">Upload to Blockchain</span>
       </div>
       <!--button v-on:click="printAllItems()">print all items</button-->
