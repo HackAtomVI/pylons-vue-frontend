@@ -4,22 +4,22 @@
       <div class="nav__content">
         <ul class="nav__menu">
           <li>
-            <router-link to="/"> HOME </router-link>
+            <router-link to="/" style="padding: 1.8rem"> HOME </router-link>
           </li>
           <li>
-            <router-link to="/upload"> UPLOAD NFT </router-link>
+            <router-link to="/upload" style="padding: 1.8rem"> UPLOAD NFT </router-link>
           </li>
           <li>
-            <router-link to="/workshop"> MY NFT HERO </router-link>
+            <router-link to="/workshop" style="padding: 1.8rem"> MY NFT HERO </router-link>
           </li>
           <li>
-            <router-link to="/market"> FORGE </router-link>
+            <router-link to="/market" style="padding: 1.8rem"> FORGE </router-link>
           </li>
           <li>
-            <router-link to="/arena"> ARENA </router-link>
+            <router-link style="padding: 1.8rem" to="/arena"> ARENA </router-link>
           </li>
           <li>
-            <router-link to="/about"> CROWD CONTROL </router-link>
+            <router-link style="padding: 1.8rem" to="/about"> CROWD CONTROL </router-link>
           </li>
           <li>
             <a class="discord-button" target="_blank" href="https://discord.gg/ZKKbhUs">
@@ -93,6 +93,7 @@ export default {
 
 .nav__menu {
   width: auto;
+  min-width: 80%;
   list-style-type: none;
   margin: 0;
   padding: 0;

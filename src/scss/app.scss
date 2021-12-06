@@ -39,10 +39,12 @@
     display: inline-block;
     text-decoration: none;
     color: white;
+    margin: auto;
   }
   .discord-button {
     background-color: white;
     color: black;
     padding: 0;
     font-size: 18px;
+    justify-content: right;
   }

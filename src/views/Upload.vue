@@ -5,9 +5,7 @@
       <div class="title">Get Ready for Battle!</div>
       <div class="description">
         Here you can upload your NFT. Currently this is only possible via the right-click-save-as bridge. <br />
-        This means you upload your saved NFT here via the form and then you can send it to the Arena! <br />
         However in the future we want to do this through IBC once Pylons supports IBC transfer of NFTs. <br />
-        This is also known as the Age of Awesomeness. You are currently in the Age of Crypto-Enthusiasm. <br />
         <br />
         Please enter the Name of your fighter:
       </div>
@@ -358,7 +356,7 @@ function compressImg(dataURL, maxKB) {
 .e60_170 {
   background-color: rgba(255, 255, 255, 1);
   margin: 0 auto;
-  opacity: 0.5;
+  opacity: 0.9;
   font-size: 35px;
   color: black;
   padding: 5px;

@@ -6,7 +6,7 @@
       </router-link>
 
       <router-link v-if="!getLoggedIn" to="/login">
-        <div class="awesome-button">
+        <div class="awesome-button wide-small">
           <span class="awesome-button-text">Login</span>
         </div>
       </router-link>
@@ -49,6 +49,14 @@ export default {
 
 <style scoped lang="scss">
 @import '../scss/variables';
+.wide-small {
+  width: 180px;
+  height: 40px;
+  z-index: 100;
+  position: absolute;
+  right: 10%;
+  padding: 10px;
+}
 
 header {
   background-color: $header-gray;
@@ -112,39 +120,5 @@ header {
   position: absolute;
   top: 0;
   right: 2rem;
-}
-.awesome-button {
-  z-index: 100;
-  position: absolute;
-  right: 10%;
-  cursor: pointer;
-  width: 180px;
-  height: 60px;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  font-style: white;
-  padding: 20px;
-  margin: auto;
-  background-color: black;
-  // background-color: #d61224;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
-  filter: invert(1);
-  -webkit-filter: invert(1);
-}
-.awesome-button:hover {
-  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
-}
-.awesome-button:active {
-  box-shadow: none;
-}
-.awesome-button-text {
-  text-decoration: none;
-  color: white;
 }
 </style>
