@@ -106,7 +106,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getFight } from '../utils/pylonsInteraction.js'
+import { getItemsFromFight } from '../utils/pylonsInteraction.js'
 import StickyLeft from '@/components/StickyLeft.vue'
 import StickyRight from '@/components/StickyRight.vue'
 import StickyArmor from '@/components/StickyArmor.vue'
@@ -123,6 +123,7 @@ export default {
   data() {
     return {
       fighterEquipment: {},
+      opponentEquipment: {},
       queuedFights: [],
       opponentFighter: {
         nft: {},
@@ -267,6 +268,25 @@ export default {
           } else {
             console.log('fight successful: ', res.data.Fighter)
             this.queuedFights.pop()
+            console.log('looking up opponent fighter with id', res.data.Fighter.opponentFighter)
+
+            this.$axios
+              .get(
+                'http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' +
+                  res.data.Fighter.opponentFighter,
+                {
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                },
+              )
+              .then((res) => {
+                console.log('looked up opponent fighter data:', res)
+                getItemsFromFight
+                  .bind(this)(res.data.Fighter)
+                  .then((res) => {
+                    this.opponentEquipment = res
+                    console.log('opponent Equipment:', this.opponentEquipment)
+                  })
+              })
           }
         })
     },

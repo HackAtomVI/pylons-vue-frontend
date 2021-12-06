@@ -74,6 +74,45 @@ export function getItems() {
     })
 }
 
+export function getItemsFromFight(fight) {
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
+      params: {
+        '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
+        owner: fight.creator,
+      },
+    })
+    .then((res) => {
+      let items = []
+      res.Items.forEach((item) => {
+        let entry = {
+          ID: item.ID,
+        }
+        item.strings.forEach((string) => {
+          entry[string.Key] = string.Value
+        })
+        item.doubles.forEach((double) => {
+          entry[double.Key] = double.Value
+        })
+        item.mutableStrings.forEach((string) => {
+          entry[string.Key] = string.Value
+        })
+        items[item.ID] = entry
+      })
+      console.log('items dict', items)
+
+      let opponentEquipment = {
+        armor: items[fight.Armoritem],
+        helmet: {},
+        lefthand: items[fight.LHitem],
+        righthand: items[fight.RHitem],
+        nft: items[fight.NFT],
+      }
+
+      return opponentEquipment
+    })
+}
+
 export function craftWeapon() {
   return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
     value: {
