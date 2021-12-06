@@ -1,57 +1,79 @@
 <template>
   <div class="background">
-    <div v-if="getIsClientWinner()" class="container">
+    <div class="container">
       <div class="e90_141">
         <div class="result-text">MATCH RESULT</div>
       </div>
-      <div class="e90_209">You WIN!</div>
+      <div v-if="getIsClientWinner()" class="e90_209">You WIN!</div>
+      <div v-else class="e90_209__red">YOU LOSE!</div>
       <div class="content-wrapper">
         <div class="nft-name nft-name__own" id="nftName">
-          <span>PLACEHOLDER</span>
-          <img src="../assets/img/winStar.png" class="star-img" />
+          <span> {{ this.$store.getters['getFighterEquipment'].nft.name }} </span>
+          <img v-if="getIsClientWinner()" src="../assets/img/winStar.png" class="star-img" />
+          <img v-else src="../assets/img/loseStar.png" class="star-img" />
         </div>
         <div class="nft-name nft-name__opponent" id="nftName">
-          <img src="../assets/img/loseStar.png" class="star-img" />
-          <span>PLACEHOLDER</span>
+          <img v-if="getIsClientWinner()" src="../assets/img/loseStar.png" class="star-img" />
+          <img v-else src="../assets/img/winStar.png" class="star-img" />
+          <span>{{ this.opponentNft }}</span>
         </div>
         <br />
         <div class="player-container">
           <div class="hero-wrapper">
             <div class="stats_wrapper"></div>
-            <div class="nft-img_wrapper" style="float: right"></div>
+            <div class="nft-img_wrapper" style="float: right">
+              <div class="stickfigure-background">
+                <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+                <StickyLeft
+                  v-if="exists(opponentNft.lefthand.name)"
+                  :name="opponentNft.lefthand.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 100"
+                />
+                <StickyRight
+                  v-if="exists(opponentNft.righthand.name)"
+                  :name="opponentNft.righthand.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 100"
+                />
+                <StickyArmor
+                  v-if="exists(opponentNft.armor.name)"
+                  :name="opponentNft.armor.name"
+                  class="equipped-item shifted-down"
+                  style="z-index: 10"
+                />
+                <img :src="nftImg" class="nft-image shifted-down" style="z-index: 9999" />
+              </div>
+            </div>
           </div>
           <div class="vs-text">VS</div>
           <div class="hero-wrapper">
-            <div class="nft-img_wrapper" style="float: left"></div>
-            <div class="stats_wrapper"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="!getIsClientWinner()" class="container">
-      <div class="e90_141">
-        <div class="result-text">MATCH RESULT</div>
-      </div>
-      <div class="e90_209__red">YOU LOSE!</div>
-      <div class="content-wrapper">
-        <div class="nft-name nft-name__own" id="nftName">
-          <span>PLACEHOLDER</span>
-          <img src="../assets/img/loseStar.png" class="star-img" />
-        </div>
-        <div class="nft-name nft-name__opponent" id="nftName">
-          <img src="../assets/img/winStar.png" class="star-img" />
-          <span>PLACEHOLDER</span>
-        </div>
-        <br />
-        <div class="player-container">
-          <div class="hero-wrapper">
-            <div class="stats_wrapper"></div>
-            <div class="nft-img_wrapper" style="float: right"></div>
-          </div>
-          <div class="vs-text">VS</div>
-          <div class="hero-wrapper">
-            <div class="nft-img_wrapper" style="float: left"></div>
+            <div class="nft-img_wrapper" style="float: left">
+              <div class="nft-img_wrapper" style="float: right">
+                <div class="stickfigure-background">
+                  <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
+                  <StickyLeft
+                    v-if="exists(opponentNft.lefthand.name)"
+                    :name="opponentNft.lefthand.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 100"
+                  />
+                  <StickyRight
+                    v-if="exists(opponentNft.righthand.name)"
+                    :name="opponentNft.righthand.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 100"
+                  />
+                  <StickyArmor
+                    v-if="exists(opponentNft.armor.name)"
+                    :name="opponentNft.armor.name"
+                    class="equipped-item shifted-down"
+                    style="z-index: 10"
+                  />
+                  <img :src="nftImg" class="nft-image shifted-down" style="z-index: 9999" />
+                </div>
+              </div>
+            </div>
             <div class="stats_wrapper"></div>
           </div>
         </div>
@@ -67,15 +89,26 @@ export default {
   data() {
     return {
       isClientWinner: false,
+      opponentNft: {},
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      this.isClientWinner = this.$route.params.isWinner
+    },
+    exists(item) {
+      if (typeof item === 'undefined') return false
+      else if (item === '') return false
+      else return true
+    },
     getIsClientWinner() {
       console.log(this.$store.getters.getIsWinner)
       return this.$store.getters.getIsWinner
     },
   },
-  mounted() {},
 }
 </script>
 <style scoped lang="scss">
@@ -104,6 +137,33 @@ export default {
   height: 250px;
   background-color: white;
   // height: 20%;
+}
+.stickfigure {
+  width: 100%;
+  height: 100%;
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 0;
+  //background-image: url("../assets/img/stick_items/sboi.png");
+}
+.nft-img_wrapper {
+  width: 250px;
+  background-color: white;
+  // height: 20%;
+}
+.equipped-item {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+}
+.stickfigure-background {
+  width: 100%;
+  height: 100%;
+  background: $background-gradient;
+  //background-image: url('../assets/img/stick_items/sboiBG.png');
+  display: grid;
+  z-index: -3;
 }
 .hero-wrapper {
   display: flex;
@@ -170,6 +230,10 @@ export default {
   background-color: rgb(37, 37, 37);
   width: 100%;
   height: 100px;
+}
+.shifted-down {
+  margin-top: 10px;
+  border-width: 0px;
 }
 .background {
   top: 0;
