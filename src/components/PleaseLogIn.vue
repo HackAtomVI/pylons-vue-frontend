@@ -1,6 +1,8 @@
 <template>
   <div class="wrapper">
-    <div style="text-align: center">Please log in before proceeding to this page! :)</div>
+    <div style="text-align: center">
+      Please<router-link to="/login"> log in </router-link> before proceeding to this page! :)
+    </div>
   </div>
 </template>
 

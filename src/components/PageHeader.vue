@@ -5,11 +5,11 @@
         <img class="logo" alt="Crowd Control" src="../assets/logo2.gif" />
       </router-link>
 
-      <router-link v-if="!getLoggedIn" to="/login">
+      <!--router-link v-if="!getLoggedIn" to="/login">
         <div class="awesome-button wide-small">
           <span class="awesome-button-text">Login</span>
         </div>
-      </router-link>
+      </router-link-->
     </div>
   </header>
 </template>
