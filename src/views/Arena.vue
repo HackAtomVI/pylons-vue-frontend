@@ -444,7 +444,8 @@ export default {
 .stickfigure-background {
   height: 100%;
   width: 100%;
-  background: $background-gradient;
+  background-image: url('../assets/img/stick_items/sboiBG.png');
+  background-size: stretch;
   //background-image: url('../assets/img/stick_items/sboiBG.png');
   display: grid;
   z-index: -3;
@@ -537,7 +538,7 @@ export default {
   color: white;
 }
 .shifted-down {
-  margin-top: 10px;
+  margin-top: 5%;
   border-width: 0px;
 }
 .fight-box {

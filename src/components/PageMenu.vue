@@ -21,7 +21,7 @@
           <li>
             <router-link style="padding: 1.8rem" to="/about"> CROWD CONTROL </router-link>
           </li>
-          <li>
+          <li style="float: right">
             <a class="discord-button" target="_blank" href="https://discord.gg/ZKKbhUs">
               <picture style="color: black">
                 <source type="image/webp" srcset="../assets/icon/discord.webp" />

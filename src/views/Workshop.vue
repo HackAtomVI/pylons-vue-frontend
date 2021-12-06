@@ -213,7 +213,7 @@
       </div>
       <div class="panel__right">
         <div class="stickfigure-background">
-          <img src="../assets/img/stick_items/sboi.png" class="stickfigure" />
+          <img src="../assets/img/stick_items/sboi.png" class="stickfigure shifted-down" />
           <StickyLeft
             v-if="!R.isEmpty(this.$store.getters['getFighterEquipment'].lefthand)"
             :name="this.$store.getters['getFighterEquipment'].lefthand.name"
@@ -628,12 +628,15 @@ export default {
   width: 450px;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }
 .stickfigure-background {
   width: 468px;
   height: 468px;
   background-image: url('../assets/img/stick_items/sboiBG.png');
+  background-size: 100%;
   display: grid;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
 }
 .stickfigure {
   width: 100%;
@@ -827,7 +830,7 @@ export default {
   color: white;
 }
 .shifted-down {
-  margin-top: 10px;
+  margin-top: 5%;
   border-width: 0px;
 }
 </style>

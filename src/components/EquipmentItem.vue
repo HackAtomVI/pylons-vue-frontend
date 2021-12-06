@@ -87,6 +87,7 @@ export default {
 .wrapper {
   // width: 55px;
   // height: 55px;
+  cursor: pointer;
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.5);
   border-top-left-radius: 10px;
