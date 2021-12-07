@@ -30,4 +30,5 @@ With the following setup you can run this frontend as a client for your local py
 ## Run for Production
 
 npm run build
+
 serve -S dist
