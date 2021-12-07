@@ -197,28 +197,38 @@
                 </div>
                 <button
                   v-on:click="equipItem()"
-                  class="equip"
+                  class="equip regular-button"
                   v-if="this.selectedItemName !== '' && singleButton() === true"
                 >
                   Equip
                 </button>
                 <button
                   v-on:click="this.enchant()"
-                  class="equip"
+                  class="equip regular-button"
                   v-if="this.selectedItemName !== '' && singleButton() === true && this.selectedEnchantment === 'none'"
                 >
                   Enchant
                 </button>
               </div>
             </div>
-            <router-link to="/market">
-              <div
-                class="awesome-button smaller-button"
-                style="float: left; margin-top: 50px; height: 40px; padding: 10px; width: 200px"
-              >
-                <span class="awesome-button-text" style="">BUY MORE ITEMS</span>
-              </div>
-            </router-link>
+            <div>
+              <router-link to="/market" style="display: inline">
+                <div
+                  class="awesome-button smaller-button"
+                  style="float: left; margin-top: 50px; height: 40px; padding: 10px; width: 180px"
+                >
+                  <span class="awesome-button-text" style="">BUY MORE ITEMS</span>
+                </div>
+              </router-link>
+              <router-link to="/arena" style="display: inline">
+                <div
+                  class="awesome-button smaller-button"
+                  style="float: left; margin-top: 50px; margin-left: 90px; height: 40px; padding: 10px; width: 180px"
+                >
+                  <span class="awesome-button-text" style="">GO TO ARENA</span>
+                </div>
+              </router-link>
+            </div>
           </div>
         </div>
         <div class="panel__right">
