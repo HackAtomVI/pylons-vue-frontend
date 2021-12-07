@@ -101,8 +101,13 @@
                 </div>
               </div>
               <div class="inventory__right">
-                <div @click="this.enchant()" v-if="this.selectedItemName !== ''" class="item-name">
-                  {{ this.selectedItemName }} <img class="enchant-icon" src="../assets/img/market/enchant.png" />
+                <div v-if="this.selectedItemName !== ''" class="item-name">
+                  {{ this.selectedItemName }}
+                  <img
+                    v-if="this.selectedEnchantment !== 'none'"
+                    class="enchant-icon"
+                    src="../assets/img/market/enchant.png"
+                  />
                 </div>
 
                 <div
