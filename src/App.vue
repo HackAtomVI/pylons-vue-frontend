@@ -80,7 +80,7 @@ export default {
       if (this.isLoggedIn) {
         this.$axios
           .post(
-            'http://v2202008103543124756.megasrv.de:4500',
+            process.env.VUE_APP_FAUCET,
             {
               address: this.$store.getters['common/wallet/address'],
               coins: ['5000upylon'],
