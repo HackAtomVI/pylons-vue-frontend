@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Index from '@/views/Index.vue'
 import Market from '@/views/Market.vue'
 import Arena from '@/views/Arena.vue'
@@ -13,6 +13,7 @@ import Result from '@/views/Result.vue'
 import About from '@/views/About.vue'
 import Enchant from '@/views/Enchant.vue'
 
+const routerHistory = createWebHistory()
 const routes = [
   {
     path: '/',
@@ -33,7 +34,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: routerHistory,
   routes,
 })
 
