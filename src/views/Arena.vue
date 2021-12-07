@@ -333,8 +333,13 @@ export default {
     },
     getFightDone(id) {
       this.notifyInfo('Checking', 'Checking Battle status, please wait')
+<<<<<<< HEAD
       return this.$axios
         .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
+=======
+      this.$axios
+        .get(process.env.VUE_APP_API_COSMOS + '/Pylons-tech/pylons/pylons/fight?ID=' + id, {
+>>>>>>> b7acb77 (Update battle axios queries)
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
         .then((res) => {
@@ -355,7 +360,8 @@ export default {
             this.battleLog = res.data.Fighter.Log
             this.$axios
               .get(
-                'http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' +
+                process.env.VUE_APP_API_COSMOS +
+                  '/Pylons-tech/pylons/pylons/fight?ID=' +
                   res.data.Fighter.opponentFighter,
                 {
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
