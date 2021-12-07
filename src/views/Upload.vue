@@ -155,7 +155,7 @@ export default {
       //console.log(vm.nftimg)
     },
     setNftData() {
-      this.notifyInfo('Updating NFT', 'Your NFT is being updated, please wait!')
+      this.notifyInfo('Updating NFT', 'Please wait!\nYou will be redirected once the upload is successful!')
       this.$store
         .dispatch('Pylonstech.pylons.pylons/sendMsgSetItemString', {
           value: {
@@ -191,9 +191,10 @@ export default {
               if (res.code == 0) {
                 console.log('Img updated', res)
                 this.notifySuccess('Very Nice', 'NFT Name and Image successfully updated!')
+                this.$router.push('Workshop')
               } else {
                 console.error(res)
-                this.notifyFail('Sad :(', 'TX FAILED!')
+                this.notifyFail('Sad :(', 'TRANSACTION FAILED!')
               }
             })
         })

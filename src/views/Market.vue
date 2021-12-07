@@ -36,8 +36,13 @@
         </div>
       </div>
       <router-link to="/workshop">
-        <div class="awesome-button" style="float: left; margin: 100px auto; height: 40px; padding: 10px; width: 300px">
-          <span class="awesome-button-text" style="padding-top: 0px">GO TO MY HERO PAGE</span>
+        <div
+          class="awesome-button"
+          style="float: left; margin: 100px auto; height: 40px; padding: 10px; width: 300px; background-color: white"
+        >
+          <span class="awesome-button-text" style="padding-top: 0px"
+            ><span style="color: black">GO TO MY HERO PAGE</span></span
+          >
         </div>
       </router-link>
     </div>
@@ -88,6 +93,10 @@ export default {
         })
     },
     craftArmor() {
+      if (this.lock) {
+        this.notifyInfo('CHILL OUT!', 'Please wait for your item to finish crafting before getting another one!')
+        return
+      }
       this.lock = true
       this.notifyInfo('Armor', 'Crafting it \nPlease wait')
       craftArmor
@@ -105,6 +114,10 @@ export default {
         })
     },
     craftShield() {
+      if (this.lock) {
+        this.notifyInfo('CHILL OUT!', 'Please wait for your item to finish crafting before getting another one!')
+        return
+      }
       this.lock = true
       this.notifyInfo('Shield', 'Crafting it \nPlease wait')
       craftShield

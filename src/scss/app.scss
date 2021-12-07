@@ -42,3 +42,9 @@
     color: white;
     margin: auto;
   }
+  .regular-button:hover {
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
+  }
+  .regular-button:active {
+    box-shadow: none;
+  }
