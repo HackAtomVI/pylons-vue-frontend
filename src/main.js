@@ -10,11 +10,6 @@ import Notifications from '@kyvg/vue3-notification'
 
 import { getNft, getItems } from './utils/pylonsInteraction.js'
 
-// createApp.prototype.$http = axios.create({
-//     baseURL: 'http://v2202008103543124756.megasrv.de:4500',
-// })
-//saxios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
-
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
 app.config.globalProperties._depsLoaded = true
