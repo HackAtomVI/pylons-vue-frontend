@@ -42,6 +42,7 @@ export default {
   },
   mounted() {
     console.log('loggedin?', this.$store.getters['common/wallet/loggedIn'])
+    console.log('env', process.env.VUE_APP_FAUCET)
   },
   computed: {
     hasWallet() {
