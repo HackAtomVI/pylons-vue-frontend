@@ -53,7 +53,7 @@
       <div class="footer-container">
         <div
           class="awesome-button smaller-button"
-          v-if="!this.fightFinished && this.fightQueued"
+          v-if="!this.fightFinished && this.fightQueued && this.fighterID != 'undefined'"
           @click="checkFightResult(this.fighterID)"
           style="
             cursor: pointer;
@@ -65,6 +65,12 @@
           "
         >
           <span class="awesome-button-text" style="color: black">CLICK TO CHECK BATTLE RESULT!</span>
+        </div>
+        <div
+          class="awesome-box smaller-button"
+          v-if="!this.fightFinished && this.fightQueued && this.fighterID == 'undefined'"
+        >
+          <span class="awesome-button-text" style="color: black">Queueing fight...</span>
         </div>
         <div class="queue-container">
           <div v-if="this.fightQueued || this.keepLog" class="fight-box">
@@ -177,7 +183,12 @@ export default {
       canFight: false,
       ownedItems: [],
       nftImg: 'undefined',
+      timer: '',
+      refreshPromise: undefined,
     }
+  },
+  created() {
+    this.timer = setInterval(this.refreshFightState, 5000)
   },
   mounted() {
     if (this.isLoggedIn()) {
@@ -263,6 +274,7 @@ export default {
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
         let rightID = this.fighterEquipment.righthand.ID
+        this.fighterID = 'undefined'
         if (this.fighterEquipment.lefthand.oneHanded === 'false') {
           rightID = this.fighterEquipment.lefthand.ID
         }
@@ -310,9 +322,18 @@ export default {
     checkFightResult(id) {
       this.getFightDone(id)
     },
+    refreshFightState() {
+      console.log('refreshFightState')
+      if (this.fightQueued && this.fighterID != 'undefined' && !this.refreshPromise) {
+        this.refreshPromise = this.getFightDone(this.fighterID)
+        this.refreshPromise.then(() => {
+          this.refreshPromise = undefined
+        })
+      }
+    },
     getFightDone(id) {
       this.notifyInfo('Checking', 'Checking Battle status, please wait')
-      this.$axios
+      return this.$axios
         .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         })
@@ -380,6 +401,10 @@ export default {
       else if (item === '') return false
       else return true
     },
+  },
+  beforeUnmount() {
+    console.log('beforeUnmount')
+    clearInterval(this.timer)
   },
 }
 </script>
@@ -583,5 +608,26 @@ export default {
   overflow-y: auto;
   width: 100%;
   background: $background-gradient;
+}
+.awesome-box {
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  font-size: 18px;
+  font-style: white;
+  // background-color: #d61224;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  filter: invert(1);
+  -webkit-filter: invert(1);
+  background-color: rgba(255, 255, 255, 0.8);
+  height: 40px;
+  margin: 15px auto;
+  padding: 10px;
+  width: 400px;
 }
 </style>
