@@ -29,7 +29,7 @@
 
       <div
         @click="setNftData()"
-        class="awesome-button"
+        class="awesome-button smaller"
         style="margin: -20px auto; height: 40px; padding: 10px; width: 300px"
       >
         <span class="awesome-button-text">UPLOAD TO BLOCKCHAIN</span>
@@ -317,47 +317,8 @@ function compressImg(dataURL, maxKB) {
   grid-column: 1;
   grid-row: 1;
 }
-.awesome-button {
-  cursor: pointer;
-  width: 180px;
+.smaller {
   height: 90px;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  font-size: 18px;
-  font-style: white;
-  padding: 20px;
-  margin: auto;
-  background-color: black;
-  // background-color: #d61224;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: 0px 6px 6px rgba(255, 255, 255, 0.5);
-  filter: invert(1);
-  -webkit-filter: invert(1);
-}
-.awesome-button:hover {
-  box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.5);
-}
-.awesome-button:active {
-  box-shadow: none;
-}
-.awesome-button-text {
-  text-decoration: none;
-  color: white;
-}
-
-.e60_150 {
-  background-color: black;
-  color: white;
-  width: 50%;
-  border-width: 0px;
-  font-size: 25px;
-  border-radius: 4px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 3px 2px;
 }
 
 .e60_170 {

@@ -95,8 +95,6 @@ export default {
     }
   },
   mounted() {
-    console.log('FUCK THIS SHIT')
-    console.log('query fight 0:', getFight(0))
     this.init()
   },
   methods: {

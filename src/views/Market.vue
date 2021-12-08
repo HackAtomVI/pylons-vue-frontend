@@ -83,7 +83,6 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Weapon crafting successful!')
-          //this.enchant()
           this.lock = false
         })
         .catch((err) => {
@@ -104,7 +103,6 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Armor crafting successful!')
-          //this.enchant()
           this.lock = false
         })
         .catch((err) => {
@@ -125,7 +123,6 @@ export default {
         .then((res) => {
           console.log('craft result', res)
           this.notifySuccess('Very Nice', 'Shield crafting successful!')
-          //this.enchant()
           this.lock = false
         })
         .catch((err) => {
@@ -143,7 +140,6 @@ export default {
         .bind(this)()
         .then((res) => {
           craftedItem = res[res.length - 1]
-          //console.log(craftedItem)
           this.$router.push({
             name: 'Enchant',
             params: { itemNew: true, id: craftedItem.ID },

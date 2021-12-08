@@ -9,7 +9,6 @@
         <div class="item-container">
           <div class="item-container__left">
             <EquipmentItem v-if="isInitialized" :name="this.item.name" class="equipment-item" />
-            <!-- <img class="item-img" :src="itemImg" /> -->
           </div>
           <div class="item-container__right">
             <div class="item-name">{{ this.itemName }}</div>
@@ -194,8 +193,6 @@ export default {
     logItem() {
       this.itemID = this.$route.params.id
       this.isNew = this.$route.params.itemNew
-      //console.log("id: " + this.itemID + " || isNew: " + this.isNew)
-      //console.log()
     },
     equipItem() {
       let equipment = this.$store.getters['getFighterEquipment']
@@ -270,9 +267,10 @@ export default {
           break
         }
       }
-      if (successfulEquip) this.notifySuccess('Very Nice', 'Item equiped!')
-      console.log('vvvv=== Get Fighter equipment ===vvv')
-      console.log(this.$store.getters['getFighterEquipment'])
+      if (successfulEquip) {
+        this.notifySuccess('Very Nice', 'Item equiped!')
+      }
+      console.log('Get Fighter equipment', this.$store.getters['getFighterEquipment'])
     },
   },
 }

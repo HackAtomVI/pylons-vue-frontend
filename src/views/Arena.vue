@@ -51,7 +51,6 @@
         </div>
       </div>
       <div class="footer-container">
-        <!-- <div class="title" style="margin-top: 60px;text-align:left; display:inline;">Queued Battle</div> -->
         <div
           class="awesome-button smaller-button"
           v-if="!this.fightFinished && this.fightQueued"
@@ -181,13 +180,9 @@ export default {
     }
   },
   mounted() {
-    //console.log('query fight 0:', getFight(0))
-    //console.log('the whole store:', this.$store)
-    //console.log("IMAGE: ", this.$store.getters['getFighterEquipment'].nft.image)
     if (this.isLoggedIn()) {
       this.nftImg = this.$store.getters['getFighterEquipment'].nft.image
       this.queryMyNFT().then((nft) => {
-        //console.log('NFT:', nft)
         if (R.isEmpty(nft.name)) {
           this.fighterName = 'please give your NFT a proper name'
         } else {
@@ -203,7 +198,6 @@ export default {
 
       this.queryMyItems().then((items) => {
         this.ownedItems = items
-        //console.log('store fighter equipment', this.$store.getters['getFighterEquipment'])
         this.fighterEquipment = this.$store.getters['getFighterEquipment']
 
         this.canFight = true
@@ -289,7 +283,7 @@ export default {
           })
           .then((res) => {
             console.log('Enlisted Successfully: ', res)
-            console.log('TEST: ', JSON.parse(res.rawLog))
+            console.log('Parsed result of enlist: ', JSON.parse(res.rawLog))
             this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
 
             if (this.fighterID.includes('pylo')) {

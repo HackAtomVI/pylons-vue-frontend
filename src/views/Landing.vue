@@ -9,9 +9,7 @@
           <span class="awesome-button-text" style="text-decoration: none"> GET STARTED NOW </span>
         </div>
       </router-link>
-      <div v-if="isStartClicked" style="text-align: center">
-        <!-- <SpWallet class="wallet" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" /> -->
-      </div>
+      <div v-if="isStartClicked" style="text-align: center"></div>
     </div>
   </div>
 </template>

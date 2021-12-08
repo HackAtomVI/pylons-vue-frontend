@@ -1,20 +1,12 @@
 <template>
   <div class="background">
     <div v-if="this.isUserLoggedIn()" class="container">
-      <!-- LOCAL HEADER -->
-      <!-- <div class="local-header">
-        <div class="header-item">
-          ITEM COLLECTION
-        </div>
-        <div class="header-item">
-          HERO
-        </div>
-      </div> -->
       <div class="top-panels">
         <div class="panel-wrapper">
           <div class="panel__left">
             <div class="selection-wrapper">
-              <!-- <div class="selection-item">
+              <!-- helmet is commented out, because helmet will not be finished until end of hackathon -->
+              <!-- <div class="selection-item"> 
               <span class="selection-text" style="color: rgb(18, 209, 209)">HELMET</span>
               <div class="arrow-left blue" />
               <div class="arrow-right blue" />
@@ -37,8 +29,6 @@
                 >
                   {{ getEquipedItemDisplayName('armor') }}
                 </div>
-                <!-- <div class="arrow-left orange" />
-              <div class="arrow-right orange" /> -->
               </div>
               <div class="selection-item">
                 <span class="selection-text" style="color: rgb(255, 118, 118)">RIGHT HAND:</span>
@@ -58,8 +48,6 @@
                 >
                   {{ getEquipedItemDisplayName('right') }}
                 </div>
-                <!-- <div class="arrow-left red" />
-              <div class="arrow-right red" /> -->
               </div>
               <div class="selection-item">
                 <span class="selection-text" style="color: rgb(255, 118, 118)">LEFT HAND:</span>
@@ -78,17 +66,11 @@
                 >
                   {{ getEquipedItemDisplayName('left') }}
                 </div>
-
-                <!-- <div class="arrow-left red" />
-              <div class="arrow-right red" /> -->
               </div>
             </div>
             <div class="inventory-container" style="">
               <div class="inventory__left">
                 <div id="item-list">
-                  <!-- <img src='@/assets/img/item_icons/art_armor_icon_13.png'> -->
-                  <!-- v-on:click="EquimpentItemSelected(item.id)" -->
-
                   <EquipmentItem
                     class="grid-item"
                     v-for="(item, index) in ownedItems"
@@ -276,8 +258,6 @@ import StickyLeft from '@/components/StickyLeft.vue'
 import StickyRight from '@/components/StickyRight.vue'
 import StickyArmor from '@/components/StickyArmor.vue'
 
-import { StringKeyValue } from '@/store/generated/Pylons-tech/pylons/Pylonstech.pylons.pylons'
-
 export default {
   name: 'Workshop',
   components: {
@@ -321,7 +301,6 @@ export default {
     console.log(this.$store)
     if (this.isUserLoggedIn()) {
       this.init()
-      //console.log("lefthand equipment name", this.$store.getters['getFighterEquipment'].lefthand.name)
     } else this.notifyFail('Epic fail', "How could you have an NFT Hero, if you're not even logged in??")
 
     console.log('Fighter Equipment:', this.$store.getters['getFighterEquipment'])
@@ -369,19 +348,11 @@ export default {
 
       let name = item.name
       this.selectedItemName = name.charAt(0).toUpperCase() + name.slice(1)
-      //console.log(this.singleButton())
     },
     singleButton() {
-      return true //While Equipment is limited to being equiped in specific hand
-      // if (
-      //   (this.selectedOneHanded === 'true' || this.selectedItemType === 'shield') &&
-      //   this.selectedItemType !== 'armor'
-      // ) {
-      //   return false
-      // } else return true
+      return true
     },
     isUserLoggedIn() {
-      //console.log(this.$store)
       return this.$store.getters['common/wallet/loggedIn']
     },
     equipItem() {
@@ -391,13 +362,9 @@ export default {
       switch (this.selectedItemType) {
         case 'weapon': {
           if (this.selectedOneHanded === 'true') {
-            console.log('equipping 1H')
-
             if (R.isEmpty(equipment.righthand)) {
-              console.log('righthand empty')
               this.$store.commit('setFighterRightHand', this.selectedItem)
             } else if (R.isEmpty(equipment.lefthand)) {
-              console.log('lefthand empty')
               if (equipment.lefthand.ID === this.selectedItem.ID || equipment.righthand.ID === this.selectedItem.ID) {
                 this.notifyFail('Already worn', 'You are already wearing this item. ')
                 successfulEquip = false
@@ -408,7 +375,6 @@ export default {
                 }
               }
             } else {
-              console.log('no hand empty')
               if (this.selectedItem.ID === equipment.righthand.ID) {
                 this.notifyFail('Already worn', 'You are already wearing this item. ')
                 successfulEquip = false
@@ -431,7 +397,6 @@ export default {
               this.notifyFail('Already worn', 'You are already wearing this item. ')
               successfulEquip = false
             } else {
-              console.log('equipping 2H')
               this.$store.commit('setFighterRightHand', this.selectedItem)
               this.$store.commit('setFighterLeftHand', {})
             }
@@ -449,26 +414,20 @@ export default {
           break
         }
         case 'shield': {
-          console.log('right hand empty?', R.isEmpty(equipment.righthand))
-          console.log('right hand onehanded?', equipment.righthand.oneHanded)
           if (this.selectedItem.ID === equipment.lefthand.ID) {
             this.notifyFail('Already worn', 'You are already wearing this item. ')
             successfulEquip = false
           } else if (!R.isEmpty(equipment.righthand) && equipment.righthand.oneHanded == 'false') {
-            console.log('REMOVE 2H')
             this.$store.commit('setFighterRightHand', {})
           }
-
           this.$store.commit('setFighterLeftHand', this.selectedItem)
 
           console.log('worn items:', this.$store.getters['getFighterEquipment'])
-
           break
         }
       }
       if (successfulEquip) this.notifySuccess('Very Nice', 'Item equiped!')
-      console.log('vvvv=== Get Fighter equipment ===vvv')
-      console.log(this.$store.getters['getFighterEquipment'])
+      console.log('Get Fighter equipment', this.$store.getters['getFighterEquipment'])
     },
     enchant() {
       console.log('selectedItem: ', this.selectedItem)
@@ -667,7 +626,6 @@ export default {
   height: 100%;
   grid-column: 1;
   grid-row: 1;
-  //background-image: url("../assets/img/stick_items/sboi.png");
 }
 .equipped-item {
   grid-column: 1;
@@ -677,14 +635,11 @@ export default {
 }
 .selection-wrapper {
   width: 100%;
-  //margin-bottom: 30px;
   font-size: 21px;
   display: flex;
   font-family: $font-family;
   font-weight: bolder;
-  // padding: 30px 0;
   flex-direction: column;
-  // justify-content: space-evenly;
 }
 .selection-item {
   display: flex;
@@ -750,7 +705,6 @@ export default {
   width: 40px;
   height: 40px;
   transform: translateY(7px);
-  //background-image: url('../assets/img/settings.png');
 }
 .edit-icon {
   display: inline;
