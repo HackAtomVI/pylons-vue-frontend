@@ -34,8 +34,6 @@
       >
         <span class="awesome-button-text">UPLOAD TO BLOCKCHAIN</span>
       </div>
-      <!--button v-on:click="printAllItems()">print all items</button-->
-      <!--button v-on:click="loadNft()">Load NFT</button-->
     </div>
   </div>
   <div v-if="!this.isUserLoggedIn()" class="background">
@@ -93,19 +91,6 @@ export default {
         }
       })
     },
-    printAllItems() {
-      this.$store
-        .dispatch('Pylonstech.pylons.pylons/QueryListItemByOwner', {
-          params: {
-            '@type': 'Pylonstech.pylons.pylons/QueryListItemByOwner',
-            owner: this.$store.getters['common/wallet/address'],
-          },
-        })
-        .then((res) => {
-          console.log('All items: ')
-          console.log(res.Items)
-        })
-    },
     createNft() {
       return new Promise((resolve, reject) => {
         this.$store
@@ -141,7 +126,6 @@ export default {
       console.log('hasImg: ' + this.hasImg)
     },
     createImage(file) {
-      //var nftimg = new Image();
       var reader = new FileReader()
       var vm = this
 
@@ -152,7 +136,6 @@ export default {
       reader.readAsDataURL(file)
 
       console.log(file)
-      //console.log(vm.nftimg)
     },
     setNftData() {
       this.notifyInfo('Updating NFT', 'Please wait!\nYou will be redirected once the upload is successful!')

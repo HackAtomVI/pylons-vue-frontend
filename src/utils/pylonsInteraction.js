@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 export function getFight(id) {
   return this.$axios
     .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
@@ -56,6 +58,11 @@ export function getItems() {
       },
     })
     .then((res) => {
+      let ownAddress = false
+      if (!R.isEmpty(this.$store.state.common.wallet.selectedAddress)) {
+        ownAddress = this.$store.state.common.wallet.selectedAddress
+      }
+      console.log('own address', ownAddress)
       console.log('items', res)
       let items = []
       res.Items.forEach((item) => {
@@ -68,7 +75,9 @@ export function getItems() {
         item.doubles.forEach((double) => {
           entry[double.Key] = double.Value
         })
-        items.push(entry)
+        if (!ownAddress || item.owner == ownAddress) {
+          items.push(entry)
+        }
       })
       return items
     })
