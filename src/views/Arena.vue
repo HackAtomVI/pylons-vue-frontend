@@ -274,6 +274,7 @@ export default {
       if (this.canFight) {
         let leftID = this.fighterEquipment.lefthand.ID
         let rightID = this.fighterEquipment.righthand.ID
+        this.fighterID = 'undefined'
         if (this.fighterEquipment.lefthand.oneHanded === 'false') {
           rightID = this.fighterEquipment.lefthand.ID
         }
