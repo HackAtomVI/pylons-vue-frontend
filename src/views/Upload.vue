@@ -251,7 +251,7 @@ function compressImg(dataURL, maxKB) {
   console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
 
   while (Math.round(newDataURL.length) / 1000 > maxKB) {
-    quality -= 0.1
+    quality /= 1.5
     newDataURL = canvas.toDataURL('image/jpeg', quality)
     console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
 

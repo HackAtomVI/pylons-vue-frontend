@@ -10,6 +10,9 @@
           <span class="awesome-button-text">Login</span>
         </div>
       </router-link-->
+      <div class="awesome-button wide-small">
+        <span class="awesome-button-text"> Token: {{ getTokenAmount }} </span>
+      </div>
     </div>
   </header>
 </template>
@@ -19,6 +22,7 @@ export default {
   name: 'PageHeader',
   data() {
     return {
+      tokenAmount: -1,
       isLoggedIn: false,
       walletName: '',
     }
@@ -27,11 +31,15 @@ export default {
     "$store.getters['common/wallet/walletName']": function () {
       this.getLoginStatus()
     },
+    "$store.getters['getTokenAmount']": function () {
+      console.log('store watched for token amount')
+      this.tokenAmount = this.$store.getters['tokenAmount']
+    },
   },
 
   computed: {
-    getUserCredits() {
-      return this.$store.getters.getUserCredits
+    getTokenAmount() {
+      return this.$store.getters.getTokenAmount
     },
     getLoggedIn() {
       return this.$store.getters['common/wallet/loggedIn']

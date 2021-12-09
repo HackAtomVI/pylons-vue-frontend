@@ -17,12 +17,7 @@ const store = createStore({
       armor: {},
       helmet: {},
     },
-    equipedItemNames: {
-      lefthand: '',
-      righthand: '',
-      armor: '',
-      helmet: '',
-    },
+    tokenAmount: -1,
     isLoggedIn: false,
     nftName: '',
     isWinner: false,
@@ -77,20 +72,9 @@ const store = createStore({
     setOpponentHelmet(state, helmet) {
       state.opponentEquipment.helmet = helmet
     },
-
-    setEquipmentNameLeftHand(state, lefthand) {
-      state.equipedItemNames.lefthand = lefthand
+    setTokenAmount(state, amount) {
+      state.tokenAmount = amount
     },
-    setEquipmentNameRightHand(state, righthand) {
-      state.equipedItemNames.righthand = righthand
-    },
-    setEquipmentNameArmor(state, armor) {
-      state.equipedItemNames.armor = armor
-    },
-    setEquipmentNameHelmet(state, helmet) {
-      state.equipedItemNames.helmet = helmet
-    },
-
     setNft(state, nft) {
       state.fighterEquipment = nft
     },
@@ -109,8 +93,8 @@ const store = createStore({
     getOpponentEquipment: (state) => {
       return state.fighterEquipment
     },
-    getEquipedItemNames: (state) => {
-      return state.equipedItemNames
+    getTokenAmount: (state) => {
+      return state.tokenAmount
     },
     getNft: (state) => {
       return state.NFT

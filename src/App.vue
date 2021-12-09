@@ -25,6 +25,7 @@ import '@starport/vue/lib/starport-vue.css'
 //import Sidebar from './components/Sidebar'
 import PageMenu from './components/PageMenu'
 import PageHeader from './components/PageHeader'
+import { updateBalance } from './utils/pylonsInteraction.js'
 
 export default {
   components: {
@@ -78,6 +79,8 @@ export default {
       }
 
       if (this.isLoggedIn) {
+        updateBalance.bind(this)()
+
         this.$axios
           .post(
             process.env.VUE_APP_FAUCET,
@@ -136,42 +139,6 @@ export default {
     },
   },
   async created() {
-    let local = {
-      apiNode: 'http://localhost:1317',
-      rpcNode: 'http://localhost:26657',
-      wsNode: 'ws://localhost:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://localhost:26657/tx?hash=0x',
-    }
-    let pylonsserver = {
-      apiNode: 'http://api.testnet.pylons.tech:1317',
-      rpcNode: 'http://api.testnet.pylons.tech:26657',
-      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://api.testnet.pylons.tech:26657/tx?hash=0x',
-    }
-    let pylonsserver2 = {
-      apiNode: 'http://46.166.140.172:1317',
-      rpcNode: 'http://46.166.140.172:26657',
-      wsNode: 'http://46.166.140.172:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://localhost:26657/tx?hash=0x',
-    }
-    let shameserver = {
-      apiNode: 'http://v2202008103543124756.megasrv.de:1318',
-      rpcNode: 'http://v2202008103543124756.megasrv.de:26659',
-      wsNode: 'ws://v2202008103543124756.megasrv.de:26659/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://v2202008103543124756.megasrv.de:26659/tx?hash=0x',
-    }
     await this.$store.dispatch('common/env/init')
     this.initialized = true
   },
