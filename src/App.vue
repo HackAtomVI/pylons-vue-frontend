@@ -25,7 +25,7 @@ import '@starport/vue/lib/starport-vue.css'
 //import Sidebar from './components/Sidebar'
 import PageMenu from './components/PageMenu'
 import PageHeader from './components/PageHeader'
-import { updateBalance } from './utils/pylonsInteraction.js'
+import { updateBalance, openFaucet, createAccount, getCoins } from './utils/pylonsInteraction.js'
 
 export default {
   components: {
@@ -77,65 +77,34 @@ export default {
           return delay(t, v)
         })
       }
-
       if (this.isLoggedIn) {
-        updateBalance.bind(this)()
-
-        this.$axios
-          .post(
-            process.env.VUE_APP_FAUCET,
-            {
-              address: this.$store.getters['common/wallet/address'],
-              coins: ['5000upylon'],
-            },
-            {
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            },
-          )
-          .delay(1000)
-          .then((res) => {
-            console.log('Faucet Initiated: ', res)
-            console.log('dispatch this:', {
-              '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-              creator: this.$store.getters['common/wallet/address'],
-              username: this.$store.getters['common/wallet/walletName'],
-            })
-            this.$store
-              .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-                value: {
-                  '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-                  creator: this.$store.getters['common/wallet/address'],
-                  username: this.$store.getters['common/wallet/walletName'],
-                },
-              })
-              .then((res) => {
-                console.log('after create account, yes', res)
-                this.$store
-                  .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-                    value: {
-                      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-                      creator: this.$store.getters['common/wallet/address'],
-                      cookbookID: 'nftarena',
-                      recipeID: 'getcoins',
-                      coinInputsIndex: '0',
-                      itemIDs: [],
-                      paymentInfos: [],
-                    },
-                  })
-                  .then((res) => {
-                    console.log('GottenCoins: ', res)
-                  })
-              })
+        updateBalance
+          .bind(this)()
+          .then((balance) => {
+            console.log('balance', balance)
+            if (balance.length === 0) {
+              console.log('New account, registering')
+              openFaucet
+                .bind(this)()
+                .delay(1000)
+                .then((res) => {
+                  console.log('Faucet Initiated: ', res)
+                  createAccount
+                    .bind(this)()
+                    .then((res) => {
+                      getCoins
+                        .bind(this)()
+                        .then((res) => {
+                          console.log('GottenCoins: ', res)
+                          updateBalance.bind(this)()
+                        })
+                    })
+                })
+            }
           })
       } else {
         console.log('LOGGED OUT')
       }
-    },
-  },
-  '$store.state.common.wallet': {
-    deep: true,
-    handler() {
-      console.log('OHA', this.$store.state.common.wallet)
     },
   },
   async created() {

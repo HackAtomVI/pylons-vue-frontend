@@ -245,7 +245,7 @@ export function getBalance() {
 }
 
 export function updateBalance() {
-  getBalance
+  return getBalance
     .bind(this)()
     .then((balances) => {
       balances.forEach((balance) => {
@@ -253,5 +253,43 @@ export function updateBalance() {
           this.$store.commit('setTokenAmount', balance.amount)
         }
       })
+      return balances
     })
+}
+
+export function openFaucet() {
+  return this.$axios.post(
+    process.env.VUE_APP_FAUCET,
+    {
+      address: this.$store.getters['common/wallet/address'],
+      coins: ['5000upylon'],
+    },
+    {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+  )
+}
+
+export function createAccount() {
+  return this.$store.dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+      creator: this.$store.getters['common/wallet/address'],
+      username: this.$store.getters['common/wallet/walletName'],
+    },
+  })
+}
+
+export function getCoins() {
+  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+      creator: this.$store.getters['common/wallet/address'],
+      cookbookID: 'nftarena',
+      recipeID: 'getcoins',
+      coinInputsIndex: '0',
+      itemIDs: [],
+      paymentInfos: [],
+    },
+  })
 }
