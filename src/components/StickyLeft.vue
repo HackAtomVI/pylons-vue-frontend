@@ -72,6 +72,7 @@ export default {
         case 'dagger':
         case 'flail':
         case 'mace':
+        case 'javelin':
           return true
       }
       return false

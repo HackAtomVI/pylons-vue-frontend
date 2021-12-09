@@ -1,5 +1,19 @@
 import * as R from 'ramda'
 
+export function createNft() {
+  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+      creator: this.$store.getters['common/wallet/address'],
+      cookbookID: 'nftarena',
+      recipeID: 'importnft',
+      coinInputsIndex: '0',
+      itemIDs: [],
+      paymentInfos: [],
+    },
+  })
+}
+
 export function getFight(id) {
   return this.$axios
     .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
@@ -123,45 +137,60 @@ export function getItemsFromFight(fight) {
 }
 
 export function craftWeapon() {
-  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-    value: {
-      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-      creator: this.$store.getters['common/wallet/address'],
-      cookbookID: 'nftarena',
-      recipeID: 'mintweapon',
-      coinInputsIndex: '0',
-      itemIDs: [],
-      paymentInfos: [],
-    },
-  })
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+      value: {
+        '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+        creator: this.$store.getters['common/wallet/address'],
+        cookbookID: 'nftarena',
+        recipeID: 'mintweapon',
+        coinInputsIndex: '0',
+        itemIDs: [],
+        paymentInfos: [],
+      },
+    })
+    .then((res) => {
+      updateBalance.bind(this)()
+      return res
+    })
 }
 
 export function craftArmor() {
-  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-    value: {
-      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-      creator: this.$store.getters['common/wallet/address'],
-      cookbookID: 'nftarena',
-      recipeID: 'mintarmor',
-      coinInputsIndex: '0',
-      itemIDs: [],
-      paymentInfos: [],
-    },
-  })
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+      value: {
+        '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+        creator: this.$store.getters['common/wallet/address'],
+        cookbookID: 'nftarena',
+        recipeID: 'mintarmor',
+        coinInputsIndex: '0',
+        itemIDs: [],
+        paymentInfos: [],
+      },
+    })
+    .then((res) => {
+      updateBalance.bind(this)()
+      return res
+    })
 }
 
 export function craftShield() {
-  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-    value: {
-      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-      creator: this.$store.getters['common/wallet/address'],
-      cookbookID: 'nftarena',
-      recipeID: 'mintshield',
-      coinInputsIndex: '0',
-      itemIDs: [],
-      paymentInfos: [],
-    },
-  })
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+      value: {
+        '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+        creator: this.$store.getters['common/wallet/address'],
+        cookbookID: 'nftarena',
+        recipeID: 'mintshield',
+        coinInputsIndex: '0',
+        itemIDs: [],
+        paymentInfos: [],
+      },
+    })
+    .then((res) => {
+      updateBalance.bind(this)()
+      return res
+    })
 }
 export function enchantItem(itemType, id) {
   let recipe
@@ -183,14 +212,83 @@ export function enchantItem(itemType, id) {
       return
     }
   }
+  return this.$store
+    .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+      value: {
+        '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+        creator: this.$store.getters['common/wallet/address'],
+        cookbookID: 'nftarena',
+        recipeID: recipe,
+        coinInputsIndex: '0',
+        itemIDs: [id],
+        paymentInfos: [],
+      },
+    })
+    .then((res) => {
+      updateBalance.bind(this)()
+      return res
+    })
+}
+
+export function getBalance() {
+  return this.$axios
+    .get(
+      'http://v2202008103543124756.megasrv.de:1318/cosmos/bank/v1beta1/balances/' +
+        this.$store.getters['common/wallet/address'],
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      },
+    )
+    .then((res) => {
+      return res.data.balances
+    })
+}
+
+export function updateBalance() {
+  return getBalance
+    .bind(this)()
+    .then((balances) => {
+      balances.forEach((balance) => {
+        if (balance.denom == 'nftarena/coin') {
+          this.$store.commit('setTokenAmount', balance.amount)
+        }
+      })
+      return balances
+    })
+}
+
+export function openFaucet() {
+  return this.$axios.post(
+    process.env.VUE_APP_FAUCET,
+    {
+      address: this.$store.getters['common/wallet/address'],
+      coins: ['5000upylon'],
+    },
+    {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+  )
+}
+
+export function createAccount() {
+  return this.$store.dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
+      creator: this.$store.getters['common/wallet/address'],
+      username: this.$store.getters['common/wallet/walletName'],
+    },
+  })
+}
+
+export function getCoins() {
   return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
     value: {
       '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
       creator: this.$store.getters['common/wallet/address'],
       cookbookID: 'nftarena',
-      recipeID: recipe,
+      recipeID: 'getcoins',
       coinInputsIndex: '0',
-      itemIDs: [id],
+      itemIDs: [],
       paymentInfos: [],
     },
   })

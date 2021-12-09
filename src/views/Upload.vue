@@ -43,6 +43,7 @@
 
 <script>
 import PleaseLogIn from '../components/PleaseLogIn.vue'
+import { getNft } from '../utils/pylonsInteraction.js'
 
 export default {
   name: 'Upload',
@@ -70,7 +71,7 @@ export default {
         console.log('First res is: ')
         console.log(res)
         if (res === false) {
-          this.createNft().then(() => {
+          this.createNFT().then(() => {
             console.log('Created NFT: ')
             this.queryMyNFT().then((res) => {
               this.heroNft = res
@@ -91,6 +92,7 @@ export default {
         }
       })
     },
+    /*
     createNft() {
       return new Promise((resolve, reject) => {
         this.$store
@@ -109,7 +111,7 @@ export default {
             resolve(res)
           })
       })
-    },
+    },*/
     inputFile(event) {
       let file = event.target.files[0]
 
@@ -251,7 +253,7 @@ function compressImg(dataURL, maxKB) {
   console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
 
   while (Math.round(newDataURL.length) / 1000 > maxKB) {
-    quality -= 0.1
+    quality /= 1.5
     newDataURL = canvas.toDataURL('image/jpeg', quality)
     console.log('quality', quality, 'size', Math.round(newDataURL.length) / 1000)
 

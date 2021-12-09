@@ -25,6 +25,7 @@ import '@starport/vue/lib/starport-vue.css'
 //import Sidebar from './components/Sidebar'
 import PageMenu from './components/PageMenu'
 import PageHeader from './components/PageHeader'
+import { updateBalance, openFaucet, createAccount, getCoins } from './utils/pylonsInteraction.js'
 
 export default {
   components: {
@@ -76,102 +77,37 @@ export default {
           return delay(t, v)
         })
       }
-
       if (this.isLoggedIn) {
-        this.$axios
-          .post(
-            process.env.VUE_APP_FAUCET,
-            {
-              address: this.$store.getters['common/wallet/address'],
-              coins: ['5000upylon'],
-            },
-            {
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            },
-          )
-          .delay(1000)
-          .then((res) => {
-            console.log('Faucet Initiated: ', res)
-            console.log('dispatch this:', {
-              '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-              creator: this.$store.getters['common/wallet/address'],
-              username: this.$store.getters['common/wallet/walletName'],
-            })
-            this.$store
-              .dispatch('Pylonstech.pylons.pylons/MsgCreateAccount', {
-                value: {
-                  '@type': '/Pylonstech.pylons.pylons.MsgCreateAccount',
-                  creator: this.$store.getters['common/wallet/address'],
-                  username: this.$store.getters['common/wallet/walletName'],
-                },
-              })
-              .then((res) => {
-                console.log('after create account, yes', res)
-                this.$store
-                  .dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
-                    value: {
-                      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
-                      creator: this.$store.getters['common/wallet/address'],
-                      cookbookID: 'nftarena',
-                      recipeID: 'getcoins',
-                      coinInputsIndex: '0',
-                      itemIDs: [],
-                      paymentInfos: [],
-                    },
-                  })
-                  .then((res) => {
-                    console.log('GottenCoins: ', res)
-                  })
-              })
+        updateBalance
+          .bind(this)()
+          .then((balance) => {
+            console.log('balance', balance)
+            if (balance.length === 0) {
+              console.log('New account, registering')
+              openFaucet
+                .bind(this)()
+                .delay(1000)
+                .then((res) => {
+                  console.log('Faucet Initiated: ', res)
+                  createAccount
+                    .bind(this)()
+                    .then((res) => {
+                      getCoins
+                        .bind(this)()
+                        .then((res) => {
+                          console.log('GottenCoins: ', res)
+                          updateBalance.bind(this)()
+                        })
+                    })
+                })
+            }
           })
       } else {
         console.log('LOGGED OUT')
       }
     },
   },
-  '$store.state.common.wallet': {
-    deep: true,
-    handler() {
-      console.log('OHA', this.$store.state.common.wallet)
-    },
-  },
   async created() {
-    let local = {
-      apiNode: 'http://localhost:1317',
-      rpcNode: 'http://localhost:26657',
-      wsNode: 'ws://localhost:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://localhost:26657/tx?hash=0x',
-    }
-    let pylonsserver = {
-      apiNode: 'http://api.testnet.pylons.tech:1317',
-      rpcNode: 'http://api.testnet.pylons.tech:26657',
-      wsNode: 'ws://api.testnet.pylons.tech:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://api.testnet.pylons.tech:26657/tx?hash=0x',
-    }
-    let pylonsserver2 = {
-      apiNode: 'http://46.166.140.172:1317',
-      rpcNode: 'http://46.166.140.172:26657',
-      wsNode: 'http://46.166.140.172:26657/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://localhost:26657/tx?hash=0x',
-    }
-    let shameserver = {
-      apiNode: 'http://v2202008103543124756.megasrv.de:1318',
-      rpcNode: 'http://v2202008103543124756.megasrv.de:26659',
-      wsNode: 'ws://v2202008103543124756.megasrv.de:26659/websocket',
-      chainId: 'pylons',
-      addrPrefix: 'pylo',
-      sdkVersion: 'Stargate',
-      getTXApi: 'http://v2202008103543124756.megasrv.de:26659/tx?hash=0x',
-    }
     await this.$store.dispatch('common/env/init')
     this.initialized = true
   },
