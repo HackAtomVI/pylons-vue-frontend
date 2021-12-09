@@ -84,7 +84,7 @@
             <button @click="this.equipItem()" class="equip">Equip to NFT</button>
           </div>
 
-          <div v-if="!this.isEnchanted" class="enchant-description">Enchant your item for 15 Tokens.</div>
+          <div v-if="!this.isEnchanted" class="enchant-description">Enchant your item for 100 Tokens.</div>
           <div v-if="this.isEnchanted" class="enchant-description">Item is enchanted</div>
         </div>
       </div>

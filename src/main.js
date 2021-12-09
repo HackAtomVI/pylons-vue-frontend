@@ -8,7 +8,7 @@ import * as R from 'ramda'
 
 import Notifications from '@kyvg/vue3-notification'
 
-import { getNft, getItems } from './utils/pylonsInteraction.js'
+import { createNft, getNft, getItems } from './utils/pylonsInteraction.js'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
@@ -32,6 +32,12 @@ app.mixin({
           check = true
       })(navigator.userAgent || navigator.vendor || window.opera)
       return check
+    },
+    createNFT: function () {
+      return createNft.bind(this)()
+    },
+    getMyNFT: function () {
+      return getNft.bind(this)()
     },
     queryMyNFT: function () {
       console.log('QUERY MY NFT')

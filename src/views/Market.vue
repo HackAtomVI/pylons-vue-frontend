@@ -11,7 +11,7 @@
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
-            25 token
+            100 token
           </div>
         </div>
         <div class="weapon-wrapper">
@@ -21,7 +21,7 @@
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
-            25 token
+            100 token
           </div>
         </div>
         <div class="surprise-wrapper">
@@ -31,7 +31,7 @@
           </div>
           <div class="description" style="padding-top: 15px; text-align: center">
             Price: <br />
-            20 token
+            100 token
           </div>
         </div>
       </div>

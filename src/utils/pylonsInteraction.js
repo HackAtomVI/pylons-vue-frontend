@@ -1,5 +1,19 @@
 import * as R from 'ramda'
 
+export function createNft() {
+  return this.$store.dispatch('Pylonstech.pylons.pylons/sendMsgExecuteRecipe', {
+    value: {
+      '@type': '/Pylonstech.pylons.pylons.MsgExecuteRecipe',
+      creator: this.$store.getters['common/wallet/address'],
+      cookbookID: 'nftarena',
+      recipeID: 'importnft',
+      coinInputsIndex: '0',
+      itemIDs: [],
+      paymentInfos: [],
+    },
+  })
+}
+
 export function getFight(id) {
   return this.$axios
     .get('http://v2202008103543124756.megasrv.de:1318/Pylons-tech/pylons/pylons/fight?ID=' + id, {
