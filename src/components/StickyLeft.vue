@@ -67,12 +67,12 @@ export default {
   methods: {
     flipImg() {
       switch (this.itemName) {
-        case 'axe':
-        case 'sword':
-        case 'dagger':
-        case 'flail':
-        case 'mace':
-        case 'javelin':
+        case 'Axe':
+        case 'Sword':
+        case 'Dagger':
+        case 'Flail':
+        case 'Mace':
+        case 'Javelin':
           return true
       }
       return false
