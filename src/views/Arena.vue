@@ -149,7 +149,7 @@
 
 <script>
 import * as R from 'ramda'
-import { getItemsFromFight } from '../utils/pylonsInteraction.js'
+import { getItemsFromFight, updateBalance } from '../utils/pylonsInteraction.js'
 import StickyLeft from '@/components/StickyLeft.vue'
 import StickyRight from '@/components/StickyRight.vue'
 import StickyArmor from '@/components/StickyArmor.vue'
@@ -371,6 +371,7 @@ export default {
                     this.notifySuccess('Very Nice!', 'Fight log updated!')
                     this.keepLog = true
                     this.fightQueued = false
+                    updateBalance.bind(this)()
                   })
               })
           }
