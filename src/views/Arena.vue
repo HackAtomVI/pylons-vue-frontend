@@ -281,6 +281,12 @@ export default {
         if (this.fighterEquipment.righthand.oneHanded === 'false') {
           leftID = this.fighterEquipment.righthand.ID
         }
+        if (!leftID || !rightID || !this.fighterEquipment.armor.ID) {
+          this.notifyFail(
+            'No proper Equipment',
+            'For Arena fight you need weapons in your hands and armor on your body.',
+          )
+        }
         this.$store
           .dispatch('Pylonstech.pylons.pylons/sendMsgEnlistForArena', {
             value: {
@@ -294,6 +300,9 @@ export default {
             },
           })
           .then((res) => {
+            if (res.code > 0) {
+              this.notifyFail('Enlisting failed.', res.rawLog)
+            }
             console.log('Enlisted Successfully: ', res)
             console.log('Parsed result of enlist: ', JSON.parse(res.rawLog))
             this.fighterID = JSON.parse(res.rawLog)[0].events[0].attributes[1].value
