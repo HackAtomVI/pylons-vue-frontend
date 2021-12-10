@@ -12,16 +12,14 @@ With the following setup you can run this frontend as a client of the crowd-cont
 ## Setup frontend for own node
 With the following setup you can run this frontend as a client for your local pylons-node.
 ### Setup chain
-1. Clone the pylons repo `git clone git@github.com:Pylons-tech/pylons.git`
-2. Checkout the branch containing the battle transaction `git checkout origin/hackatom-cc`
-3. Start the blockchain `starport chain serve`
+1. Follow instructions from here https://github.com/HackAtomVI/nftarena-recipes#readme
 
 ### Setup frontend
-4. Clone this repo `git clone git@github.com:HackAtomVI/pylons-vue-frontend.git`
-5. Use the "localBlockchain"-branch `git checkout origin/localBlockchain`
-6. In this folder run `npm i`
-7. In this folder run `npm run serve`
-8. The website will be available in your browser at `localhost:8080`
+2. Clone this repo `git clone git@github.com:HackAtomVI/pylons-vue-frontend.git`
+3. Use the "localBlockchain"-branch `git checkout origin/localBlockchain`
+4. In this folder run `npm i`
+5. In this folder run `npm run serve`
+6. The website will be available in your browser at `localhost:8080`
 
 ## App UI Template
 
