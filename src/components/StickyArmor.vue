@@ -24,11 +24,11 @@ export default {
       itemName: this.name,
       imgs: {
         //Armor
-        chainmail: chainmail,
-        gambeson: gambeson,
-        brigandine: brigandine,
-        plateArmor: platearmor,
-        paddedVest: paddedvest,
+        Chainmail: chainmail,
+        Gambeson: gambeson,
+        Brigandine: brigandine,
+        PlateArmor: platearmor,
+        PaddedVest: paddedvest,
       },
     }
   },
