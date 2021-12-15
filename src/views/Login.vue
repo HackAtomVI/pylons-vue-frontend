@@ -3,6 +3,11 @@
     <div class="container">
       <div class="e60_72">Join the Experience</div>
       <div class="maintext">Before you can play the Crowd Control NFT Arena Game, you need to create a wallet.</div>
+      <div class="maintext">
+        Please <b>don't use Keplr</b>. We have no idea why Keplr inserts this strange fee that we have nowhere defined
+        in our code. To try this out, create new wallet or use existing, but Keplr would only work if you have a lot of
+        token for the fees...
+      </div>
       <div class="wrapper">
         <SpWallet class="wallet--local" ref="wallet" v-on:dropdown-opened="$refs.menu.closeDropdown()" />
       </div>

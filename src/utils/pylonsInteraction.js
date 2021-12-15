@@ -262,7 +262,7 @@ export function openFaucet() {
     process.env.VUE_APP_FAUCET,
     {
       address: this.$store.getters['common/wallet/address'],
-      coins: ['5000upylon'],
+      coins: ['5000upylon', '5000unftarena/coin'],
     },
     {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
